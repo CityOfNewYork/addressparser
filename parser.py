@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+from nltk.chunk import *
+from nltk.chunk.util import *
+from nltk.chunk.regexp import *
+from nltk import Tree
+from nltk.tokenize import word_tokenize
+import nltk
+
+import util
+
+
+def filter_paren(tup):
+    if tup[0] == '(':
+        return tup[0], '-NONE-'
+    return tup
+
+
+def parse(text):
+    tokens = word_tokenize(util.preproces_text(text))
+    tagged = nltk.pos_tag(tokens)
+
+    # get rid of commas
+    tagged = [tup for tup in tagged if tup[0] != ',']
+
+    # flag open paren as -NONE-
+    tagged = map(filter_paren, tagged)
+
+    grammer = 'Location: ' \
+        '{<CD><NNP>+<JJ>?<NNP>+|' \
+        '<CD><NNP><CD><NNP>+|' \
+        '<CD>+<NNP>+|' \
+        '<CD><NNP>+}'
+    chunkParser = nltk.RegexpParser(grammer)
+    result = chunkParser.parse(tagged)
+    return [s for s in result.subtrees(lambda t: t.label() == 'Location')]
+
+if __name__ == '__main__':
+    import codecs
+
+    sample = codecs.open('trainers/ad-trainer2.txt', 'r', encoding='utf8') \
+        .read()
+
+    util.showResults(parse(sample))
