@@ -19,11 +19,11 @@ def preproces_text(text):
     return filter_boroughs(text)
 
 
+def location_to_string(tree):
+    return ' '.join([c[0] for c in tree])
+
+
 def showResults(res):
     for ad in res:
-        address = []
-        for component in ad:
-            address.append(component[0])
-        print ' '.join(address)
-        # if address[-2].lower() == 'ny' or address[-1].lower() == 'ny' :
-        #     print ' '.join(address)
+        print location_to_string(ad)
+
