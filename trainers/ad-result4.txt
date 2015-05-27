@@ -1,0 +1,64 @@
+1 Centre Street,9th Floor, Borough of Manhattan
+(u'1', 'CD'), (u'Centre', 'NNP'), (u'Street', 'NNP'), (u'9th', 'JJ'), (u'Floor', 'NNP'), (u'Manhattan', 'NNP'), (u'Ny', 'NNP')
+<CD><NNP>+<JJ>?<NNP>+
+
+
+BOROUGH OF QUEENS 15-5446-Block 1289, lot 15–
+37-18 79th Street-Jackson Heights Historic District
+
+BOROUGH OF QUEENS 14-8118-Block 8041, lot 47–
+121 Arleigh Road-Douglaston Historic District
+
+BOROUGH OF QUEENS 15-7412 - Block 8020, lot 6–
+10 Richmond Road-Douglaston Historic District
+
+BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3–
+2 Fillmore Place-Fillmore Place Historic District
+
+BOROUGH OF BROOKLYN 15-7102-Block 201, lot 5–
+20 Old Fulton Street-Fulton Ferry Historic District
+
+BOROUGH OF BROOKLYN 15-6521 - Block 2105, lot 18–
+289 Clermont Avenue-Fort Greene Historic District
+
+BOROUGH OF BROOKLYN 15-6730 - Block 2092, lot 9–
+243 Clermont Avenue-Fort Greene Historic District
+
+BOROUGH OF BROOKLYN 15-8061 - Block 184, lot 33–
+100 Nevins Street, aka 451 Pacific Street-Boerum Hill Historic District
+
+BOROUGH OF BROOKLYN 15-8123 – Block 248, lot 15-
+98 Montague Street - Brooklyn Heights Historic District
+
+BOROUGH OF BROOKLYN 15-5058-Block 234, lot 68–
+146 Willow Street-Brooklyn Heights Historic District
+
+BOROUGH OF BROOKLYN 14-0356-Block 264, lot 25–
+144 Clinton Street, aka 17-23 Aitken Place-Brooklyn Heights Historic
+District
+
+BOROUGH OF BROOKLYN 15-6873 - Block 297, lot 27–
+168 Court Street-Cobble Hill Historic District
+
+BOROUGH OF BROOKLYN 14-7989 - Block 1234, lot 10–
+816 Prospect Place-Crown Heights North Historic District II
+
+BOROUGH OF MANHATTAN 15-6223 – Block 15, lot 22-
+21 West Street - 21 West Street Building-Individual Landmark
+
+BOROUGH OF MANHATTAN 14-8387-Block 180, lot 15–
+15 Jay Street-Tribeca West Historic District
+
+BOROUGH OF MANHATTAN 15-2081-Block 474, lot 7506–
+40 Mercer Street, aka 465 Broadway and 106-114 Grand Street-SoHoCast
+Iron Historic District
+
+BOROUGH OF MANHATTAN 15-1397-Block 530, lot 24–
+35 Great Jones Street-NoHo Historic District
+
+
+
+
+
+
+
