@@ -64,9 +64,32 @@ class PublicHearing(unittest.TestCase):
         print expected
         print 'addresses = ', addresses
         for loc in addresses:
-            print 'found: ', loc
             self.assertIn(loc, expected)
             expected.remove(loc)
+
+        # check to see if everything was found
+        self.assertEqual(expected, [])
+
+
+    # @SkipTest
+    def testLandmarkPreservation(self):
+        result_fn = os.path.join(os.path.dirname(__file__), 'ad-result4.txt')
+        expected = open(result_fn).readlines()
+        expected = [e.strip() for e in expected]
+
+        trainer_fn = os.path.join(os.path.dirname(__file__), 'ad-trainer4.txt')
+        text = codecs.open(trainer_fn, 'r', encoding='utf8').read()
+        addresses = parser.parse(text)
+        print expected
+        print 'addresses = ', addresses
+        for loc in addresses:
+            print 'probable Address: ', loc
+            if loc in expected:
+                print 'valid'
+                expected.remove(loc)
+            else:
+                print 'not valid - does not exist in expectations'
+            # self.assertIn(loc, expected)
 
         # check to see if everything was found
         self.assertEqual(expected, [])

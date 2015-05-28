@@ -1,4 +1,5 @@
 import re
+import historicMappings
 
 _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
                            '(Brooklyn|Queens|Staten\s+Island|Bronx)',
@@ -16,7 +17,11 @@ def filter_boroughs(text):
 
 
 def preproces_text(text):
-    return filter_boroughs(text)
+    # replace unicode dash(-) with ascii dash(-)
+    text = text.replace(u'\u2013', '-')
+
+    text = filter_boroughs(text)
+    return historicMappings.preprocess(text)
 
 
 def location_to_string(tree):

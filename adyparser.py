@@ -3,8 +3,9 @@ from nltk.chunk import *
 from nltk.chunk.util import *
 from nltk.chunk.regexp import *
 from nltk import Tree
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk
+import re
 
 import util
 import usaddress
@@ -15,22 +16,23 @@ def filter_paren(tup):
         return tup[0], '-NONE-'
     return tup
 
+
 def filter_unnecessary_abbreviations(tup):
-    rex = re.compile( 'inc\.$|rest$', re.IGNORECASE)
+    rex = re.compile('inc\.$|rest$', re.IGNORECASE)
     if rex.match(tup[0]):
         return tup[0], '-NONE-'
     return tup
+
 
 def filter_jj_to_nnp(tup):
     txt = tup[0].lower()
     if txt.endswith('st') or txt.endswith('nd') or \
        txt.endswith('rd') or txt.endswith('th'):
-       return tup[0], 'NNP'
+        return tup[0], 'NNP'
     return tup
 
 
-
-def probableAddresses(text):
+def xxxprobableAddresses(text):
     tokens = word_tokenize(util.preproces_text(text))
     tagged = nltk.pos_tag(tokens)
 
@@ -58,11 +60,11 @@ def probableAddresses(text):
     chunkParser = nltk.RegexpParser(grammer)
     result = chunkParser.parse(tagged)
     return [s for s in result.subtrees(lambda t: t.label() == 'Location')]
-
 #  (u'55', 'CD'),
 #  (u'Water', 'NNP'),
 #  (u'Street', 'NNP'), (u'9th', 'JJ'), (u'Floor', 'NNP'), (u'SW', 'NNP'),
 # (u'New', 'NNP'), (u'York', 'NNP'), (u'NY', 'NNP'), (u'10041', 'CD')
+
 
 def showFailureReason(msg, ady, address, verbose=False):
         if verbose:
@@ -72,7 +74,24 @@ def showFailureReason(msg, ady, address, verbose=False):
             print
 
 
-def isValidAddress(ady):
+def probableAddresses(text, verbose=False):
+    locations = []
+    sentences = sent_tokenize(util.preproces_text(text))
+    for s in sentences:
+        if len(s) < 10:
+            if verbose:
+                showFailureReason('Sentence too short', s, '--', verbose)
+            continue
+        print s
+        locs = xxxprobableAddresses(s)
+        locations += locs
+        print locs
+        print '---\n'
+
+    return locations
+
+
+def isValidAddress(ady, verbose=False):
 
     address = usaddress.parse(ady)
     if len(address) < 4:
@@ -80,21 +99,21 @@ def isValidAddress(ady):
         return False
 
     if any([a[1] == 'Recipient' for a in address]):
-        showFailureReason('Recipient', ady, address)
+        showFailureReason('Recipient', ady, address, verbose)
         return False
 
     if not any([a[1] == 'StreetName' for a in address]):
-        showFailureReason('StreetName', ady, address)
+        showFailureReason('StreetName', ady, address, verbose)
         return False
 
     if not any([a[1] == 'AddressNumber' for a in address]):
-        showFailureReason('AddressNumber', ady, address)
+        showFailureReason('AddressNumber', ady, address, verbose)
         return False
 
     # filter out improbable address endings
     last = ady.split(' ')[-1].lower()
     if last in ['food', 'inc', 'corp', 'llc', 'room', 'of']:
-        showFailureReason('Bad Ending', ady, address)
+        showFailureReason('Bad Ending', ady, address, verbose)
         return False
 
     # print ady
@@ -115,7 +134,7 @@ def parse(text):
 if __name__ == '__main__':
     import codecs
 
-    sample = codecs.open('trainers/ad-trainer2.txt', 'r', encoding='utf8') \
+    sample = codecs.open('trainers/ad-trainer4.txt', 'r', encoding='utf8') \
         .read()
 
     print parse(sample)
