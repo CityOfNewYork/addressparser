@@ -2,7 +2,7 @@
 from nltk.chunk import *
 from nltk.chunk.util import *
 from nltk.chunk.regexp import *
-from nltk import Tree
+# from nltk import Tree
 from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk
 import re
@@ -24,21 +24,20 @@ def filter_unnecessary_abbreviations(tup):
     return tup
 
 
-def filter_jj_to_nnp(tup):
-    txt = tup[0].lower()
-    if txt.endswith('st') or txt.endswith('nd') or \
-       txt.endswith('rd') or txt.endswith('th'):
-        return tup[0], 'NNP'
-    return tup
-
-
 def filter_comma(tup):
     if tup[0] == ',':
         return ',', 'COMMA'
     return tup
 
 
-def parseAddresses(text):
+def filter_ls(tup):
+    # ls (list marker) is not necessarey, should be a digit
+    if tup[1] == 'LS':
+        return tup[0], 'CD'
+    return tup
+
+
+def parseAddresses(text, verbose=False):
     tokens = word_tokenize(util.preproces_text(text))
     tagged = nltk.pos_tag(tokens)
 
@@ -48,14 +47,16 @@ def parseAddresses(text):
     # flag open paren as -NONE-
     tagged = map(filter_paren, tagged)
 
+    # change counting lists (ls) to counting digits (cd)
+    tagged = map(filter_ls, tagged)
+
     # change POS tag to -NONE- to aid chunking
     # todo: better comments -- remove this function to find
     # cases where this break tests
     tagged = map(filter_unnecessary_abbreviations, tagged)
 
-    # tagged = map(filter_jj_to_nnp, tagged)
-
-    # print tagged
+    if verbose:
+        print tagged
 
     grammer = 'Location: ' \
         '{<CD><NNP|COMMA>+<JJ>?<NNP|COMMA>+|' \
@@ -83,7 +84,7 @@ def probableAddresses(text, verbose=False):
             if verbose:
                 showFailureReason('Sentence too short', s, '--', verbose)
             continue
-        locs = parseAddresses(s)
+        locs = parseAddresses(s, verbose)
         locations += locs
 
     return locations
@@ -93,7 +94,7 @@ def isValidAddress(ady, verbose=False):
 
     address = usaddress.parse(ady)
     if len(address) < 4:
-        showFailureReason('Not Enough Terms', ady, address)
+        showFailureReason('Not Enough Terms', ady, address, verbose)
         return False
 
     if any([a[1] == 'Recipient' for a in address]):
@@ -117,14 +118,14 @@ def isValidAddress(ady, verbose=False):
     return True
 
 
-def parse(text):
-    candidates = probableAddresses(text)
+def parse(text, verbose=False):
+    candidates = probableAddresses(text, verbose)
     candidates = [util.location_to_string(c) for c in candidates]
 
     # for c in candidates:
     #     print c
 
-    return [c for c in candidates if isValidAddress(c)]
+    return [c for c in candidates if isValidAddress(c, False)]
 
 
 if __name__ == '__main__':
@@ -132,5 +133,5 @@ if __name__ == '__main__':
 
     sample = codecs.open('trainers/ad-trainer4.txt', 'r', encoding='utf8') \
         .read()
-
-    print parse(sample)
+    for address in  parse(sample):
+        print address
