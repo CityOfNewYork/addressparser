@@ -39,7 +39,7 @@ def preproces_text(text):
 
 
 def location_to_string(tree):
-    return ' '.join([c[0] for c in tree])
+    return ' '.join([c[0] for c in tree]).replace(' ,', ',')
 
 
 def showResults(res):
