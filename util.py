@@ -19,6 +19,7 @@ _b = '[brooklyn|bronx|manhattan|staten\s+island|queens]'
 _rex_blockcodes = r'BOROUGH\s+of\s+%s[^b]+block[^,]+,\s+lot[\s\d]+.' % _b
 _rex_blockcodes = re.compile(_rex_blockcodes, re.IGNORECASE)
 
+
 def filter_boroughs(text):
     global _rex_boroughs, _rex_manhattan
     text = _rex_manhattan.sub('NY, NY.\n', text)
@@ -27,11 +28,12 @@ def filter_boroughs(text):
 
 def filter_blockcodes(text):
     global _rex_blockcodes
-    return '.\n'.join( [para for para in _rex_blockcodes.split(text)])
+    return '.\n'.join([para for para in _rex_blockcodes.split(text)])
+
 
 def preproces_text(text):
     # replace unicode dash(-) with ascii dash(-)
-    text = text.replace(u'\u2013', '-')
+    # text = text.replace(u'\u2013', '-')
 
     text = filter_boroughs(text)
     text = filter_blockcodes(text)
