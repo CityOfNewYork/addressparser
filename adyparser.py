@@ -32,7 +32,7 @@ def filter_jj_to_nnp(tup):
     return tup
 
 
-def xxxprobableAddresses(text):
+def parseAddresses(text):
     tokens = word_tokenize(util.preproces_text(text))
     tagged = nltk.pos_tag(tokens)
 
@@ -60,18 +60,13 @@ def xxxprobableAddresses(text):
     chunkParser = nltk.RegexpParser(grammer)
     result = chunkParser.parse(tagged)
     return [s for s in result.subtrees(lambda t: t.label() == 'Location')]
-#  (u'55', 'CD'),
-#  (u'Water', 'NNP'),
-#  (u'Street', 'NNP'), (u'9th', 'JJ'), (u'Floor', 'NNP'), (u'SW', 'NNP'),
-# (u'New', 'NNP'), (u'York', 'NNP'), (u'NY', 'NNP'), (u'10041', 'CD')
 
 
-def showFailureReason(msg, ady, address, verbose=False):
-        if verbose:
-            print 'Failed: %s' % msg
-            print ady
-            print address
-            print
+def showFailureReason(msg, address, components, verbose=False):
+    if verbose:
+        print 'Failed: %s' % msg
+        print '\tAddress:\t\t%s' % address
+        print '\tUS Address Components:\t%s\n' % components
 
 
 def probableAddresses(text, verbose=False):
@@ -82,16 +77,13 @@ def probableAddresses(text, verbose=False):
             if verbose:
                 showFailureReason('Sentence too short', s, '--', verbose)
             continue
-        print s
-        locs = xxxprobableAddresses(s)
+        locs = parseAddresses(s)
         locations += locs
-        print locs
-        print '---\n'
 
     return locations
 
 
-def isValidAddress(ady, verbose=False):
+def isValidAddress(ady, verbose=True):
 
     address = usaddress.parse(ady)
     if len(address) < 4:
@@ -116,9 +108,6 @@ def isValidAddress(ady, verbose=False):
         showFailureReason('Bad Ending', ady, address, verbose)
         return False
 
-    # print ady
-    # print address
-    # print
     return True
 
 
