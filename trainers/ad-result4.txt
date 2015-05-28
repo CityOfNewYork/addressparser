@@ -1,17 +1,17 @@
-37-18 79th Street Jackson Heights Queens, NY
-121 Arleigh Road Douglaston Queens, NY
-10 Richmond Road Douglaston Queens, NY
-2 Fillmore Place Fillmore Place Brooklyn, NY
-20 Old Fulton Street Fulton Ferry Brooklyn, NY
-289 Clermont Avenue Fort Greene Brooklyn, NY
-243 Clermont Avenue Fort Greene Brooklyn, NY
-100 Nevins Street, aka 451 Pacific Street Boerum Hill Brooklyn, NY
-98 Montague Street Brooklyn Heights Brooklyn, NY
-146 Willow Street Brooklyn Heights Brooklyn, NY
-144 Clinton Street, aka 17-23 Aitken Place-Brooklyn Heights Brooklyn, NY
-168 Court Street Cobble Hill Brooklyn, NY
-816 Prospect Place Crown Heights North Brooklyn, NY
-21 West Street NY, NY
-15 Jay Street Tribeca West NY, NY
-40 Mercer Street, aka 465 Broadway and 106-114 Grand Street-SoHoCast Iron NY, NY
-35 Great Jones Street-NoHo NY, NY
+37-18 79th Street Jackson Heights Queens NY
+121 Arleigh Road Douglaston Queens NY
+10 Richmond Road Douglaston Queens NY
+2 Fillmore Place Fillmore Place Brooklyn NY
+20 Old Fulton Street Fulton Ferry Brooklyn NY
+289 Clermont Avenue Fort Greene Brooklyn NY
+243 Clermont Avenue Fort Greene Brooklyn NY
+451 Pacific Street Boerum Hill Brooklyn NY
+98 Montague Street Brooklyn Heights Brooklyn NY
+146 Willow Street Brooklyn Heights Brooklyn NY
+17-23 Aitken Place Brooklyn Heights Brooklyn NY
+168 Court Street Cobble Hill Brooklyn NY
+816 Prospect Place Crown Heights North Brooklyn NY
+21 West Street NY NY
+15 Jay Street Tribeca NY NY
+35 Great Jones Street NoHo NY NY
+106-114 Grand Street SoHo NY NY
