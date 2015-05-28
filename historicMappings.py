@@ -28,7 +28,6 @@ manhattan = [re.compile(i, re.IGNORECASE) for i in manhattan]
 
 
 def preprocess(text):
-    orig = text
     for rex in queens:
         text = rex.sub(', \\1, Queens, NY.\n', text)
 
@@ -37,8 +36,4 @@ def preprocess(text):
 
     for rex in manhattan:
         text = rex.sub(', \\1, NY, NY.\n', text)
-    if orig != text:
-        print 'Original: [%s]' % orig
-        print 'Processed: [%s]' % text
-        print '===' * 12
     return text
