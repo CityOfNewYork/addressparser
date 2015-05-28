@@ -11,12 +11,6 @@ import util
 import usaddress
 
 
-def filter_paren(tup):
-    if tup[0] == '(':
-        return tup[0], '-NONE-'
-    return tup
-
-
 def filter_unnecessary_abbreviations(tup):
     rex = re.compile('inc\.$|rest$', re.IGNORECASE)
     if rex.match(tup[0]):
@@ -43,9 +37,6 @@ def parseAddresses(text, verbose=False):
 
     # retag commas
     tagged = map(filter_comma, tagged)
-
-    # flag open paren as -NONE-
-    tagged = map(filter_paren, tagged)
 
     # change counting lists (ls) to counting digits (cd)
     tagged = map(filter_ls, tagged)
@@ -133,5 +124,5 @@ if __name__ == '__main__':
 
     sample = codecs.open('trainers/ad-trainer4.txt', 'r', encoding='utf8') \
         .read()
-    for address in  parse(sample):
+    for address in parse(sample):
         print address
