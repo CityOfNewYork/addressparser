@@ -35,6 +35,7 @@ def probableAddresses(text):
     result = chunkParser.parse(tagged)
     return [s for s in result.subtrees(lambda t: t.label() == 'Location')]
 
+
 def isValidAddress(ady):
     address = usaddress.parse(ady)
     if len(address) < 5:
@@ -42,8 +43,8 @@ def isValidAddress(ady):
 
     if any([a[1] == 'Recipient' for a in address]):
         return False
-
     return True
+
 
 def parse(text):
     candidates = probableAddresses(text)
