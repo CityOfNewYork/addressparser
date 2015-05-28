@@ -32,12 +32,18 @@ def filter_jj_to_nnp(tup):
     return tup
 
 
+def filter_comma(tup):
+    if tup[0] == ',':
+        return ',', 'COMMA'
+    return tup
+
+
 def parseAddresses(text):
     tokens = word_tokenize(util.preproces_text(text))
     tagged = nltk.pos_tag(tokens)
 
-    # get rid of commas
-    tagged = [tup for tup in tagged if tup[0] != ',']
+    # retag commas
+    tagged = map(filter_comma, tagged)
 
     # flag open paren as -NONE-
     tagged = map(filter_paren, tagged)
@@ -52,10 +58,10 @@ def parseAddresses(text):
     # print tagged
 
     grammer = 'Location: ' \
-        '{<CD><NNP>+<JJ>?<NNP>+|' \
-        '<CD><NNP><CD><NNP>+|' \
-        '<CD>+<NNP>+|' \
-        '<CD><NNP>+}'
+        '{<CD><NNP|COMMA>+<JJ>?<NNP|COMMA>+|' \
+        '<CD><NNP><CD><NNP|COMMA>+|' \
+        '<CD>+<NNP|COMMA>+|' \
+        '<CD><NNP|COMMA>+}'
 
     chunkParser = nltk.RegexpParser(grammer)
     result = chunkParser.parse(tagged)
@@ -83,7 +89,7 @@ def probableAddresses(text, verbose=False):
     return locations
 
 
-def isValidAddress(ady, verbose=True):
+def isValidAddress(ady, verbose=False):
 
     address = usaddress.parse(ady)
     if len(address) < 4:
@@ -104,8 +110,8 @@ def isValidAddress(ady, verbose=True):
 
     # filter out improbable address endings
     last = ady.split(' ')[-1].lower()
-    if last in ['food', 'inc', 'corp', 'llc', 'room', 'of']:
-        showFailureReason('Bad Ending', ady, address, verbose)
+    if last != 'ny':
+        showFailureReason('does not end with NY', ady, address, verbose)
         return False
 
     return True
@@ -113,10 +119,11 @@ def isValidAddress(ady, verbose=True):
 
 def parse(text):
     candidates = probableAddresses(text)
+    candidates = [util.location_to_string(c) for c in candidates]
+
     # for c in candidates:
     #     print c
 
-    candidates = [util.location_to_string(c) for c in candidates]
     return [c for c in candidates if isValidAddress(c)]
 
 
