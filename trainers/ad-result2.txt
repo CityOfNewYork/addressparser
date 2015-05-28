@@ -1,26 +1,26 @@
-66 John Street 11th Floor NY NY
-132 Mulberry Street NY NY
-135 W Broadway NY NY
-149 2nd Avenue NY NY
-241 Bowery NY NY
-4015 Broadway NY NY
-675 Hudson Street NY NY
-20 E 76th Street NY NY
-975 Amsterdam Avenue NY NY
-221 Columbus Avenue NY NY
-423 Amsterdam Avenue NY NY
-445 W 238th Street Bronx NY
-44 W 63rd Street NY NY
-50 E Fordham Road Bronx NY
-22 Peck Slip NY NY
-20 Spring Street NY NY
-24 Saint Nicholas Avenue Brooklyn NY
-26 Carmine Street NY NY
-10603 Metropolitan Avenue Queens NY
-1454 2nd Avenue NY NY
-16 King Street NY NY
-209 E 42nd Street NY NY
-138 Mulberry Street NY NY
-33 E 60th Street NY NY
-723 Fulton Street Brooklyn NY
-384 Broome Street NY NY
+66 John Street, 11th Floor, NY, NY
+132 Mulberry Street NY, NY
+135 W Broadway NY, NY
+149 2nd Avenue NY, NY
+241 Bowery NY, NY
+4015 Broadway NY, NY
+675 Hudson Street NY, NY
+20 E 76th Street NY, NY
+975 Amsterdam Avenue NY, NY
+221 Columbus Avenue NY, NY
+423 Amsterdam Avenue NY, NY
+445 W 238th Street Bronx, NY
+44 W 63rd Street NY, NY
+50 E Fordham Road Bronx, NY
+22 Peck Slip NY, NY
+20 Spring Street NY, NY
+24 Saint Nicholas Avenue Brooklyn, NY
+26 Carmine Street NY, NY
+10603 Metropolitan Avenue Queens, NY
+1454 2nd Avenue NY, NY
+16 King Street NY, NY
+209 E 42nd Street NY, NY
+138 Mulberry Street NY, NY
+33 E 60th Street NY, NY
+723 Fulton Street Brooklyn, NY
+384 Broome Street NY, NY
