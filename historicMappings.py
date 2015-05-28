@@ -7,12 +7,16 @@ queens = [
 ]
 queens = [re.compile(i, re.IGNORECASE) for i in queens]
 
+bk_nobackfill = [
+    '-Fillmore\s+Place\s+Historic\s+District',
+]
+bk_nobackfill = [re.compile(i, re.IGNORECASE) for i in bk_nobackfill]
+
 brooklyn = [
-    '-(Fillmore\s+Place)\s+Historic\s+District',
     '-(Fulton\s+Ferry)\s+Historic\s+District',
     '-(Fort\s+Greene)\s+Historic\s+District',
     '-(Boerum Hill)\s+Historic\s+District',
-    '-(Brooklyn Heights)\s+Historic\s+District',
+    '[\-\s]+(Brooklyn\s+Heights)\s+Historic\s+District',
     '-(Cobble Hill)\s+Historic\s+District',
     '-(Crown Heights)\s+North\s+Historic\s+District\s+II'
 ]
@@ -33,6 +37,8 @@ def preprocess(text):
 
     for rex in brooklyn:
         text = rex.sub(', \\1, Brooklyn, NY.\n', text)
+    for rex in bk_nobackfill:
+        text = rex.sub(', Brooklyn, NY.\n', text)
 
     for rex in manhattan:
         text = rex.sub(', \\1, NY, NY.\n', text)
