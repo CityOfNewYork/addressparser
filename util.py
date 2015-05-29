@@ -31,10 +31,9 @@ def filter_blockcodes(text):
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
 
 
+# Entry point for preprocessing. Add more methods within this
+# function
 def preproces_text(text):
-    # replace unicode dash(-) with ascii dash(-)
-    # text = text.replace(u'\u2013', '-')
-
     text = filter_boroughs(text)
     text = filter_blockcodes(text)
     return historicMappings.preprocess(text)
@@ -42,9 +41,3 @@ def preproces_text(text):
 
 def location_to_string(tree):
     return ' '.join([c[0] for c in tree]).replace(' ,', ',')
-
-
-def showResults(res):
-    for ad in res:
-        print location_to_string(ad)
-
