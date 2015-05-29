@@ -6,7 +6,7 @@ import os.path
 import unittest
 import codecs
 
-import adyparser as parser
+import nycaddress as parser
 
 
 class PublicHearing(unittest.TestCase):
