@@ -1,4 +1,4 @@
-from ad-trainer4.txt
+from ad-sample4.txt
 
 This doesn't parse correctly.
 should find: 21 West Street, NY, NY
