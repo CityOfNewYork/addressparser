@@ -1,0 +1,6 @@
+nltk
+numpy
+ipython[all]
+nose
+usaddress
+flask
