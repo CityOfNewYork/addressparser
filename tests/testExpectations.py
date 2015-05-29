@@ -11,7 +11,14 @@ import adyparser as parser
 
 class PublicHearing(unittest.TestCase):
 
-    def checkExpectation(self, source, expectation):
+    def __init__(self, *args, **kwds):
+        super(PublicHearing, self).__init__(*args, **kwds)
+        self.cwd = os.path.dirname(__file__)
+
+    def checkExpectation(self, sample, expect):
+        source = os.path.join(self.cwd, sample)
+        expectation = os.path.join(self.cwd, expect)
+
         expected = open(expectation).readlines()
         expected = [e.strip() for e in expected]
 
@@ -25,24 +32,13 @@ class PublicHearing(unittest.TestCase):
         self.assertEqual(expected, [])
 
     def testDesignAndConstruction(self):
-        source = os.path.join(os.path.dirname(__file__), 'ad-sample1.txt')
-        expectation = os.path.join(os.path.dirname(__file__), 'ad-expected1.txt')
-        self.checkExpectation(source, expectation)
-
+        self.checkExpectation('ad-sample1.txt', 'ad-expected1.txt')
 
     def testDepartmentOfConsumerAffairs(self):
-        source = os.path.join(os.path.dirname(__file__), 'ad-sample2.txt')
-        expectation = os.path.join(os.path.dirname(__file__), 'ad-expected2.txt')
-        self.checkExpectation(source, expectation)
+        self.checkExpectation('ad-sample2.txt', 'ad-expected2.txt')
 
     def testDepartmentOfTransportation(self):
-        source = os.path.join(os.path.dirname(__file__), 'ad-sample3.txt')
-        expectation = os.path.join(os.path.dirname(__file__), 'ad-expected3.txt')
-        self.checkExpectation(source, expectation)
-
+        self.checkExpectation('ad-sample3.txt', 'ad-expected3.txt')
 
     def testLandmarkPreservation(self):
-        source = os.path.join(os.path.dirname(__file__), 'ad-sample4.txt')
-        expectation = os.path.join(os.path.dirname(__file__), 'ad-expected4.txt')
-        self.checkExpectation(source, expectation)
-
+        self.checkExpectation('ad-sample4.txt', 'ad-expected4.txt')
