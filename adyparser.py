@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from nltk.chunk import *
-from nltk.chunk.util import *
-from nltk.chunk.regexp import *
+# from nltk.chunk import *
+# from nltk.chunk.util import *
+# from nltk.chunk.regexp import *
 # from nltk import Tree
 from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk
@@ -31,7 +31,7 @@ def filter_ls(tup):
     return tup
 
 
-def parseAddresses(text, verbose=False):
+def pos_tag(text, verbose=False):
     tokens = word_tokenize(util.preproces_text(text))
     tagged = nltk.pos_tag(tokens)
 
@@ -44,8 +44,12 @@ def parseAddresses(text, verbose=False):
     # change POS tag to -NONE- to aid chunking
     # todo: better comments -- remove this function to find
     # cases where this break tests
-    tagged = map(filter_unnecessary_abbreviations, tagged)
+    return map(filter_unnecessary_abbreviations, tagged)
 
+
+def parseAddresses(text, verbose=False):
+
+    tagged = pos_tag(text, verbose)
     if verbose:
         print tagged
 
@@ -122,7 +126,7 @@ def parse(text, verbose=False):
 if __name__ == '__main__':
     import codecs
 
-    sample = codecs.open('trainers/ad-trainer4.txt', 'r', encoding='utf8') \
+    sample = codecs.open('tests/ad-sample4.txt', 'r', encoding='utf8') \
         .read()
     for address in parse(sample):
         print address
