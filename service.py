@@ -1,8 +1,13 @@
+import json
 from nycaddress import parse
 from flask import Flask, request
-import json
+
+# uncomment to allow CORS
+# from flask.ext.cors import CORS, cross_origin
 
 app = Flask(__name__)
+# cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def parseAddresses(text):
@@ -16,6 +21,7 @@ def root():
 
 
 @app.route('/parseaddresses/', methods=['GET', 'POST'])
+# @cross_origin()
 def parseaddresses():
     '''POST Payload:
         {"source": "string"}
