@@ -58,7 +58,7 @@ def filterBoroughOf(text):
     return re.sub(boroughOf, r"""\g<2>, NY""", text)
 
 def filterBoroughOfManhattan(text):
-    return re.sub(boroughOfManhattan, r"""\g<2>, NY""", text)
+    return re.sub(boroughOfManhattan, r"""New York, NY""", text)
 
 
 #For instances such as "1 Centre Street in Manhattan"
@@ -75,4 +75,4 @@ def filterInBorough(text):
     return re.sub(inBorough, r', \g<2>, NY', text)
 
 def filterInManhattan(text):
-    return re.sub(inManhattan, r', \g<2>, NY', text)
+    return re.sub(inManhattan, r', New York, NY', text)
