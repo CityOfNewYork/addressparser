@@ -1,0 +1,64 @@
+swagger: '2.0'
+info:
+  title: NYC Address Parser
+  description: Webservice to detect NYC addresses from text
+  version: "0.0.1"
+# the domain of the service
+host: 127.0.0.1:5000
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /
+produces:
+  - application/json
+paths:
+  /parseaddresses/:
+    post:
+      summary: Parse endpoint
+      description: The only endpoint used to submit a string to be parsed.
+      parameters:
+        - name: source
+          in: body
+          description: Raw text to be parsed
+          required: true
+          schema:
+              $ref: '#/definitions/RequestData'
+      responses:
+        '200': 
+          description: array of detected addresses.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StreetAddress'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  StreetAddress:
+    description: evolving description. stay tune
+    required:
+      - text
+    properties:
+      text:
+        type: string
+        description: Fulltext US street address
+        
+  RequestData:
+    properties:
+      source:
+        type: string
+        description: the string to be parsed for addresses
+        
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+        description: Error message
