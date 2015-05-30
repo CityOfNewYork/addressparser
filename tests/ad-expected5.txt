@@ -1,0 +1,28 @@
+;; This buffer is for notes you don't want to save, and for Lisp evaluation.
+;; If you want to create a file, visit that file with C-x C-f,
+;; then enter the text in that file's own buffer.
+
+22 Reade Street, New York, NY 10007
+Councilman's Chamber, City Hall, Manhattan, New York 1000
+22 Reade Street, Main Floor, Manhattan,
+40 Rector Street, 2nd Floor, New York, NY 10006
+City Hall, Third Floor, New York, NY 10007.
+Department of Education Meets in the Hall of the Board for a monthly business meeting on the Third Wednesday, of each month at 6:00 P.M. The Annual Meeting is held on the first Tuesday of July at 10:00 A.M. Board of Elections 32 Broadway, 7th Floor, New York, NY 10004, on Tuesday, at 1:30 P.M. and at the call of the Commissioner.
+Environmental Control Board Meets at 100 Church Street, 12th Floor, Training Room #143, New York, NY 10007 at 9:15 A.M. once a month at the call of the Chairman.
+Board of Health Meets at Gotham Center, 42-09 28th Street, Long Island City, N.Y. 11101, at 10:00 A.M., quarterly or at the call of the Chairman.
+Health Insurance Board Meets in Room 530, Municipal Building, Manhattan, New York 10007, at call of the Chairman.
+Board of Higher Education Meets at 535 East 80th Street, Manhattan, New York 10021, at 5:30 P.M., on fourth Monday in January, February, March, April, June, September, October, November and December. Annual meeting held on fourth Monday in May.
+Room 2203, 2 Washington Street, New York, NY 10004
+40 Rector Street, New York, NY 10006
+22 Reade Street, Main Floor, Manhattan
+22 Reade Street, Main Floor
+22 Reade Street, Main Floor, Manhattan
+Hearing Room, Municipal Building, 9th Floor North, 1 Centre Street, Manhattan, NY
+Boardroom, 22nd Floor, 335 Adams Street, Brooklyn, New York 11201
+Board Room, 12th Floor of 250 Broadway, New York, NY 10007
+100 Centre Street, Manhattan, New York, NY 10013
+Room 603, Municipal Building, New York 10007
+40 Rector Street, 6th Floor, Hearing Room "E"
+BSA conference room, 9th Floor, 40 Rector Street
+40 Rector Street, 9th Floor
+Room 936, Municipal Building, Manhattan, New York, NY 10007
