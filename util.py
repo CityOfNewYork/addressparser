@@ -41,3 +41,38 @@ def preproces_text(text):
 
 def location_to_string(tree):
     return ' '.join([c[0] for c in tree]).replace(' ,', ',')
+
+
+#Some filters for other address formats
+
+#For instances such as "22 Reade Street, Spector Hall, Borough of Manhattan"
+boroughOf = re.compile(r"""(Borough\s+of\s+)
+                           (Brooklyn|Queens|Staten\s+Island|Bronx)""",
+                           re.IGNORECASE | re.VERBOSE)
+
+boroughOfManhattan = re.compile(r"""(Borough\s+of\s+)
+                           (Manhattan)""",
+                           re.IGNORECASE | re.VERBOSE)
+
+def filterBoroughOf(text):
+    return re.sub(boroughOf, r"""\g<2>, NY""", text)
+
+def filterBoroughOfManhattan(text):
+    return re.sub(boroughOfManhattan, r"""New York, NY""", text)
+
+
+#For instances such as "1 Centre Street in Manhattan"
+
+inBorough = re.compile(r"""(\sin\s)
+                           (Brooklyn|Queens|Staten\s+Island|Bronx)""", 
+                           re.IGNORECASE | re.VERBOSE)
+
+inManhattan = re.compile(r"""(\sin\s)
+                           (Manhattan)""", 
+                           re.IGNORECASE | re.VERBOSE)
+
+def filterInBorough(text):
+    return re.sub(inBorough, r', \g<2>, NY', text)
+
+def filterInManhattan(text):
+    return re.sub(inManhattan, r', New York, NY', text)
