@@ -13,7 +13,7 @@ def parseAddresses(text):
 
 @app.route('/')
 def root():
-    return """Welcome to the NYC Address Parser BetaNYC."""
+    return "BetaNYC 5 Borough's address finder"
 
 
 @app.route('/parseaddresses/', methods=['GET', 'POST'])

@@ -29,7 +29,7 @@ def parseAddresses(text):
 
 @app.route('/', methods=['GET'])
 def index():
-    return """Welcome to the NYC Address Parser BetaNYC."""
+    return "BetaNYC 5 Borough's address finder"
 
 
 @app.route('/api/parseaddresses', methods=['POST'])
@@ -89,7 +89,7 @@ def parseaddresses():
 def spec():
     swag = swagger(app)
     swag['info']['version'] = '0.1'
-    swag['info']['title'] = 'BetaNYC 5 Borroughs address finder'
+    swag['info']['title'] = "BetaNYC 5 Borough's address finder"
     return jsonify(swag)
 
 
