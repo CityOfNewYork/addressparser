@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from nycaddress import parse
 from flask import Flask, request, jsonify
 from flask_swagger import swagger
@@ -75,6 +76,16 @@ def parseaddresses():
                   source:
                       type: string
                       description: String to parse
+                      example: >
+                                 NOTICE IS HEREBY GIVEN, pursuant to law, that
+                                 the New York City Department of Consumer
+                                 Affairs will hold a Public Hearing on
+                                 Wednesday, January 28, 2015, at 2:00 P.M., at
+                                 66 John Street, 11th Floor, in the Borough of
+                                 Manhattan, on the following petitions for
+                                 sidewalk café revocable consent: 1. 132
+                                 Mulberry Inc. 132 Mulberry Street in the
+                                 Borough of Manhattan
     """
     if request.method == 'GET':
         return 'So, instructions would be printed here...'
