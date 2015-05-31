@@ -1,64 +1,53 @@
-swagger: '2.0'
-info:
-  title: NYC Address Parser
-  description: Webservice to detect NYC addresses from text
-  version: "0.0.1"
-# the domain of the service
-host: 127.0.0.1:5000
-# array of all schemes that your API supports
-schemes:
-  - http
-# will be prefixed to all paths
-basePath: /
-produces:
-  - application/json
-paths:
-  /parseaddresses/:
-    post:
-      summary: Parse endpoint
-      description: The only endpoint used to submit a string to be parsed.
-      parameters:
-        - name: source
-          in: body
-          description: Raw text to be parsed
-          required: true
-          schema:
-              $ref: '#/definitions/RequestData'
-      responses:
-        '200': 
-          description: array of detected addresses.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/StreetAddress'
-        default:
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
 definitions:
-  StreetAddress:
-    description: evolving description. stay tune
-    required:
-      - text
-    properties:
-      text:
-        type: string
-        description: Fulltext US street address
-        
-  RequestData:
-    properties:
-      source:
-        type: string
-        description: the string to be parsed for addresses
-        
   Error:
+    properties:
+      code:
+        example: 400
+        format: int32
+        type: integer
+      message:
+        description: Error message
+        example: Invalid or Missing JSON Request
+        type: string
     required:
       - code
       - message
+  Input:
     properties:
-      code:
-        type: integer
-        format: int32
-      message:
+      source:
+        description: String to parse
+        example: "NOTICE IS HEREBY GIVEN, pursuant to law, that the New York City Department of Consumer Affairs will hold a Public Hearing on Wednesday, January 28, 2015, at 2:00 P.M., at 66 John Street, 11th Floor, in the Borough of Manhattan, on the following petitions for sidewalk café revocable consent: 1. 132 Mulberry Inc. 132 Mulberry Street in the Borough of Manhattan"
         type: string
-        description: Error message
+    required:
+      - source
+  StreetAddress:
+    properties:
+      text:
+        description: Fulltext US street address
+        type: string
+    required:
+      - text
+info:
+  title: "BetaNYC 5 Borough's address finder"
+  version: "0.1"
+paths:
+  /api/parseaddresses:
+    post:
+      description: The only endpoint used to submit a string to be parsed.
+      parameters:
+        - in: body
+          name: source
+          schema:
+            $ref: "#/definitions/Input"
+      responses:
+        "200":
+          description: list of addresses.
+          schema:
+            $ref: "#/definitions/StreetAddress"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+      summary: Parse Addresses
+swagger: "2.0"
+
