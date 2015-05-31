@@ -4,3 +4,4 @@ ipython[all]
 nose
 usaddress
 flask
+flask-swagger
