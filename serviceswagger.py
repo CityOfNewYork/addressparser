@@ -61,9 +61,11 @@ def parseaddresses():
                     code:
                         type: integer
                         format: int32
+                        example: 400
                     message:
                         type: string
                         description: Error message
+                        example: Invalid or Missing JSON Request
 
     parameters:
         - in: body
@@ -90,10 +92,15 @@ def parseaddresses():
     if request.method == 'GET':
         return 'So, instructions would be printed here...'
 
-    data = request.json
-    data = data['source']
-    print 'data is %s' % data
-    return parseAddresses(data)
+    try:
+        data = request.json
+        source = data['source']
+        ret = parseAddresses(source)
+    except:
+        errmsg = 'Invalid or Missing JSON Request'
+        ret = jsonify({'code': 400, 'message': errmsg})
+
+    return ret
 
 
 @app.route('/spec')
