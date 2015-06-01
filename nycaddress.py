@@ -73,8 +73,10 @@ def showFailureReason(msg, address, components, verbose=False):
 
 def probableAddresses(text, verbose=False):
     locations = []
-    sentences = sent_tokenize(util.preproces_text(text))
+    # sentences = sent_tokenize(util.preproces_text(text))
+    sentences = sent_tokenize(text)
     for s in sentences:
+        print 'Sent: %s\n' % s
         if len(s) < 10:
             if verbose:
                 showFailureReason('Sentence too short', s, '--', verbose)
@@ -104,12 +106,6 @@ def isValidAddress(ady, verbose=False):
         showFailureReason('AddressNumber', ady, address, verbose)
         return False
 
-    # filter out improbable address endings
-    last = ady.split(' ')[-1].lower()
-    if last != 'ny':
-        showFailureReason('does not end with NY', ady, address, verbose)
-        return False
-
     return True
 
 
@@ -117,16 +113,18 @@ def parse(text, verbose=False):
     candidates = probableAddresses(text, verbose)
     candidates = [util.location_to_string(c) for c in candidates]
 
-    # for c in candidates:
-    #     print c
+    # only candidates that end in NY
+    rex = re.compile('(.+,\s+NY)', re.IGNORECASE)
+    candidates = [rex.match(c) for c in candidates]
+    candidates = [c.group() for c in candidates if c is not None]
 
-    return [c for c in candidates if isValidAddress(c, False)]
+    return [c for c in candidates if isValidAddress(c)]
 
 
 if __name__ == '__main__':
     import codecs
 
-    sample = codecs.open('tests/ad-sample4.txt', 'r', encoding='utf8') \
+    sample = codecs.open('tests/ad-sample6.txt', 'r', encoding='utf8') \
         .read()
-    for address in parse(sample):
+    for address in parse(sample, False):
         print address
