@@ -1,12 +1,23 @@
 # -*- coding: utf-8 -*-
-from nycaddress import parse
+import urllib3.contrib.pyopenssl
+urllib3.contrib.pyopenssl.inject_into_urllib3()
+from os import environ
+
 from flask import Flask, request, jsonify
 from flask_swagger import swagger
+
+from nyc_geoclient import Geoclient
+from nycaddress import parse_with_geo
 
 # from flask.ext.cors import CORS
 # CORS(app, resources=r'/*', allow_headers='Content-Type')
 
 app = Flask(__name__)
+
+# load app keys from environment
+appid = environ['DOITT_CROL_APP_ID']
+appkey = environ['DOITT_CROL_APP_KEY']
+g = Geoclient(appid, appkey)
 
 
 @app.after_request
@@ -24,8 +35,8 @@ def after_request(response):
 
 
 def parseAddresses(text):
-    return jsonify({'addresses':
-                    [{"text": loc} for loc in parse(text)]})
+    global g
+    return jsonify(addresses=parse_with_geo(text, g))
 
 
 @app.route('/', methods=['GET'])
@@ -41,15 +52,74 @@ def parseaddresses():
     ---
     responses:
         '200':
-            description: list of addresses.
             schema:
-                id: StreetAddress
+                id: addresses
                 required:
-                    - text
+                    - addresses
                 properties:
-                    text:
-                        type: string
-                        description: Fulltext US street address
+                    addresses:
+                        type: array
+                        items:
+                            schema:
+                                id: location
+                                required:
+                                    - "@type"
+                                    - "@context"
+                                    - address
+                                    - geo
+                                properties:
+                                    "@type":
+                                        type: string
+                                        example: Place
+                                    "@context":
+                                        type: url
+                                        example: http://schema.org
+                                    address:
+                                        schema:
+                                            id: address
+                                            required:
+                                                - "@type"
+                                                - addressLocality
+                                                - addressRegion
+                                                - postalCode
+                                                - streetAddress
+                                                - borough
+                                            properties:
+                                                "@type":
+                                                    type: string
+                                                    example: PostalAddress
+                                                streetAddress:
+                                                    type: string
+                                                    example: >
+                                                               31-01 Ditmars
+                                                               Boulevard
+                                                addressLocality:
+                                                    type: string
+                                                    example: New York City
+                                                postalCode:
+                                                    type: string
+                                                    example: 11105
+                                                borough:
+                                                    type: string
+                                                    example: Queens
+
+                                    geo:
+                                        schema:
+                                            id: geo
+                                            required:
+                                                - "@type"
+                                                - longitude
+                                                - latitude
+                                            properties:
+                                                "@type":
+                                                    type: string
+                                                    example: GeoCoordinates
+                                                longitude:
+                                                    type: string
+                                                    example: 40.776306
+                                                latitude:
+                                                    type: string
+                                                    example: -73.910118
         default:
             description: Unexpected error
             schema:
@@ -96,7 +166,8 @@ def parseaddresses():
         data = request.json
         source = data['source']
         ret = parseAddresses(source)
-    except:
+    except Exception, e:
+        print 'Exception: %s' % e
         errmsg = 'Invalid or Missing JSON Request'
         ret = jsonify({'code': 400, 'message': errmsg})
 
