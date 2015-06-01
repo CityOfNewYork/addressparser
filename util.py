@@ -30,13 +30,24 @@ def filter_blockcodes(text):
     global _rex_blockcodes
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
 
+_street_abreviations = re.compile('\s+(st\.|str\.)[\s,]', re.IGNORECASE)
+
+
+def filter_street_abbreviations(text):
+    global _street_abreviations
+    return _street_abreviations.sub(' Street', text)
+
+
 
 # Entry point for preprocessing. Add more methods within this
 # function
 def preproces_text(text):
+    text = text.replace(u'\xa0', ' ')
     text = filter_boroughs(text)
     text = filter_blockcodes(text)
-    return historicMappings.preprocess(text)
+    text = historicMappings.preprocess(text)
+    text = filter_street_abbreviations(text)
+    return text
 
 
 def location_to_string(tree):
@@ -64,11 +75,11 @@ def filterBoroughOfManhattan(text):
 #For instances such as "1 Centre Street in Manhattan"
 
 inBorough = re.compile(r"""(\sin\s)
-                           (Brooklyn|Queens|Staten\s+Island|Bronx)""", 
+                           (Brooklyn|Queens|Staten\s+Island|Bronx)""",
                            re.IGNORECASE | re.VERBOSE)
 
 inManhattan = re.compile(r"""(\sin\s)
-                           (Manhattan)""", 
+                           (Manhattan)""",
                            re.IGNORECASE | re.VERBOSE)
 
 def filterInBorough(text):
