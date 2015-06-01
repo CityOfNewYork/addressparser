@@ -31,14 +31,21 @@ class PublicHearing(unittest.TestCase):
 
         self.assertEqual(expected, [])
 
+    # @SkipTest
     def testDesignAndConstruction(self):
         self.checkExpectation('ad-sample1.txt', 'ad-expected1.txt')
 
+    # @SkipTest
     def testDepartmentOfConsumerAffairs(self):
         self.checkExpectation('ad-sample2.txt', 'ad-expected2.txt')
 
+    # @SkipTest
     def testDepartmentOfTransportation(self):
         self.checkExpectation('ad-sample3.txt', 'ad-expected3.txt')
 
+    # @SkipTest
     def testLandmarkPreservation(self):
         self.checkExpectation('ad-sample4.txt', 'ad-expected4.txt')
+
+    def testxxx(self):
+        self.checkExpectation('ad-sample6.txt', 'ad-expected6.txt')
