@@ -47,5 +47,7 @@ class PublicHearing(unittest.TestCase):
     def testLandmarkPreservation(self):
         self.checkExpectation('ad-sample4.txt', 'ad-expected4.txt')
 
-    def testxxx(self):
+    def testHandleStreetAbbreviation(self):
+        '''expand st. and str. to street
+        '''
         self.checkExpectation('ad-sample6.txt', 'ad-expected6.txt')

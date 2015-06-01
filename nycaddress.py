@@ -76,7 +76,7 @@ def probableAddresses(text, verbose=False):
     # sentences = sent_tokenize(util.preproces_text(text))
     sentences = sent_tokenize(text)
     for s in sentences:
-        print 'Sent: %s\n' % s
+        # print 'Sent: %s\n' % s
         if len(s) < 10:
             if verbose:
                 showFailureReason('Sentence too short', s, '--', verbose)
