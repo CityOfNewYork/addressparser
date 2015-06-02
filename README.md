@@ -26,4 +26,4 @@ Extract address details from a text string.
 * [Explore the api](http://localhost:5000/api)
 
 ## License
-[MIT](LICENSE)
+[Apache License, Version 2.0](LICENSE)
