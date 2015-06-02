@@ -9,6 +9,7 @@ import re
 
 import util
 import usaddress
+from nyc_geoclient import Geoclient
 
 
 def filter_unnecessary_abbreviations(tup):
@@ -109,6 +110,49 @@ def isValidAddress(ady, verbose=False):
     return True
 
 
+def lookup_geo(g, ady):
+    components = usaddress.parse(ady)
+    addressNumber = ' '.join([a[0] for a in components
+                              if a[1] == 'AddressNumber'])
+    streetName = ' '.join([a[0] for a in components
+                           if a[1].startswith('Street')])
+
+    streetName = streetName.replace(',', '')
+    borough = components[-2][0].replace(',', '')
+    if borough == 'NY':
+        borough = 'Manhattan'
+
+    # print '%s  : %s : %s ' %(addressNumber, streetName, borough)
+    dic = g.address(addressNumber, streetName, borough)
+    zipcode = dic.get('zipCode', '')
+    streetAddress = '%s %s' % (dic.get('houseNumber', ''),
+                               dic.get('firstStreetNameNormalized', ''))
+
+    borough = dic.get('firstBoroughName', '')
+    longitude = dic.get('longitude', '')
+    latitude = dic.get('latitude', '')
+
+    return {
+        "refLocation": [{
+            "@type": "Place",
+            "@context": "http://schema.org",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "New York City",
+                "addressRegion": "NY",
+                "postalCode": zipcode,
+                "streetAddress": streetAddress.strip(),
+                "borough": borough
+            },
+
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": latitude,
+                "longitude": longitude
+            }}]
+    }
+
+
 def parse(text, verbose=False):
     candidates = probableAddresses(text, verbose)
     candidates = [util.location_to_string(c) for c in candidates]
@@ -121,10 +165,25 @@ def parse(text, verbose=False):
     return [c for c in candidates if isValidAddress(c)]
 
 
+def parse_with_geo(text, g, verbose=False):
+    plains = parse(text, verbose)
+    res = [lookup_geo(g, p) for p in plains]
+    return res
+
 if __name__ == '__main__':
     import codecs
+    from os import environ
+
+    # https://urllib3.readthedocs.org/en/latest/security.html#pyopenssl
+    import urllib3.contrib.pyopenssl
+    urllib3.contrib.pyopenssl.inject_into_urllib3()
+    appid = environ['DOITT_CROL_APP_ID']
+    appkey = environ['DOITT_CROL_APP_KEY']
 
     sample = codecs.open('tests/ad-sample6.txt', 'r', encoding='utf8') \
         .read()
+
+    g = Geoclient(appid, appkey)
     for address in parse(sample, False):
         print address
+        print lookup_geo(g, address)
