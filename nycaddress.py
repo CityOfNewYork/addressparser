@@ -111,44 +111,46 @@ def isValidAddress(ady, verbose=False):
 
 
 def lookup_geo(g, ady):
-    ## Todo: clean this up!
     components = usaddress.parse(ady)
-    addressNumber = ' '.join([ a[0] for a in components if a[1] =='AddressNumber'])
-    streetName = ' '.join([ a[0] for a in components if a[1].startswith('Street')])
+    addressNumber = ' '.join([a[0] for a in components
+                              if a[1] == 'AddressNumber'])
+    streetName = ' '.join([a[0] for a in components
+                           if a[1].startswith('Street')])
+
     streetName = streetName.replace(',', '')
     borough = components[-2][0].replace(',', '')
     if borough == 'NY':
         borough = 'Manhattan'
+
     # print '%s  : %s : %s ' %(addressNumber, streetName, borough)
     dic = g.address(addressNumber, streetName, borough)
-    zipcode = dic['zipCode']
-    streetAddress = dic['houseNumber']+ ' ' + dic['firstStreetNameNormalized']
-    borough = dic['firstBoroughName']
-    longitude = dic['longitude']
-    latitude = dic['latitude']
-    address = {
-        "refLocation":[
-            {
+    zipcode = dic.get('zipCode', '')
+    streetAddress = '%s %s' % (dic.get('houseNumber', ''),
+                               dic.get('firstStreetNameNormalized', ''))
+
+    borough = dic.get('firstBoroughName', '')
+    longitude = dic.get('longitude', '')
+    latitude = dic.get('latitude', '')
+
+    return {
+        "refLocation": [{
             "@type": "Place",
             "@context": "http://schema.org",
             "address": {
                 "@type": "PostalAddress",
                 "addressLocality": "New York City",
                 "addressRegion": "NY",
-                "postalCode": zipcode, #// zipCode
-                        # // houseNumber firstStreetNameNormalized:
-                "streetAddress": streetAddress,
-                "borough": borough  #// firstBoroughName
-                },
+                "postalCode": zipcode,
+                "streetAddress": streetAddress.strip(),
+                "borough": borough
+            },
+
             "geo": {
                 "@type": "GeoCoordinates",
-                "latitude": latitude, # // latitude
-                "longitude": longitude  #// longitude
-                }
-                }
-            ]
+                "latitude": latitude,
+                "longitude": longitude
+            }}]
     }
-    return address
 
 
 def parse(text, verbose=False):
@@ -161,6 +163,7 @@ def parse(text, verbose=False):
     candidates = [c.group() for c in candidates if c is not None]
 
     return [c for c in candidates if isValidAddress(c)]
+
 
 def parse_with_geo(text, g, verbose=False):
     plains = parse(text, verbose)
@@ -179,8 +182,8 @@ if __name__ == '__main__':
 
     sample = codecs.open('tests/ad-sample6.txt', 'r', encoding='utf8') \
         .read()
+
     g = Geoclient(appid, appkey)
     for address in parse(sample, False):
         print address
         print lookup_geo(g, address)
-
