@@ -25,3 +25,5 @@ Extract address details from a text string.
 ```
 * [Explore the api](http://localhost:5000/api)
 
+## License
+[MIT](LICENSE)

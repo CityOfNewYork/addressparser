@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+__author__ = "C. Sudama, Matthew Alhonte"
+__credits__ = ["Mikael Hveem", ]
+__license__ = "MIT"
+__version__ = "0.0.1"
+
 import re
 import historicMappings
 

@@ -1,3 +1,8 @@
+__author__ = "C. Sudama, Matthew Alhonte"
+__credits__ = ["Mikael Hveem", ]
+__license__ = "MIT"
+__version__ = "0.0.1"
+
 # new mappings for historic districts to be added here
 
 import re

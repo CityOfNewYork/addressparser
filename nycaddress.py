@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-# from nltk.chunk import *
-# from nltk.chunk.util import *
-# from nltk.chunk.regexp import *
-# from nltk import Tree
+__author__ = "C. Sudama, Matthew Alhonte"
+__credits__ = ["Mikael Hveem", ]
+__license__ = "MIT"
+__version__ = "0.0.1"
+
 from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk
 import re
