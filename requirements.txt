@@ -1,7 +1,11 @@
+urllib3
+nose
 nltk
 numpy
-ipython[all]
-nose
-usaddress
 flask
 flask-swagger
+usaddress
+nyc-geoclient
+pyopenssl 
+ndg-httpsclient 
+pyasn1
