@@ -4,8 +4,12 @@ __credits__ = ["Mikael Hveem", ]
 __license__ = "MIT"
 __version__ = "0.0.1"
 
-from nltk.tokenize import word_tokenize, sent_tokenize
+
+import os
 import nltk
+nltk.data.path.append(os.path.join(os.path.dirname(__file__), 'nltk-data'))
+
+from nltk.tokenize import word_tokenize, sent_tokenize
 import re
 
 import util

@@ -39,11 +39,6 @@ def after_request(response):
     return response
 
 
-def parseAddresses(text):
-    global g
-    return jsonify(addresses=parse_with_geo(text, g))
-
-
 @app.route('/', methods=['GET'])
 def index():
     return "BetaNYC 5 Borough's address finder"
@@ -57,6 +52,7 @@ def parseaddresses():
     ---
     responses:
         '200':
+            description: Response Payload
             schema:
                 id: addresses
                 required:
@@ -77,7 +73,7 @@ def parseaddresses():
                                         type: string
                                         example: Place
                                     "@context":
-                                        type: url
+                                        type: string
                                         example: http://schema.org
                                     address:
                                         schema:
@@ -101,6 +97,9 @@ def parseaddresses():
                                                 addressLocality:
                                                     type: string
                                                     example: New York City
+                                                addressRegion:
+                                                    type: string
+                                                    example: NY
                                                 postalCode:
                                                     type: string
                                                     example: 11105
@@ -164,13 +163,14 @@ def parseaddresses():
                                  Mulberry Inc. 132 Mulberry Street in the
                                  Borough of Manhattan
     """
+    global g
     if request.method == 'GET':
         return 'So, instructions would be printed here...'
 
     try:
         data = request.json
         source = data['source']
-        ret = parseAddresses(source)
+        ret = jsonify(addresses=parse_with_geo(source, g))
     except Exception, e:
         print 'Exception: %s' % e
         errmsg = 'Invalid or Missing JSON Request'

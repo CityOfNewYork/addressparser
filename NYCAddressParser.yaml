@@ -16,20 +16,81 @@ definitions:
     properties:
       source:
         description: String to parse
-        example: "NOTICE IS HEREBY GIVEN, pursuant to law, that the New York City Department of Consumer Affairs will hold a Public Hearing on Wednesday, January 28, 2015, at 2:00 P.M., at 66 John Street, 11th Floor, in the Borough of Manhattan, on the following petitions for sidewalk café revocable consent: 1. 132 Mulberry Inc. 132 Mulberry Street in the Borough of Manhattan"
+        example: 'NOTICE IS HEREBY GIVEN, pursuant to law, that the New York City Department of Consumer Affairs will hold a Public Hearing on Wednesday, January 28, 2015, at 2:00 P.M., at 66 John Street, 11th Floor, in the Borough of Manhattan, on the following petitions for sidewalk café revocable consent: 1. 132 Mulberry Inc. 132 Mulberry Street in the Borough of Manhattan'
         type: string
     required:
       - source
-  StreetAddress:
+  address:
     properties:
-      text:
-        description: Fulltext US street address
+      '@type':
+        example: PostalAddress
+        type: string
+      addressLocality:
+        example: New York City
+        type: string
+      addressRegion:
+        example: NY
+        type: string
+      borough:
+        example: Queens
+        type: string
+      postalCode:
+        example: 11105
+        type: string
+      streetAddress:
+        example: |
+          31-01 Ditmars Boulevard
         type: string
     required:
-      - text
+      - '@type'
+      - addressLocality
+      - addressRegion
+      - postalCode
+      - streetAddress
+      - borough
+  addresses:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/location'
+        type: array
+    required:
+      - addresses
+  geo:
+    properties:
+      '@type':
+        example: GeoCoordinates
+        type: string
+      latitude:
+        example: -73.910118
+        type: string
+      longitude:
+        example: 40.776306
+        type: string
+    required:
+      - '@type'
+      - longitude
+      - latitude
+  location:
+    properties:
+      '@context':
+        example: 'http://schema.org'
+        type: string
+      '@type':
+        example: Place
+        type: string
+      address:
+        $ref: '#/definitions/address'
+      geo:
+        $ref: '#/definitions/geo'
+    required:
+      - '@type'
+      - '@context'
+      - address
+      - geo
 info:
   title: "BetaNYC 5 Borough's address finder"
-  version: "0.1"
+  version: '0.1'
 paths:
   /api/parseaddresses:
     post:
@@ -38,16 +99,15 @@ paths:
         - in: body
           name: source
           schema:
-            $ref: "#/definitions/Input"
+            $ref: '#/definitions/Input'
       responses:
-        "200":
-          description: list of addresses.
+        '200':
+          description: Response Payload
           schema:
-            $ref: "#/definitions/StreetAddress"
+            $ref: '#/definitions/addresses'
         default:
           description: Unexpected error
           schema:
-            $ref: "#/definitions/Error"
+            $ref: '#/definitions/Error'
       summary: Parse Addresses
-swagger: "2.0"
-
+swagger: '2.0'
