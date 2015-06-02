@@ -1,7 +1,6 @@
 __author__ = "C. Sudama, Matthew Alhonte"
 __credits__ = ["Mikael Hveem", ]
-__license__ = "MIT"
-__version__ = "0.0.1"
+__license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
 
 # new mappings for historic districts to be added here
 
