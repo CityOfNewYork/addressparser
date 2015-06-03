@@ -37,7 +37,7 @@ def filter_ls(tup):
 
 
 def pos_tag(text, verbose=False):
-    tokens = word_tokenize(util.preproces_text(text))
+    tokens = word_tokenize(util.preproces_text(text, verbose))
     tagged = nltk.pos_tag(tokens)
 
     # retag commas
@@ -81,7 +81,8 @@ def probableAddresses(text, verbose=False):
     # sentences = sent_tokenize(util.preproces_text(text))
     sentences = sent_tokenize(text)
     for s in sentences:
-        # print 'Sent: %s\n' % s
+        if verbose:
+            print 'Sentence: %s\n' % s
         if len(s) < 10:
             if verbose:
                 showFailureReason('Sentence too short', s, '--', verbose)
