@@ -1,0 +1,44 @@
+# Filename: orig.procPublicationRequest.oct-dec-2014.csv
+# addresses with Floor, or Room
+#
+1 Centre Street, 19th Floor South, New York, N.Y
+1 Centre Street, 9th Floor North, City of New York
+One Centre Street, Room 2000 North, New York, N.Y. 10007
+100 Church Street, 12th Floor, NY, NY 10007..
+100 Gold Street, 2nd Fl., New York, NY 10038
+100 Gold Street, 2nd Floor, New York, New York 10038.
+100 Gold Street, Room 5-O8, New York, New York
+110 William Street, 4th Floor, New York, New York
+120-55 Queens Boulevard, 2nd Floor, Kew Gardens, N.Y.  11424.
+125 Worth Street, 2nd Floor Auditorium, Borough of Manhattan
+150 William Street, 9th Floor - Conference Room 9C-1, Borough of Manhattan
+16 Court Street (Corner of Montague Street) 16th Floor, Large Conference Room 1605, New York, NY 11241
+160 Water Street, 12th Floor Executive Conference Room, New York, NY 10038.
+180 Water Street, 14th Floor, Borough of Manhattan
+180 Water Street, 14th Floor, New York, NY
+180 Water Street, 14th Floor, Room 1418, New York, NY 10038
+180 Water Street, Room 2017, New York, New York, 10038
+22 Reade Street, 2nd floor conference room, Borough of Manhattan.
+22 Reade Street, 2nd floor conference room, NY, N.Y.
+22 Reade Street, 2nd floor conference room, New York, N.Y.
+22 Reade Street, Room 2E. New York, NY
+250 Broadway, 16th Floor, New York City, New York
+253 Broadway, 14th Floor, New York, NY
+253 Broadway, 2nd Floor, New York, N.Y
+253 Broadway, 9th Floor, New York, NY 10007
+255 Greenwich Street, 8th Floor, New York, NY
+255 Greenwich Street, 8th Floor, New York, New York  10007
+32 Broadway, 7th Floor, New York, NY
+33 Beaver Street, 21st Floor, New York, NY 10004
+33 Beaver Street, 21st floor, Borough of Manhattan
+40 Rector Street, 2nd Floor, New York, NY.
+40 Rector Street, 4th Floor, NYC
+40 Worth Street, 5th Floor, New York, NY
+55 Water Street, 6th Floor, New York, NY
+55 Water Street, 9th Floor SW, New York, NY
+55 Water Street, 9th Floor, Room 945, New York, NY
+59-17 Junction Boulevard, 17th Floor Conference Room, Flushing, New York
+60 Washington Square South, 4th Floor New York, NY
+65 Court Street, Room 1201, Brooklyn, NY 11201.
+830 Fifth Avenue, Room 313, New York, NY 10065
+851 Grand Concourse, Room 206, Bronx, New York 10451.
