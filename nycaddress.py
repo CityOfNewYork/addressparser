@@ -13,6 +13,8 @@ import re
 
 import util
 import usaddress
+
+from reflocation import RefLocation
 from nyc_geoclient import Geoclient
 
 
@@ -137,25 +139,8 @@ def lookup_geo(g, ady):
     longitude = dic.get('longitude', '')
     latitude = dic.get('latitude', '')
 
-    return {
-        "refLocation": [{
-            "@type": "Place",
-            "@context": "http://schema.org",
-            "address": {
-                "@type": "PostalAddress",
-                "addressLocality": "New York City",
-                "addressRegion": "NY",
-                "postalCode": zipcode,
-                "streetAddress": streetAddress.strip(),
-                "borough": borough
-            },
-
-            "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": latitude,
-                "longitude": longitude
-            }}]
-    }
+    place = RefLocation(self, streetAddress, borough, zipcode, latitude, longitude)
+    return place.schema_object()
 
 
 def parse(text, verbose=False):
