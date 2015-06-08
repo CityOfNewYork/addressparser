@@ -34,17 +34,18 @@ def filter_blockcodes(text):
     global _rex_blockcodes
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
 
+
 _street_abbreviations = re.compile('\s+(st\.|str\.)[\s,]', re.IGNORECASE)
 _avenue_abbreviations = re.compile('\s+(av\.|ave\.)[\s,]', re.IGNORECASE)
-# _circle_abbreviations = re.compile('\s+(cir\.)[\s,]', re.IGNORECASE)
 
 
 def filter_street_abbreviations(text):
+    # Todo: Build a more comprehensive list of throughways.
+    # See: http://www.semaphorecorp.com/cgi/abbrev.html
+
     global _street_abbreviations, _avenue_abbreviations
-    # global  _circle_abbreviations
     text =  _street_abbreviations.sub(' Street', text)
     text =  _avenue_abbreviations.sub(' Avenue', text)
-    # text =  _circle_abbreviations.sub(' Circle', text)
     return text
 
 _ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.IGNORECASE)
