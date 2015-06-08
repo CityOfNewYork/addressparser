@@ -19,7 +19,7 @@ from nyc_geoclient import Geoclient
 
 
 def filter_unnecessary_abbreviations(tup):
-    rex = re.compile('inc\.$|rest$', re.IGNORECASE)
+    rex = re.compile('inc\.$|rest$|corp\.?$', re.IGNORECASE)
     if rex.match(tup[0]):
         return tup[0], '-NONE-'
     return tup
@@ -37,6 +37,27 @@ def filter_ls(tup):
         return tup[0], 'CD'
     return tup
 
+def filter_streets(tup):
+    # rex = re.compile('street$|ave\.?$|avenue$|road$|place$|plaza$|boulevard$|blvd\.?$', re.IGNORECASE)
+    rex = re.compile('street$|' \
+            'ave\.?$|avenue$|' \
+            'blvd\.?$|boulevard$|' \
+            'road$|' \
+            'place$|' \
+            'plaza$',
+            re.IGNORECASE)
+    if rex.match(tup[0]):
+    # 马路的路
+        return tup[0], 'LU'
+    return tup
+
+
+def filter_state(tup):
+    rex = re.compile('NY$', re.IGNORECASE)
+    if rex.match(tup[0]):
+        return tup[0], 'STATE'
+    return tup
+
 
 def pos_tag(text, verbose=False):
     tokens = word_tokenize(util.preproces_text(text, verbose))
@@ -47,6 +68,12 @@ def pos_tag(text, verbose=False):
 
     # change counting lists (ls) to counting digits (cd)
     tagged = map(filter_ls, tagged)
+
+    # tag street names
+    tagged = map(filter_streets, tagged)
+
+    # tag state
+    tagged = map(filter_state, tagged)
 
     # change POS tag to -NONE- to aid chunking
     # todo: better comments -- remove this function to find
@@ -61,14 +88,22 @@ def parseAddresses(text, verbose=False):
         print tagged
 
     grammer = 'Location: ' \
-        '{<CD><NNP|COMMA>+<JJ>?<NNP|COMMA>+|' \
-        '<CD><NNP><CD><NNP|COMMA>+|' \
-        '<CD>+<NNP|COMMA>+|' \
-        '<CD><NNP|COMMA>+}'
+        '{' \
+        '<CD><CD|NNP|JJ|COMMMA>+<LU>?<CD|JJ|NNP|COMMA>+<STATE|COMMA>+' \
+        '}'
 
     chunkParser = nltk.RegexpParser(grammer)
     result = chunkParser.parse(tagged)
-    return [s for s in result.subtrees(lambda t: t.label() == 'Location')]
+    locations =  [s for s in result.subtrees(lambda t: t.label() == 'Location')]
+    if verbose:
+        print 'Chunked Locations:'
+        if locations:
+            for loc in locations:
+                print '\t', loc
+                print
+        else:
+            print '\tNone found'
+    return locations
 
 
 def showFailureReason(msg, address, components, verbose=False):
@@ -80,10 +115,11 @@ def showFailureReason(msg, address, components, verbose=False):
 
 def probableAddresses(text, verbose=False):
     locations = []
-    # sentences = sent_tokenize(util.preproces_text(text))
     sentences = sent_tokenize(text)
     for s in sentences:
         if verbose:
+            print '\n\n'
+            print '=' * 48
             print 'Sentence: %s\n' % s
         if len(s) < 10:
             if verbose:
@@ -139,7 +175,7 @@ def lookup_geo(g, ady):
     longitude = dic.get('longitude', '')
     latitude = dic.get('latitude', '')
 
-    place = RefLocation(self, streetAddress, borough, zipcode, latitude, longitude)
+    place = RefLocation(streetAddress, borough, zipcode, latitude, longitude)
     return place.schema_object()
 
 
@@ -174,6 +210,7 @@ if __name__ == '__main__':
         .read()
 
     g = Geoclient(appid, appkey)
-    for address in parse(sample, False):
+    for address in parse(sample):
         print address
         print lookup_geo(g, address)
+        print

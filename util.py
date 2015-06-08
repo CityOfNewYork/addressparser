@@ -26,7 +26,7 @@ _rex_blockcodes = re.compile(_rex_blockcodes, re.IGNORECASE)
 
 def filter_boroughs(text):
     global _rex_boroughs, _rex_manhattan
-    text = _rex_manhattan.sub('NY, NY.\n', text)
+    text = _rex_manhattan.sub('Manhattan, NY.\n', text)
     return _rex_boroughs.sub('\\2, NY.\n', text)
 
 
@@ -35,11 +35,22 @@ def filter_blockcodes(text):
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
 
 _street_abreviations = re.compile('\s+(st\.|str\.)[\s,]', re.IGNORECASE)
+_avenue_abreviations = re.compile('\s+(av\.|ave\.)[\s,]', re.IGNORECASE)
+# _circle_abreviations = re.compile('\s+(cir\.)[\s,]', re.IGNORECASE)
 
 
 def filter_street_abbreviations(text):
-    global _street_abreviations
-    return _street_abreviations.sub(' Street', text)
+    global _street_abreviations, _avenue_abreviations
+    # globa  _circle_abreviations
+    text =  _street_abreviations.sub(' Street', text)
+    text =  _avenue_abreviations.sub(' Avenue', text)
+    # text =  _circle_abreviations.sub(' Circle', text)
+    return text
+
+_ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.IGNORECASE)
+def filter_ny_ny(text):
+    global _ny_ny
+    return  _ny_ny.sub('Manhattan, NY.\n', text)
 
 
 # Entry point for preprocessing. Add more methods within this
@@ -53,6 +64,10 @@ def preproces_text(text, verbose=True):
     text = filter_boroughs(text)
     if verbose:
         print 'filter_boroughs:\n\t%s\n' % text
+
+    text = filter_ny_ny(text)
+    if verbose:
+        print 'filter_ny_ny:\n\t%s\n' % text
 
     text = filter_blockcodes(text)
     if verbose:
