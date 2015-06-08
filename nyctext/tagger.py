@@ -32,7 +32,8 @@ def filter_ls(tup):
     return tup
 
 def filter_streets(tup):
-    # rex = re.compile('street$|ave\.?$|avenue$|road$|place$|plaza$|boulevard$|blvd\.?$', re.IGNORECASE)
+    # Todo: Build a more comprehensive list of abbreviations.
+    # See: http://www.semaphorecorp.com/cgi/abbrev.html
     rex = re.compile('street$|' \
             'ave\.?$|avenue$|' \
             'blvd\.?$|boulevard$|' \
@@ -41,7 +42,8 @@ def filter_streets(tup):
             'plaza$',
             re.IGNORECASE)
     if rex.match(tup[0]):
-    # 马路的路
+        # 马路的路
+        # MaLu de Lu
         return tup[0], 'LU'
     return tup
 
