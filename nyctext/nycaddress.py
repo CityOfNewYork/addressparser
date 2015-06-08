@@ -68,35 +68,19 @@ def isValidAddress(ady, verbose=False):
     return True
 
 
-def lookup_geo(g, ady):
-    '''
-    Address: 30-30 Thomson Avenue Long Island City, NY
-    Lookup_geo:
-            30-30 Thomson Avenue Long Island City, NY
-            adNumber: 30-30stN      ame: Thomson AvenueBorough:City
-            (OrderedDict([
-                ('AddressNumber', u'30-       30'), 
-                ('StreetName', u'Thomson'), 
-                ('StreetNamePostType', u'Avenue'), 
-                ('PlaceName', u'Long Island City'), 
-                ('StateName', u'NY')]), 'Street Address')
-    '''
-    print 'Lookup_geo:\n\t%s' % ady
+def lookup_geo(g, ady, verbose=False):
+    if verbose:
+        print 'Lookup_geo:\n\t%s' % ady
+
     components = usaddress.parse(ady)
     tags, _ = usaddress.tag(ady)
-    # addressNumber = ' '.join([a[0] for a in components
-    #                           if a[1] == 'AddressNumber'])
-    addressNumber = tags.get('AddressNumber', '')
-    streetName = ' '.join([a[0] for a in components
-                           if a[1].startswith('Street')])
-    # streetName = streetName.replace(',', '')
-    streetName = '%s %s' % (tags.get('StreetName', ''), tags.get('StreetNamePostType', ' '))
 
-    # borough = components[-2][0].replace(',', '')
+    addressNumber = tags.get('AddressNumber', '')
+    streetName = '%s %s' % (tags.get('StreetName', ''), tags.get('StreetNamePostType', ' '))
     borough = tags.get('PlaceName', '').lower()
 
-    # todo - map neighborhoods to boroughs
-    # one example: long island city
+    # Todo - map neighborhoods to boroughs
+    # ie: long island city -> queens
     #
     if borough == 'ny':
         borough = 'manhattan'
@@ -104,10 +88,10 @@ def lookup_geo(g, ady):
     if borough == 'long island city':
         borough = 'queens'
 
-
-    print usaddress.tag(ady)
-    print 'adNumber: %s\t\tstName: %s\t\tBorough:%s' % (addressNumber, streetName, borough)
-    print
+    if verbose:
+        print usaddress.tag(ady)
+        print 'adNumber: %s\t\tstName: %s\t\tBorough:%s' % (addressNumber, streetName, borough)
+        print
 
     dic = g.address(addressNumber, streetName, borough)
     zipcode = dic.get('zipCode', '')

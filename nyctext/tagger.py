@@ -70,7 +70,7 @@ def pos_tag(text, verbose=False):
     tagged = map(filter_state, tagged)
 
     # change POS tag to -NONE- to aid chunking
-    # todo: better comments -- remove this function to find
+    # Todo: better comments -- remove this function to find
     # cases where this break tests
     return map(filter_unnecessary_abbreviations, tagged)
 
