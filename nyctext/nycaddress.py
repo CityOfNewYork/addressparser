@@ -13,7 +13,7 @@ import re
 
 import usaddress
 
-from reflocation import RefLocation
+from schema import RefLocation
 from nyc_geoclient import Geoclient
 from tagger import chunkAddresses
 
