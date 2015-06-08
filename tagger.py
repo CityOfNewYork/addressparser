@@ -87,8 +87,8 @@ def chunkAddresses(text, verbose=False):
         '}'
 
     chunkParser = nltk.RegexpParser(grammer)
-    result = chunkParser.parse(tagged)
-    locations =  [s for s in result.subtrees(lambda t: t.label() == 'Location')]
+    chunks = chunkParser.parse(tagged)
+    locations =  [s for s in chunks.subtrees(lambda t: t.label() == 'Location')]
     if verbose:
         print 'Chunked Locations:'
         if locations:
