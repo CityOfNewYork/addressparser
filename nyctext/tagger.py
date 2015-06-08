@@ -31,16 +31,14 @@ def filter_ls(tup):
         return tup[0], 'CD'
     return tup
 
-def filter_streets(tup):
-    # Todo: Build a more comprehensive list of abbreviations.
+def filter_throughways(tup):
+    '''Identify and tag throughway names.
+
+    '''
+    # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
-    rex = re.compile('street$|' \
-            'ave\.?$|avenue$|' \
-            'blvd\.?$|boulevard$|' \
-            'road$|' \
-            'place$|' \
-            'plaza$',
-            re.IGNORECASE)
+    rex = re.compile('(avenue|boulevard|place|plaza|street)', re.IGNORECASE)
+
     if rex.match(tup[0]):
         # 马路的路
         # MaLu de Lu
@@ -66,7 +64,7 @@ def pos_tag(text, verbose=False):
     tagged = map(filter_ls, tagged)
 
     # tag street names
-    tagged = map(filter_streets, tagged)
+    tagged = map(filter_throughways, tagged)
 
     # tag state
     tagged = map(filter_state, tagged)
@@ -84,9 +82,9 @@ def chunkAddresses(text, verbose=False):
         print tagged
 
     grammer = 'Location: ' \
-        '{' \
-        '<CD><CD|NNP|JJ|COMMMA>+<LU>?<CD|JJ|NNP|COMMA>+<STATE|COMMA>+' \
-        '}'
+      '{' \
+      '<CD><CD|NNP|JJ|COMMMA>+<LU>?<CD|JJ|NNP|COMMA>+<STATE|COMMA>+' \
+      '}'
 
     chunkParser = nltk.RegexpParser(grammer)
     chunks = chunkParser.parse(tagged)
@@ -100,5 +98,3 @@ def chunkAddresses(text, verbose=False):
         else:
             print '\tNone found'
     return locations
-
-
