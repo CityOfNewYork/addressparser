@@ -10,7 +10,7 @@ import nltk
 nltk.data.path.append(os.path.join(os.path.dirname(__file__), 'nltk-data'))
 from nltk.tokenize import word_tokenize
 
-import util
+import preprocess
 
 def filter_unnecessary_abbreviations(tup):
     rex = re.compile('inc\.$|rest$|corp\.?$', re.IGNORECASE)
@@ -54,7 +54,7 @@ def filter_state(tup):
 
 
 def pos_tag(text, verbose=False):
-    tokens = word_tokenize(util.preproces_text(text, verbose))
+    tokens = word_tokenize(preprocess.prepare_text(text, verbose))
     tagged = nltk.pos_tag(tokens)
 
     # retag commas

@@ -6,9 +6,8 @@ from nose.plugins.skip import SkipTest
 import os.path
 import unittest
 import codecs
-import util
-
-import nycaddress as parser
+from nyctext import preprocess
+from nyctext import nycaddress as parser
 
 
 class UnitFilters(unittest.TestCase):
@@ -31,7 +30,7 @@ class UnitFilters(unittest.TestCase):
         tests = [dict(text=src%b, expect=exp%b) for b in boroughs]
 
         for d in tests:
-            self.checkExpectation(util.filter_boroughs(d['text']), d['expect'])
+            self.checkExpectation(preprocess.filter_boroughs(d['text']), d['expect'])
 
 
     def testFilterBlockCodes(self):
@@ -49,7 +48,7 @@ class UnitFilters(unittest.TestCase):
             # text = text.replace(u'\xa0','')
             # text = text.decode('unicode_escape').encode('ascii','ignore')
             print text
-            text = util.filter_blockcodes(text)
+            text = preprocess.filter_blockcodes(text)
             exp = 'A .\n123 Burrito Boulevard, Brooklyn NY'
             self.checkExpectation(text, exp)
 

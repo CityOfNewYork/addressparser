@@ -7,8 +7,7 @@ import os.path
 import unittest
 import codecs
 
-import nycaddress as parser
-
+from nyctext import nycaddress as parser
 
 class Address(unittest.TestCase):
 

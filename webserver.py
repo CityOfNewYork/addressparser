@@ -11,7 +11,7 @@ from flask import Flask, request, jsonify
 from flask_swagger import swagger
 
 from nyc_geoclient import Geoclient
-from nycaddress import parse_with_geo
+from nyctext.nycaddress import parse_with_geo
 
 # from flask.ext.cors import CORS
 # CORS(app, resources=r'/*', allow_headers='Content-Type')

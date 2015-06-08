@@ -41,7 +41,7 @@ _avenue_abreviations = re.compile('\s+(av\.|ave\.)[\s,]', re.IGNORECASE)
 
 def filter_street_abbreviations(text):
     global _street_abreviations, _avenue_abreviations
-    # globa  _circle_abreviations
+    # global  _circle_abreviations
     text =  _street_abreviations.sub(' Street', text)
     text =  _avenue_abreviations.sub(' Avenue', text)
     # text =  _circle_abreviations.sub(' Circle', text)
@@ -55,11 +55,14 @@ def filter_ny_ny(text):
 
 # Entry point for preprocessing. Add more methods within this
 # function
-def preproces_text(text, verbose=True):
+def prepare_text(text, verbose=False):
     # There should be a section of removing all unicode
     # and non ascii characters.
     #
     text = text.replace(u'\xa0', ' ')
+
+    # if verbose:
+    #     import pdb; pdb.set_trace()
 
     text = filter_boroughs(text)
     if verbose:

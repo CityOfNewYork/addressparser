@@ -2,11 +2,12 @@ import sys
 sys.path.append('..')
 
 from nose.plugins.skip import SkipTest
+from nose.plugins.attrib import attr
 import os.path
 import unittest
 import codecs
 
-import nycaddress as parser
+from nyctext import nycaddress as parser
 
 
 # @SkipTest
@@ -49,6 +50,7 @@ class PublicHearing(unittest.TestCase):
 
         self.assertEqual(expected, [])
 
+    @attr(test='wip')
     def testDesignAndConstruction(self):
         'design and construction sample'
         self.checkExpectation('ad-sample1.txt', 'ad-expected1.txt')
@@ -59,7 +61,7 @@ class PublicHearing(unittest.TestCase):
 
     def testDepartmentOfTransportation(self):
         'department of transportation sample'
-        self.checkExpectation('ad-sample3.txt', 'ad-expected3.txt', True)
+        self.checkExpectation('ad-sample3.txt', 'ad-expected3.txt')
 
     def testLandmarkPreservation(self):
         'landmark preservation sample'

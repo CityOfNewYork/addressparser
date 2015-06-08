@@ -11,7 +11,6 @@ from nltk.tokenize import sent_tokenize
 
 import re
 
-import util
 import usaddress
 
 from reflocation import RefLocation
@@ -23,6 +22,10 @@ def showFailureReason(msg, address, components, verbose=False):
         print 'Failed: %s' % msg
         print '\tAddress:\t\t%s' % address
         print '\tUS Address Components:\t%s\n' % components
+
+
+def location_to_string(tree):
+    return ' '.join([c[0] for c in tree]).replace(' ,', ',')
 
 
 def probableAddresses(text, verbose=False):
@@ -66,18 +69,46 @@ def isValidAddress(ady, verbose=False):
 
 
 def lookup_geo(g, ady):
+    '''
+    Address: 30-30 Thomson Avenue Long Island City, NY
+    Lookup_geo:
+            30-30 Thomson Avenue Long Island City, NY
+            adNumber: 30-30stN      ame: Thomson AvenueBorough:City
+            (OrderedDict([
+                ('AddressNumber', u'30-       30'), 
+                ('StreetName', u'Thomson'), 
+                ('StreetNamePostType', u'Avenue'), 
+                ('PlaceName', u'Long Island City'), 
+                ('StateName', u'NY')]), 'Street Address')
+    '''
+    print 'Lookup_geo:\n\t%s' % ady
     components = usaddress.parse(ady)
-    addressNumber = ' '.join([a[0] for a in components
-                              if a[1] == 'AddressNumber'])
+    tags, _ = usaddress.tag(ady)
+    # addressNumber = ' '.join([a[0] for a in components
+    #                           if a[1] == 'AddressNumber'])
+    addressNumber = tags.get('AddressNumber', '')
     streetName = ' '.join([a[0] for a in components
                            if a[1].startswith('Street')])
+    # streetName = streetName.replace(',', '')
+    streetName = '%s %s' % (tags.get('StreetName', ''), tags.get('StreetNamePostType', ' '))
 
-    streetName = streetName.replace(',', '')
-    borough = components[-2][0].replace(',', '')
-    if borough == 'NY':
-        borough = 'Manhattan'
+    # borough = components[-2][0].replace(',', '')
+    borough = tags.get('PlaceName', '').lower()
 
-    # print '%s  : %s : %s ' %(addressNumber, streetName, borough)
+    # todo - map neighborhoods to boroughs
+    # one example: long island city
+    #
+    if borough == 'ny':
+        borough = 'manhattan'
+
+    if borough == 'long island city':
+        borough = 'queens'
+
+
+    print usaddress.tag(ady)
+    print 'adNumber: %s\t\tstName: %s\t\tBorough:%s' % (addressNumber, streetName, borough)
+    print
+
     dic = g.address(addressNumber, streetName, borough)
     zipcode = dic.get('zipCode', '')
     streetAddress = '%s %s' % (dic.get('houseNumber', ''),
@@ -93,7 +124,7 @@ def lookup_geo(g, ady):
 
 def parse(text, verbose=False):
     candidates = probableAddresses(text, verbose)
-    candidates = [util.location_to_string(c) for c in candidates]
+    candidates = [location_to_string(c) for c in candidates]
 
     # only candidates that end in NY
     rex = re.compile('(.+,\s+NY)', re.IGNORECASE)
@@ -118,11 +149,11 @@ if __name__ == '__main__':
     appid = environ['DOITT_CROL_APP_ID']
     appkey = environ['DOITT_CROL_APP_KEY']
 
-    sample = codecs.open('tests/ad-sample6.txt', 'r', encoding='utf8') \
+    sample = codecs.open('../tests/ad-sample1.txt', 'r', encoding='utf8') \
         .read()
 
     g = Geoclient(appid, appkey)
     for address in parse(sample):
-        print address
+        print 'Address: %s' % address
         print lookup_geo(g, address)
         print
