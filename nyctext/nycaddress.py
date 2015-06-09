@@ -28,7 +28,7 @@ def location_to_string(tree):
     return ' '.join([c[0] for c in tree]).replace(' ,', ',')
 
 
-def probableAddresses(text, verbose=False):
+def matchAddresses(text, verbose=False):
     locations = []
     sentences = sent_tokenize(text)
     for s in sentences:
@@ -107,7 +107,7 @@ def lookup_geo(g, ady, verbose=False):
 
 
 def parse(text, verbose=False):
-    candidates = probableAddresses(text, verbose)
+    candidates = matchAddresses(text, verbose)
     candidates = [location_to_string(c) for c in candidates]
 
     # only candidates that end in NY
