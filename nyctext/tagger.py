@@ -83,7 +83,7 @@ def chunkAddresses(text, verbose=False):
 
     grammer = 'Location: ' \
       '{' \
-      '<CD><CD|NNP|JJ|COMMMA>+<LU>?<CD|JJ|NNP|COMMA>+<STATE|COMMA>+' \
+      '<CD><CD|NNP|NNS|JJ|COMMMA|POS>*<LU>?<CD|JJ|NNP|NNS|COMMA>+<STATE|COMMA>+' \
       '}'
 
     chunkParser = nltk.RegexpParser(grammer)
