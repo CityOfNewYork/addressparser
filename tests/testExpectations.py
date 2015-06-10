@@ -15,11 +15,11 @@ class PublicHearing(unittest.TestCase):
 
     def __init__(self, *args, **kwds):
         super(PublicHearing, self).__init__(*args, **kwds)
-        self.cwd = os.path.dirname(__file__)
+        self.datadir = os.path.join(os.path.dirname(__file__), 'data')
 
     def checkExpectation(self, sample, expect, verbose=False):
-        source = os.path.join(self.cwd, sample)
-        expectation = os.path.join(self.cwd, expect)
+        source = os.path.join(self.datadir, sample)
+        expectation = os.path.join(self.datadir, expect)
 
         expected = open(expectation).readlines()
         expected = [e.strip() for e in expected]
@@ -50,7 +50,6 @@ class PublicHearing(unittest.TestCase):
 
         self.assertEqual(expected, [])
 
-    @attr(test='wip')
     def testDesignAndConstruction(self):
         'design and construction sample'
         self.checkExpectation('ad-sample1.txt', 'ad-expected1.txt')
