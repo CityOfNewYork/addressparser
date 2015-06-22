@@ -10,6 +10,7 @@ import re
 
 from nyctext import nycaddress as parser
 
+@SkipTest
 class HighSchools(unittest.TestCase):
 
     def __init__(self, *args, **kwds):
