@@ -10,7 +10,6 @@ class RefLocation:
 
     def schema_object(self):
         return {
-        "refLocation": [{
             "@type": "Place",
             "@context": "http://schema.org",
             "address": {
@@ -26,5 +25,6 @@ class RefLocation:
                 "@type": "GeoCoordinates",
                 "latitude": self.latitude,
                 "longitude": self.longitude
-            }}]
-    }
+            }
+        }
+    

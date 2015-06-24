@@ -169,7 +169,7 @@ def parseaddresses():
     try:
         data = request.json
         source = data['source']
-        ret = jsonify(addresses=parse_with_geo(source, g))
+        ret = jsonify(refLocation=parse_with_geo(source, g))
     except Exception, e:
         print 'Exception: %s' % e
         errmsg = 'Invalid or Missing JSON Request'
