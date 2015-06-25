@@ -133,7 +133,7 @@ if __name__ == '__main__':
     appid = environ['DOITT_CROL_APP_ID']
     appkey = environ['DOITT_CROL_APP_KEY']
 
-    sample = codecs.open('../tests/ad-sample1.txt', 'r', encoding='utf8') \
+    sample = codecs.open('../tests/data/ad-sample1.txt', 'r', encoding='utf8') \
         .read()
 
     g = Geoclient(appid, appkey)
