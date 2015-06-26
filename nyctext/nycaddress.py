@@ -17,6 +17,7 @@ from schema import RefLocation
 from nyc_geoclient import Geoclient
 from tagger import chunkAddresses
 
+
 def showFailureReason(msg, address, components, verbose=False):
     if verbose:
         print 'Failed: %s' % msg
@@ -25,7 +26,12 @@ def showFailureReason(msg, address, components, verbose=False):
 
 
 def location_to_string(tree):
-    return ' '.join([c[0] for c in tree]).replace(' ,', ',')
+    txt = ' '.join([c[0] for c in tree]).replace(' ,', ',')
+
+    # Handle chunked: 600 St Ann's Avenue Bronx, NY
+    # (Location 600/CD Saint/NNP Ann/NNP 'S/POS Avenue/LU Bronx/NNP
+    # ,/COMMA NY/STATE) by removing space before appostrophe
+    return txt.replace(" '", "'")
 
 
 def matchAddresses(text, verbose=False):
@@ -72,11 +78,11 @@ def lookup_geo(g, ady, verbose=False):
     if verbose:
         print 'Lookup_geo:\n\t%s' % ady
 
-    components = usaddress.parse(ady)
     tags, _ = usaddress.tag(ady)
 
     addressNumber = tags.get('AddressNumber', '')
-    streetName = '%s %s' % (tags.get('StreetName', ''), tags.get('StreetNamePostType', ' '))
+    streetName = [v for k, v in tags.items() if k.startswith('StreetName')]
+    streetName = ' '.join(streetName)
     borough = tags.get('PlaceName', '').lower()
 
     # Todo - map neighborhoods to boroughs
@@ -90,7 +96,8 @@ def lookup_geo(g, ady, verbose=False):
 
     if verbose:
         print usaddress.tag(ady)
-        print 'adNumber: %s\t\tstName: %s\t\tBorough:%s' % (addressNumber, streetName, borough)
+        print 'adNumber: %s\t\tstName: %s\t\tBorough:%s' % (addressNumber,
+                                                            streetName, borough)
         print
 
     dic = g.address(addressNumber, streetName, borough)
@@ -133,11 +140,13 @@ if __name__ == '__main__':
     appid = environ['DOITT_CROL_APP_ID']
     appkey = environ['DOITT_CROL_APP_KEY']
 
-    sample = codecs.open('../tests/ad-sample1.txt', 'r', encoding='utf8') \
-        .read()
+    samples = [codecs.open('../tests/data/ad-sample1.txt', 'r',
+                           encoding='utf8').read()]
 
     g = Geoclient(appid, appkey)
-    for address in parse(sample):
-        print 'Address: %s' % address
-        print lookup_geo(g, address)
-        print
+    for sample in samples:
+        print '\n\nSample: %s' % sample
+        for address in parse(sample):
+            print 'Address: %s' % address
+            print lookup_geo(g, address)
+            print
