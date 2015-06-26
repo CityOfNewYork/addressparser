@@ -53,11 +53,11 @@ def parseaddresses():
         '200':
             description: Response Payload
             schema:
-                id: addresses
+                id: refLocation
                 required:
-                    - addresses
+                    - refLocation
                 properties:
-                    addresses:
+                    refLocation:
                         type: array
                         items:
                             schema:
