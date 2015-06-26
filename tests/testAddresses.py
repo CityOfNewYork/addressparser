@@ -2,12 +2,13 @@ import sys
 sys.path.append('..')
 
 from nose.plugins.skip import SkipTest
-from nose.plugins.attrib import attr
+# from nose.plugins.attrib import attr
 import os.path
 import unittest
-import codecs
+# import codecs
 
 from nyctext import nycaddress as parser
+
 
 class Address(unittest.TestCase):
 
@@ -35,7 +36,6 @@ class Address(unittest.TestCase):
             source = template % lu
             self.checkExpectation(source, [source])
 
-
     def testWithNumberStreet(self):
         'basic - with numbered street'
 
@@ -44,7 +44,6 @@ class Address(unittest.TestCase):
         for lu in lus:
             source = template % lu
             self.checkExpectation(source, [source])
-
 
     def testWithNumberStreetAndEnding(self):
         'basic - with numbered street and -st ending'
@@ -55,7 +54,6 @@ class Address(unittest.TestCase):
             source = template % lu
             self.checkExpectation(source, [source])
 
-
     def testWithNumberStreetWithDash(self):
         'basic - with numbered street and dash'
 
@@ -64,7 +62,6 @@ class Address(unittest.TestCase):
         for lu in lus:
             source = template % lu
             self.checkExpectation(source, [source])
-
 
     def testWithCompassDirections(self):
         'basic - with compass directions'
@@ -81,7 +78,6 @@ class Address(unittest.TestCase):
                 expect = [xt % lu]
                 self.checkExpectation(source, expect)
 
-
     def testWithNumberStreetWithDashAndRoom(self):
         'basic - test with dash and Room'
 
@@ -92,7 +88,6 @@ class Address(unittest.TestCase):
             source = template % lu
             expect = [x_template % lu]
             self.checkExpectation(source, expect)
-
 
     def testIT(self):
         'basic - long island city '
@@ -108,19 +103,56 @@ class Address(unittest.TestCase):
         expect = ['55 Water Street, 9th Floor SW, Manhattan, NY']
         self.checkExpectation(source, expect)
 
+    def testSaintAnneAvenue(self):
+        'Name with apostrophe'
+        expected = [u"600 Saint Ann's Avenue Bronx, NY"]
+        text = "Academy of Science: 600 Saint Ann's Avenue Bronx, NY"
+        address = parser.parse(text)[0]
+        self.assertIn(address, expected)
+
+    def testStreetNamePreTypeAveOfAmericas(self):
+        expected = "131 Avenue Of The Americas Manhattan, NY"
+        text = 'blab blah bleu %s foo fe hu' % expected
+
+        got = parser.parse(text)
+        self.assertIn(got[0], [expected])
+
+    def testStreetNamePreTypes(self):
+        expected = [
+            "1600 Avenue L Brooklyn, NY",
+            "3000 Avenue X Brooklyn, NY",
+            "50 Avenue X Brooklyn, NY"
+        ]
+
+        for text in expected:
+            text = 'blab blah bleu %s foo fe hu' % text
+            got = parser.parse(text)[0]
+            self.assertIn(got, expected)
+
     # @attr(test='wip')
+    @SkipTest
+    def testXXX(self):
+        expected = [
+            '701 St. Anns Avenue Bronx, NY',
+            # '1180 Rev. J.A. Polite Ave. Bronx, NY',
+        ]
+
+        for text in expected:
+            print text
+            text = 'blab blah bleu %s foo fe hu' % text
+            got = parser.parse(text, verbose=True)[0]
+            self.assertIn(got, expected)
+
     #  the current sentence tokenizer splits on
-    #  cir. 
+    #  cir.
     #  TODO: How to fix?
     #
     @SkipTest
     def testColumbusCircle(self):
         'basic -  Columbus Circle'
 
-
         lus = 'Circle Cir.'.split(' ')
         for lu in lus:
             source = '4 Columbus %s NY, NY' % lu
             expect = ['4 Columbus %s Manhattan, NY' % lu]
             self.checkExpectation(source, expect, True)
-
