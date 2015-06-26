@@ -2,7 +2,7 @@ import sys
 sys.path.append('..')
 
 from nose.plugins.skip import SkipTest
-# from nose.plugins.attrib import attr
+from nose.plugins.attrib import attr
 import os.path
 import unittest
 # import codecs
@@ -131,11 +131,9 @@ class Address(unittest.TestCase):
 
     # @attr(test='wip')
     @SkipTest
-    def testXXX(self):
-        expected = [
-            '701 St. Anns Avenue Bronx, NY',
-            # '1180 Rev. J.A. Polite Ave. Bronx, NY',
-        ]
+    def testSaintNotStreet(self):
+        '701 St. Anns should resolve to Saint Anns'
+        expected = ['701 St. Anns Avenue Bronx, NY']
 
         for text in expected:
             print text
@@ -143,14 +141,29 @@ class Address(unittest.TestCase):
             got = parser.parse(text, verbose=True)[0]
             self.assertIn(got, expected)
 
-    #  the current sentence tokenizer splits on
-    #  cir.
-    #  TODO: How to fix?
-    #
+    @SkipTest
+    def testXXX(self):
+        # This fails at sentence tokenizer.
+        # splitting on periods.
+
+        expected = [
+            '1180 Reverend J.A. Polite Ave. Bronx, NY',
+        ]
+
+        for text in expected:
+            print text
+            got = parser.parse(text, verbose=True)[0]
+            self.assertIn(got, expected)
+
+    # @attr(test='wip')
     @SkipTest
     def testColumbusCircle(self):
         'basic -  Columbus Circle'
 
+        #  the current sentence tokenizer splits on
+        #  cir.
+        #  TODO: How to fix?
+        #
         lus = 'Circle Cir.'.split(' ')
         for lu in lus:
             source = '4 Columbus %s NY, NY' % lu
