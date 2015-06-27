@@ -88,10 +88,13 @@ def lookup_geo(g, ady, verbose=False):
     # Todo - map neighborhoods to boroughs
     # ie: long island city -> queens
     #
-    if borough == 'ny':
+    # if borough == 'ny':
+    if 'ny' in borough or 'manhattan' in borough:
         borough = 'manhattan'
 
-    if borough == 'long island city':
+    # if borough == 'long island city':
+    #     borough = 'queens'
+    if 'queens' in borough:
         borough = 'queens'
 
     if verbose:
@@ -121,8 +124,7 @@ def parse(text, verbose=False):
     rex = re.compile('(.+,\s+NY)', re.IGNORECASE)
     candidates = [rex.match(c) for c in candidates]
     candidates = [c.group() for c in candidates if c is not None]
-
-    return [c for c in candidates if isValidAddress(c)]
+    return [c for c in candidates if isValidAddress(c, verbose)]
 
 
 def parse_with_geo(text, g, verbose=False):

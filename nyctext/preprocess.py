@@ -5,6 +5,7 @@ __license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
 
 import re
 import historicMappings
+from queens import rex_neighborhoods_queens
 
 _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
                            '(Brooklyn|Queens|Staten\s+Island|Bronx)',
@@ -44,14 +45,21 @@ def filter_street_abbreviations(text):
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
 
     global _street_abbreviations, _avenue_abbreviations
-    text =  _street_abbreviations.sub(' Street', text)
-    text =  _avenue_abbreviations.sub(' Avenue', text)
+    text = _street_abbreviations.sub(' Street', text)
+    text = _avenue_abbreviations.sub(' Avenue', text)
     return text
+
 
 _ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.IGNORECASE)
 def filter_ny_ny(text):
     global _ny_ny
     return  _ny_ny.sub('Manhattan, NY.\n', text)
+
+
+def filter_neighborhoods(text):
+    text = rex_neighborhoods_queens.sub('\\1, Queens,', text)
+    text = text.replace(',,', ',')
+    return text
 
 
 # Entry point for preprocessing. Add more methods within this
@@ -81,6 +89,10 @@ def prepare_text(text, verbose=False):
     text = filter_street_abbreviations(text)
     if verbose:
         print 'filter_street_abbreviations:\n\t%s\n' % text
+
+    text = filter_neighborhoods(text)
+    if verbose:
+        print 'filter_neighborhoods:\n\t%s\n' % text
 
     return text
 

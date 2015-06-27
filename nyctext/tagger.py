@@ -12,6 +12,7 @@ from nltk.tokenize import word_tokenize
 
 import preprocess
 
+
 def filter_unnecessary_abbreviations(tup):
     rex = re.compile('inc\.$|rest$|corp\.?$', re.IGNORECASE)
     if rex.match(tup[0]):
@@ -31,13 +32,15 @@ def filter_ls(tup):
         return tup[0], 'CD'
     return tup
 
+
 def filter_throughways(tup):
     '''Identify and tag throughway names.
 
     '''
     # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
-    rex = re.compile('(avenue|boulevard|place|plaza|street)', re.IGNORECASE)
+    rex = re.compile('(avenue|boulevard|place|plaza|road|street)',
+                     re.IGNORECASE)
 
     if rex.match(tup[0]):
         # 马路的路
@@ -82,13 +85,14 @@ def chunkAddresses(text, verbose=False):
         print tagged
 
     grammer = 'Location: ' \
-      '{' \
-      '<CD><CD|NNP|NNS|JJ|COMMMA|POS>*<LU>?<CD|JJ|NNP|NNS|COMMA>+<STATE|COMMA>+' \
-      '}'
+        '{' \
+        '<CD><CD|NNP|NNS|JJ|COMMMA|POS>*<LU>?' \
+        '<CD|JJ|NNP|NNS|COMMA>+<STATE|COMMA>+' \
+        '}'
 
     chunkParser = nltk.RegexpParser(grammer)
     chunks = chunkParser.parse(tagged)
-    locations =  [s for s in chunks.subtrees(lambda t: t.label() == 'Location')]
+    locations = [s for s in chunks.subtrees(lambda t: t.label() == 'Location')]
     if verbose:
         print 'Chunked Locations:'
         if locations:

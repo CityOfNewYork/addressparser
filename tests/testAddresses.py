@@ -93,7 +93,7 @@ class Address(unittest.TestCase):
         'basic - long island city '
 
         source = '''30-30 Thomson Avenue Long Island City, NY 11101 '''
-        expect = ['30-30 Thomson Avenue Long Island City, NY']
+        expect = ['30-30 Thomson Avenue Long Island City, Queens, NY']
         self.checkExpectation(source, expect)
 
     def testNYNY(self):
@@ -132,7 +132,7 @@ class Address(unittest.TestCase):
     # @attr(test='wip')
     @SkipTest
     def testSaintNotStreet(self):
-        '701 St. Anns should resolve to Saint Anns'
+        '701 St. Anns should resolve to Saint Anns instead of Street Anns'
         expected = ['701 St. Anns Avenue Bronx, NY']
 
         for text in expected:

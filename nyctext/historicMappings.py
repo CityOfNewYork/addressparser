@@ -37,7 +37,14 @@ manhattan = [re.compile(i, re.IGNORECASE) for i in manhattan]
 
 def preprocess(text):
     for rex in queens:
-        text = rex.sub(', \\1, Queens, NY.\n', text)
+        # Remove the Historic district, leave the neighborhood to be
+        # promoted to correct borough at the neighborhood-filter step
+        #
+        # Start:           37-18 79th Street-Jackson Heights Historic District
+        # Strip Historic:  37-18 79th Street Jackson Heights, NY.
+        # Promote Borough: 37-18 79th Street Queens, NY.
+
+        text = rex.sub(', \\1, NY.\n', text)
 
     for rex in brooklyn:
         text = rex.sub(', \\1, Brooklyn, NY.\n', text)
