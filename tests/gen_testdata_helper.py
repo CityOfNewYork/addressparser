@@ -29,9 +29,11 @@ class Address:
 def main():
     lines = codecs.open('data/highschools.txt', encoding='latin1').read()
     lines = lines.split('\n')
-    # lines = [
-    # ]
-    entries = [Address(l,verbose=True).asDict() for l in lines if l.strip() != '' and 'bronx' in l.lower()]
+    lines = [
+        u'The Michael J. Petrides School: 715 Ocean Terrace Staten Island, NY'
+    ]
+    entries = [Address(l, verbose=True).asDict() for l in lines if l.strip() !=
+               '' and 'staten island' in l.lower()]
     # entries = [Address(l,verbose=True).asDict() for l in lines]
     appid = environ['DOITT_CROL_APP_ID']
     appkey = environ['DOITT_CROL_APP_KEY']
@@ -39,5 +41,8 @@ def main():
     pprint.pprint(entries)
     # pprint.pprint(parser.parse_with_geo(lines[0],g,verbose=True))
     for entry in entries:
-        entry['geo'] = parser.parse_with_geo(entry['source'], g)
+        entry['geo'] = parser.parse_with_geo(entry['source'], g, verbose=True)
         pprint.pprint(entry)
+
+if __name__ == '__main__':
+    main()
