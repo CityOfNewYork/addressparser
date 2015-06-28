@@ -9,6 +9,7 @@ from queens import rex_neighborhoods_queens
 from brooklyn import rex_neighborhoods_brooklyn
 from bronx import rex_neighborhoods_bronx
 from statenisland import rex_neighborhoods_statenIsland
+from manhattan import rex_neighborhoods_manhattan
 
 _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
                            '(Brooklyn|Queens|Staten\s+Island|Bronx)',
@@ -72,8 +73,12 @@ def filter_neighborhoods(text):
     if 'staten island' not in _t:
         text = rex_neighborhoods_statenIsland.sub('\\1, Staten Island,', text)
 
+    # skip if 'NY, NY' in expression
+    if 'manhattan' not in _t and 'ny, ny' not in _t:
+        text = rex_neighborhoods_manhattan.sub('\\1, Manhattan,', text)
+
     # Marble Hill can be both manhattan and bronx
-    if 'bronx' not in _t:
+    if 'marble hill' not in _t and 'bronx' not in _t:
         text = rex_neighborhoods_bronx.sub('\\1, Bronx,', text)
     text = text.replace(',,', ',')
     return text
