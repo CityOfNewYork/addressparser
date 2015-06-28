@@ -29,15 +29,15 @@ class Address:
 def main():
     lines = codecs.open('data/highschools.txt', encoding='latin1').read()
     lines = lines.split('\n')
-# lines = [
-# ]
+    # lines = [
+    # ]
     entries = [Address(l,verbose=True).asDict() for l in lines if l.strip() != '' and 'bronx' in l.lower()]
-# entries = [Address(l,verbose=True).asDict() for l in lines]
+    # entries = [Address(l,verbose=True).asDict() for l in lines]
     appid = environ['DOITT_CROL_APP_ID']
     appkey = environ['DOITT_CROL_APP_KEY']
     g = Geoclient(appid, appkey)
     pprint.pprint(entries)
-# pprint.pprint(parser.parse_with_geo(lines[0],g,verbose=True))
+    # pprint.pprint(parser.parse_with_geo(lines[0],g,verbose=True))
     for entry in entries:
         entry['geo'] = parser.parse_with_geo(entry['source'], g)
         pprint.pprint(entry)
