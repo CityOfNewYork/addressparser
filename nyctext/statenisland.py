@@ -69,7 +69,7 @@ West New Brighton
 Willowbrook
 Woodrow'''.split('\n')
 
-_hoods = [r'%s[\s,]' % n for n in _neighborhoods]
+_hoods = [r'\s%s[\s,]' % n for n in _neighborhoods]
 _hoods = '|'.join(_hoods)
 _hoods = '(%s)(?!\s+(Avenue|Street|Parkway))' % _hoods
 rex_neighborhoods_statenIsland = re.compile(_hoods, re.I)

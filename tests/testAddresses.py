@@ -78,6 +78,7 @@ class Address(unittest.TestCase):
                 expect = [xt % lu]
                 self.checkExpectation(source, expect)
 
+    @attr(test='wip')
     def testWithNumberStreetWithDashAndRoom(self):
         'basic - test with dash and Room'
 
@@ -87,7 +88,7 @@ class Address(unittest.TestCase):
         for lu in lus:
             source = template % lu
             expect = [x_template % lu]
-            self.checkExpectation(source, expect)
+            self.checkExpectation(source, expect, verbose=True)
 
     def testIT(self):
         'basic - long island city '

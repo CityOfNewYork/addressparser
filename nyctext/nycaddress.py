@@ -42,6 +42,10 @@ def matchAddresses(text, verbose=False):
             print '\n\n'
             print '=' * 48
             print 'Sentence: %s\n' % s
+
+        if verbose:
+            print 'Stripping White Spaces:\n\t%s\n' % text
+        s = re.sub('\s+', ' ', s)
         if len(s) < 10:
             if verbose:
                 showFailureReason('Sentence too short', s, '--', verbose)
