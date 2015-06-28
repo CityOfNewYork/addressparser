@@ -97,6 +97,18 @@ def lookup_geo(g, ady, verbose=False):
     if 'queens' in borough:
         borough = 'queens'
 
+    if 'brooklyn' in borough:
+        borough = 'brooklyn'
+
+    if 'bronx' in borough:
+        borough = 'bronx'
+
+    if 'manhattan' in borough:
+        borough = 'manhattan'
+
+    if 'staten island' in borough:
+        borough = 'staten island'
+
     if verbose:
         print usaddress.tag(ady)
         print 'adNumber: %s\t\tstName: %s\t\tBorough:%s' % (addressNumber,

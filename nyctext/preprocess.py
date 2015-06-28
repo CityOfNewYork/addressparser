@@ -6,6 +6,8 @@ __license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
 import re
 import historicMappings
 from queens import rex_neighborhoods_queens
+from brooklyn import rex_neighborhoods_brooklyn
+from bronx import rex_neighborhoods_bronx
 
 _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
                            '(Brooklyn|Queens|Staten\s+Island|Bronx)',
@@ -57,7 +59,16 @@ def filter_ny_ny(text):
 
 
 def filter_neighborhoods(text):
-    text = rex_neighborhoods_queens.sub('\\1, Queens,', text)
+    _t = text.lower()
+    if 'queens' not in _t:
+        text = rex_neighborhoods_queens.sub('\\1, Queens,', text)
+
+    if 'brooklyn' not in _t:
+        text = rex_neighborhoods_brooklyn.sub('\\1, Brooklyn,', text)
+
+    # Marble Hill can be both manhattan and bronx
+    if 'bronx' not in _t:
+        text = rex_neighborhoods_bronx.sub('\\1, Bronx,', text)
     text = text.replace(',,', ',')
     return text
 
