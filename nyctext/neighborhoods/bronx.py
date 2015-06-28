@@ -1,6 +1,6 @@
-import re
+from regexps import make_neighorbood_regex
 
-_neighborhoods = '''Bedford Park
+_hoods = '''Bedford Park
 Belmont
 Fordham
 Kingsbridge
@@ -70,7 +70,4 @@ Throg{1,2}s Neck
 Unionport
 Westchester Square'''.split('\n')
 
-_hoods = [r'\s%s[\s,]' % n for n in _neighborhoods]
-_hoods = '|'.join(_hoods)
-_hoods = '(%s)(?!\s+(Avenue|Street|Parkway))' % _hoods
-rex_neighborhoods_bronx = re.compile(_hoods, re.I)
+r_bronx = make_neighorbood_regex(_hoods)

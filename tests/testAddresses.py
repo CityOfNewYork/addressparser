@@ -94,7 +94,7 @@ class Address(unittest.TestCase):
         'basic - long island city '
 
         source = '''30-30 Thomson Avenue Long Island City, NY 11101 '''
-        expect = ['30-30 Thomson Avenue Long Island City, Queens, NY']
+        expect = ['30-30 Thomson Avenue, Long Island City, Queens, NY']
         self.checkExpectation(source, expect)
 
     def testNYNY(self):

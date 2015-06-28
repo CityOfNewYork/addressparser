@@ -86,9 +86,18 @@ def chunkAddresses(text, verbose=False):
 
     grammer = 'Location: ' \
         '{' \
-        '<CD><CD|NNP|NNS|JJ|COMMMA|POS>*<LU>?' \
+        '<CD>' \
+        '<CD|NNP|NNS|JJ|COMMMA|POS>*' \
+        '<LU>?' \
         '<CD|JJ|NNP|NNS|COMMA>+<STATE|COMMA>+' \
         '}'
+# (u'99', 'CD'),
+# (u'Terrace', 'LU'),
+# (u'View', 'NNP'),
+# (u'Avenue', 'LU'),
+# (u'Bronx', 'NNP'),
+# (',', 'COMMA'),
+# (u'NY', 'STATE')
 
     chunkParser = nltk.RegexpParser(grammer)
     chunks = chunkParser.parse(tagged)

@@ -5,12 +5,17 @@ __license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
 
 import re
 import historicMappings
-from queens import rex_neighborhoods_queens
-from brooklyn import rex_neighborhoods_brooklyn
-from bronx import rex_neighborhoods_bronx
-from statenisland import rex_neighborhoods_statenIsland
-from manhattan import rex_neighborhoods_manhattan
+# from queens import rex_neighborhoods_queens
+# from brooklyn import rex_neighborhoods_brooklyn
+# from bronx import rex_neighborhoods_bronx
+# from statenisland import rex_neighborhoods_statenIsland
+# from manhattan import rex_neighborhoods_manhattan
 
+from neighborhoods import rex_neighborhoods_queens
+from neighborhoods import rex_neighborhoods_brooklyn
+from neighborhoods import rex_neighborhoods_bronx
+from neighborhoods import rex_neighborhoods_statenIsland
+from neighborhoods import rex_neighborhoods_manhattan
 _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
                            '(Brooklyn|Queens|Staten\s+Island|Bronx)',
                            re.IGNORECASE)
@@ -65,21 +70,21 @@ def filter_ny_ny(text):
 def filter_neighborhoods(text):
     _t = text.lower()
     if 'queens' not in _t:
-        text = rex_neighborhoods_queens.sub('\\1, Queens,', text)
+        text = rex_neighborhoods_queens.sub(', \\1, Queens,', text)
 
     if 'brooklyn' not in _t:
-        text = rex_neighborhoods_brooklyn.sub('\\1, Brooklyn,', text)
+        text = rex_neighborhoods_brooklyn.sub(', \\1, Brooklyn,', text)
 
     if 'staten island' not in _t:
-        text = rex_neighborhoods_statenIsland.sub('\\1, Staten Island,', text)
+        text = rex_neighborhoods_statenIsland.sub(', \\1, Staten Island,', text)
 
     # skip if 'NY, NY' in expression
     if 'manhattan' not in _t and 'ny, ny' not in _t:
-        text = rex_neighborhoods_manhattan.sub('\\1, Manhattan,', text)
+        text = rex_neighborhoods_manhattan.sub(', \\1, Manhattan,', text)
 
     # Marble Hill can be both manhattan and bronx
     if 'marble hill' not in _t and 'bronx' not in _t:
-        text = rex_neighborhoods_bronx.sub('\\1, Bronx,', text)
+        text = rex_neighborhoods_bronx.sub(', \\1, Bronx,', text)
     text = text.replace(',,', ',')
     return text
 

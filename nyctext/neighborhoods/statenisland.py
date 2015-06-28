@@ -1,6 +1,6 @@
-import re
+from regexps import make_neighorbood_regex
 
-_neighborhoods = '''Annadale
+_hoods = '''Annadale
 Arden Heights
 Arlington
 Arrochar
@@ -69,7 +69,4 @@ West New Brighton
 Willowbrook
 Woodrow'''.split('\n')
 
-_hoods = [r'\s%s[\s,]' % n for n in _neighborhoods]
-_hoods = '|'.join(_hoods)
-_hoods = '(%s)(?!\s+(Avenue|Street|Parkway))' % _hoods
-rex_neighborhoods_statenIsland = re.compile(_hoods, re.I)
+r_statenIsland = make_neighorbood_regex(_hoods)
