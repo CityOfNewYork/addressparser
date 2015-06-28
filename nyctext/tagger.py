@@ -39,7 +39,7 @@ def filter_throughways(tup):
     '''
     # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
-    rex = re.compile('(avenue|boulevard|place|plaza|road|street)',
+    rex = re.compile('(avenue|boulevard|place|plaza|road|street|terrace)',
                      re.IGNORECASE)
 
     if rex.match(tup[0]):

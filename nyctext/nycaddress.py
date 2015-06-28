@@ -111,9 +111,9 @@ def lookup_geo(g, ady, verbose=False):
 
     if verbose:
         print usaddress.tag(ady)
-        print 'adNumber: %s\t\tstName: %s\t\tBorough:%s' % (addressNumber,
-                                                            streetName, borough)
-        print
+        print 'adNumber: %s\t\tstName: %s\t\tBorough:%s\n\n' % (addressNumber,
+                                                                streetName,
+                                                                borough)
 
     dic = g.address(addressNumber, streetName, borough)
     zipcode = dic.get('zipCode', '')
@@ -141,7 +141,7 @@ def parse(text, verbose=False):
 
 def parse_with_geo(text, g, verbose=False):
     plains = parse(text, verbose)
-    res = [lookup_geo(g, p) for p in plains]
+    res = [lookup_geo(g, p, verbose) for p in plains]
     return res
 
 if __name__ == '__main__':

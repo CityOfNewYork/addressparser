@@ -8,6 +8,7 @@ import historicMappings
 from queens import rex_neighborhoods_queens
 from brooklyn import rex_neighborhoods_brooklyn
 from bronx import rex_neighborhoods_bronx
+from statenisland import rex_neighborhoods_statenIsland
 
 _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
                            '(Brooklyn|Queens|Staten\s+Island|Bronx)',
@@ -53,9 +54,11 @@ def filter_street_abbreviations(text):
 
 
 _ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.IGNORECASE)
+
+
 def filter_ny_ny(text):
     global _ny_ny
-    return  _ny_ny.sub('Manhattan, NY.\n', text)
+    return _ny_ny.sub('Manhattan, NY.\n', text)
 
 
 def filter_neighborhoods(text):
@@ -65,6 +68,9 @@ def filter_neighborhoods(text):
 
     if 'brooklyn' not in _t:
         text = rex_neighborhoods_brooklyn.sub('\\1, Brooklyn,', text)
+
+    if 'staten island' not in _t:
+        text = rex_neighborhoods_statenIsland.sub('\\1, Staten Island,', text)
 
     # Marble Hill can be both manhattan and bronx
     if 'bronx' not in _t:
