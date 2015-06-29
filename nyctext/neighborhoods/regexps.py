@@ -9,5 +9,5 @@ def make_neighorbood_regex(lHoods):
 
     # Don't match if neighborhood is followed
     # by a thoroughfare name
-    lst = '(%s)(?!(Avenue|Street|Parkway))' % lst
+    lst = '(%s)(?!(Avenue|Boulevard|Street|Parkway))' % lst
     return  re.compile(lst, re.I)
