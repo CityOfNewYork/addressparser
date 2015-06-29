@@ -1,10 +1,15 @@
-import codecs
 from os import environ
 from nyc_geoclient import Geoclient
 from nycaddress import parse, lookup_geo
 
 
+def unparsible():
+    return '''ANITA TERRACE OWNERS,INC.: ONE PENN PLAZA SUITE 4000  NEW YORK, NY
+701 St. Anns Avenue Bronx, NY'''.split('\n')
+
+
 def main():
+    # import codecs
 
     # https://urllib3.readthedocs.org/en/latest/security.html#pyopenssl
     import urllib3.contrib.pyopenssl
@@ -19,18 +24,25 @@ def main():
     #     'FRATELLIS MARKET PLACE: 0 WARDS ISLAND/2FL MANHATTAN, NY',
     #     'FRESH DELIGHT: 1 RICHMOND TERRACE STATEN ISLAND, NY',
     # ]
-    samples = [
-        'Metropolitan High School Inc.: 1180 Rev. J.A. Polite Ave. Bronx, NY'
-    ]
     g = Geoclient(appid, appkey)
+    not_parsed = []
+    samples = unparsible()
+
     for sample in samples:
         print '\n\nSample: %s' % sample
-        for address in parse(sample, verbose=True):
+        addresses = parse(sample, verbose=True)
+        if not addresses:
+            not_parsed.append(sample)
+            continue
+        for address in addresses:
             print 'Address: %s' % address
             print lookup_geo(g, address, False)
             print
         print
         print
+    print 'Addresses not parsed:'
+    for ad in not_parsed:
+        print ad
 
 if __name__ == '__main__':
     main()
