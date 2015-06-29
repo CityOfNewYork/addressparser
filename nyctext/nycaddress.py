@@ -14,8 +14,8 @@ import re
 import usaddress
 
 from schema import RefLocation
-from nyc_geoclient import Geoclient
 from tagger import chunkAddresses
+from pretokenize import transform
 
 
 def showFailureReason(msg, address, components, verbose=False):
@@ -36,6 +36,11 @@ def location_to_string(tree):
 
 def matchAddresses(text, verbose=False):
     locations = []
+    # Replace periods where it is preceeded by a single
+    # Letter
+    #
+    text = transform(text, verbose=verbose)
+
     sentences = sent_tokenize(text)
     for s in sentences:
         if verbose:
@@ -145,26 +150,4 @@ def parse(text, verbose=False):
 
 def parse_with_geo(text, g, verbose=False):
     plains = parse(text, verbose)
-    res = [lookup_geo(g, p, verbose) for p in plains]
-    return res
-
-if __name__ == '__main__':
-    import codecs
-    from os import environ
-
-    # https://urllib3.readthedocs.org/en/latest/security.html#pyopenssl
-    import urllib3.contrib.pyopenssl
-    urllib3.contrib.pyopenssl.inject_into_urllib3()
-    appid = environ['DOITT_CROL_APP_ID']
-    appkey = environ['DOITT_CROL_APP_KEY']
-
-    samples = [codecs.open('../tests/data/ad-sample1.txt', 'r',
-                           encoding='utf8').read()]
-
-    g = Geoclient(appid, appkey)
-    for sample in samples:
-        print '\n\nSample: %s' % sample
-        for address in parse(sample):
-            print 'Address: %s' % address
-            print lookup_geo(g, address)
-            print
+    return [lookup_geo(g, p, verbose) for p in plains]
