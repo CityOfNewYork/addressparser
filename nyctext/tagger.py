@@ -25,6 +25,11 @@ def filter_comma(tup):
         return ',', 'COMMA'
     return tup
 
+def filter_hash(tup):
+    if tup[0] == '#':
+        return '#', 'HASH'
+    return tup
+
 
 def filter_ls(tup):
     # ls (list marker) is not necessarey, should be a digit
@@ -63,6 +68,9 @@ def pos_tag(text, verbose=False):
     # retag commas
     tagged = map(filter_comma, tagged)
 
+    # retag #
+    tagged = map(filter_hash, tagged)
+
     # change counting lists (ls) to counting digits (cd)
     tagged = map(filter_ls, tagged)
 
@@ -87,17 +95,10 @@ def chunkAddresses(text, verbose=False):
     grammer = 'Location: ' \
         '{' \
         '<CD>' \
-        '<CD|NNP|NNS|JJ|COMMMA|POS>*' \
+        '<CD|DT|NN|NNP|NNS|JJ|JJS|COMMMA|POS|PRP|HASH|WDT>*' \
         '<LU>?' \
-        '<CD|JJ|NNP|NNS|COMMA>+<STATE|COMMA>+' \
+        '<CD|JJ|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH>+<STATE|COMMA>+' \
         '}'
-# (u'99', 'CD'),
-# (u'Terrace', 'LU'),
-# (u'View', 'NNP'),
-# (u'Avenue', 'LU'),
-# (u'Bronx', 'NNP'),
-# (',', 'COMMA'),
-# (u'NY', 'STATE')
 
     chunkParser = nltk.RegexpParser(grammer)
     chunks = chunkParser.parse(tagged)
