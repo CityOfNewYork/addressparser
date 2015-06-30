@@ -4,8 +4,7 @@ from nycaddress import parse, lookup_geo
 
 
 def unparsible():
-    return '''ANITA TERRACE OWNERS,INC.: ONE PENN PLAZA SUITE 4000  NEW YORK, NY
-FRATELLIS MARKET PLACE: 0 WARDS ISLAND/2FL MANHATTAN, NY,
+    return '''FRATELLIS MARKET PLACE: 0 WARDS ISLAND/2FL MANHATTAN, NY
 701 St. Anns Avenue Bronx, NY'''.split('\n')
 
 
@@ -15,23 +14,14 @@ def main():
     # https://urllib3.readthedocs.org/en/latest/security.html#pyopenssl
     import urllib3.contrib.pyopenssl
     urllib3.contrib.pyopenssl.inject_into_urllib3()
-    appid = environ['DOITT_CROL_APP_ID']
-    appkey = environ['DOITT_CROL_APP_KEY']
-
-    # samples = [codecs.open('../tests/data/ad-sample1.txt', 'r',
-    #                        encoding='utf8').read()]
-    #
-    # samples = [
-    #     'FRATELLIS MARKET PLACE: 0 WARDS ISLAND/2FL MANHATTAN, NY',
-    #     'FRESH DELIGHT: 1 RICHMOND TERRACE STATEN ISLAND, NY',
-    # ]
+    # appid = environ['DOITT_CROL_APP_ID']
+    # appkey = environ['DOITT_CROL_APP_KEY']
     # g = Geoclient(appid, appkey)
     g = None
     not_parsed, parsed = [], []
     samples = unparsible()
-    samples = [
-        '110E 28th street Floor 8, New York, NY',
-    ]
+    # samples = [
+    # ]
         # -- usaddress needs to be trained with this
         # "1 RICHMOND TERRACE STATEN ISLAND, NY"
         # "135-11 126th Street, South Ozone Park, Queens, NY 11420"
@@ -105,6 +95,7 @@ def main():
     print 'Addresses parsed:'
     for ad in parsed:
         print ad
+    print '\n\n'
 
     print 'Addresses not parsed:'
     for ad in not_parsed:
