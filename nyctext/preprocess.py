@@ -45,19 +45,29 @@ def filter_blockcodes(text):
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
 
 
-_street_abbreviations = re.compile('\s+(st\.|str\.)[\s,]', re.IGNORECASE)
-_avenue_abbreviations = re.compile('\s+(av\.|ave\.)[\s,]', re.IGNORECASE)
+# _street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
+# _avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
+# _boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
+# _plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
+# _drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
+# _parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
+# _road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
 
 
-def filter_street_abbreviations(text):
+# def filter_street_abbreviations(text):
     # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
 
-    global _street_abbreviations, _avenue_abbreviations
-    text = _street_abbreviations.sub(' Street', text)
-    text = _avenue_abbreviations.sub(' Avenue', text)
-    return text
-
+    # global _street_abbreviations, _avenue_abbreviations
+    # text = _street_abbreviations.sub(' Street ', text)
+    # text = _avenue_abbreviations.sub(' Avenue ', text)
+    # text = _boulevard_abbreviations.sub(' Boulevard ', text)
+    # text = _plaza_abbreviations.sub(' Plaza ', text)
+    # text = _drive_abbreviations.sub(' Drive ', text)
+    # text = _parkway_abbreviations.sub(' Parkway ', text)
+    # text = _road_abbreviations.sub(' Road ', text)
+    # return text
+    #
 
 _ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.IGNORECASE)
 
@@ -112,10 +122,6 @@ def prepare_text(text, verbose=False):
     text = historicMappings.preprocess(text)
     if verbose:
         print 'historicMappings:\n\t%s\n' % text
-
-    text = filter_street_abbreviations(text)
-    if verbose:
-        print 'filter_street_abbreviations:\n\t%s\n' % text
 
     text = filter_neighborhoods(text)
     if verbose:
