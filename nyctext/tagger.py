@@ -25,16 +25,23 @@ def filter_comma(tup):
         return ',', 'COMMA'
     return tup
 
+
 def filter_hash(tup):
     if tup[0] == '#':
         return '#', 'HASH'
     return tup
 
 
-def filter_ls(tup):
+def filter_cd(tup):
     # ls (list marker) is not necessarey, should be a digit
-    if tup[1] == 'LS':
-        return tup[0], 'CD'
+    val, tag = tup[0].lower(), tup[1]
+    if tag == 'LS':
+        return val, 'CD'
+    else:
+        if len(val) > 2 and \
+           val[-2:] in ['st', 'nd', 'rd', 'th'] and \
+           val[0].isdigit() and val[-3].isdigit():
+            return tup[0], 'CD'
     return tup
 
 
@@ -44,7 +51,10 @@ def filter_throughways(tup):
     '''
     # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
-    rex = re.compile('(avenue|boulevard|place|plaza|road|street|terrace)',
+    # have to treat broadway & bowery as a thhoroughfare
+    # because they are valid street names and thoroughfares in of
+    # themselves
+    rex = re.compile('(avenue|bowery|broadway|boulevard|circle|crescent|drive|expressway|highway|lane|park|piers|place|plaza|road|street|slip|square|terrace|turnpike)',
                      re.IGNORECASE)
 
     if rex.match(tup[0]):
@@ -72,7 +82,7 @@ def pos_tag(text, verbose=False):
     tagged = map(filter_hash, tagged)
 
     # change counting lists (ls) to counting digits (cd)
-    tagged = map(filter_ls, tagged)
+    tagged = map(filter_cd, tagged)
 
     # tag street names
     tagged = map(filter_throughways, tagged)
@@ -96,7 +106,7 @@ def chunkAddresses(text, verbose=False):
         '{' \
         '<CD>' \
         '<CD|DT|NN|NNP|NNS|JJ|JJS|COMMMA|POS|PRP|HASH|WDT>*' \
-        '<LU>?' \
+        '<LU>+?' \
         '<CD|JJ|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH>+<STATE|COMMA>+' \
         '}'
 
