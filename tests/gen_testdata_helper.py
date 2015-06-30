@@ -42,8 +42,8 @@ The Urban Assembly School for Global Commerce: 2005 Madison Avenue New York, NY
 
 def lines():
 
-    # files = ['data/ACRIS_-_Personal_Property_Parties.txt',
-    files = [
+    files = ['data/ACRIS_-_Personal_Property_Parties.txt',
+    # files = [
              'data/DOHMH_New_York_City_Restaurant_Inspection_Results.txt',
              'data/Lower_Manhattan_Retailers.txt',
              'data/Mapped_In_NY_Companies.txt']
@@ -70,10 +70,13 @@ def processAll(g):
         if ad.address is None:
             unparsed += 1
             print 'source: %s' % ad.source
+        else:
+            parsed += 1
 
 
-    print '\n\nSummary Unparsed: %d' % unparsed
-
+    print '\n\nSummary:\n\tUnparsed: %d\n\tParsed: %d' % (unparsed, parsed)
+    total = 1.0*(parsed + unparsed)
+    print 'Completion %%: %f' % (parsed/total*100)
 
 
 def processAdys(g, fn):
