@@ -43,7 +43,6 @@ The Urban Assembly School for Global Commerce: 2005 Madison Avenue New York, NY
 def lines():
 
     files = ['data/ACRIS_-_Personal_Property_Parties.txt',
-    # files = [
              'data/DOHMH_New_York_City_Restaurant_Inspection_Results.txt',
              'data/Lower_Manhattan_Retailers.txt',
              'data/Mapped_In_NY_Companies.txt']
@@ -63,20 +62,29 @@ def lines():
 
 def processAll(g):
     unparsed, parsed = 0, 0
+    dic = []
     for line in lines():
         if line.strip() == '':
             continue
         ad = Address(line, verbose=False)
         if ad.address is None:
+            dic.append(dict(parsed=False, text=line))
             unparsed += 1
             print 'source: %s' % ad.source
         else:
+            dic.append(dict(parsed=True, text=line))
             parsed += 1
 
 
     print '\n\nSummary:\n\tUnparsed: %d\n\tParsed: %d' % (unparsed, parsed)
     total = 1.0*(parsed + unparsed)
     print 'Completion %%: %f' % (parsed/total*100)
+
+    fn = 'current_results.json'
+    print 'Writing to file: %s' % fn
+    out =  open(fn, 'wt')
+    json.dump(dic, out)
+    out.flush()
 
 
 def processAdys(g, fn):
@@ -87,21 +95,27 @@ def processAdys(g, fn):
 #     entry['geo'] = parser.parse_with_geo(entry['source'], g, verbose=False)
 
     unparsed, parsed = [], []
+    total = []
 
     for e in entries:
         if e.address:
             parsed.append(e.asDict())
+            total.append(dict(parsed=True, text=e['source']))
         else:
             unparsed.append(e.asDict())
+            total.append(dict(parsed=False, text=e['source']))
 
     print '%d Unparsed Addresses' % (len(unparsed))
     print '%d Parsed Addresses' % (len(parsed))
-    for e in  unparsed:
-        print 'source: "%s"' % e['source']
+    # for e in  unparsed:
+        # print 'source: "%s"' % e['source']
         # print Address(e['source'], verbose=True)
         # print '\n'*3
 
     # print json.dumps(unparsed, indent=1)
+    out =  open('current_results.json', 'wt')
+    json.dump(total, out)
+    out.flush()
 
 
 
