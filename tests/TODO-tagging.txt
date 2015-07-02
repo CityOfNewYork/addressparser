@@ -1,0 +1,13 @@
+Sentence: NYC Technology Development Corporation: 15 Metrotech Center, 19th Floor , Brooklyn, NY
+
+Build a regext tagger to better detect throughways.
+
+Metrotech Center -- the Center can be considered a Throughway
+
+( NYC/NN ) ( Technology/NN ) ( Development/NN ) ( Corporation/NN ): 
+( 15/CD ) ( Metrotech/NN ) ( Center/LU ), 
+( 19th/CD ) ( Floor/LOC ) ( ,/COMMA ) 
+( Brooklyn/CITY ) (,/COMMA ) ( NY/STATE )
+
+22 St Annes St, Bronx NY
+( 22/CD ) ( st/NN ) ( Annes/NN ) ( St/LU ) ( ,/COMMA ) ( Bronx/CITY ) ( NY/STATE )
