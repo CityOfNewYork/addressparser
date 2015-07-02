@@ -1,0 +1,64 @@
+Unparsible:
+
+FRATELLIS MARKET PLACE: 0 WARDS ISLAND/2FL MANHATTAN, NY
+701 St. Anns Avenue Bronx, NY
+
+
+
+
+# -- usaddress needs to be trained with this
+# "1 RICHMOND TERRACE STATEN ISLAND, NY"
+# "135-11 126th Street, South Ozone Park, Queens, NY 11420"
+# "715 Ocean Terrace Staten Island, NY"
+# "105-25 Horace Harding Expy N, Corona, NY"
+
+# -- Bowling Green needs to be handle differently
+#
+# 'source: National Museum of the American Indian (Gift Shop): 1 Bowling Green , New York, NY',
+
+# -- Insert default thoroughfare
+# '241 West 97th #5N, New York, NY'
+#     --> 241 West 97th Street #5N, New York, NY
+
+
+# -- Street or Saint? .... how to solve this problem?
+#
+# 32 ST MARKS PLACE MANHATTAN, NY',
+# 634 St. Nicholas Ave , New York, NY
+
+# -- changes in malu to recognize park, square, drive, crescent, lane,
+#    turnpike, expressway, highway, circle
+# #1 GARDEN CHINESE: 221 PROSPECT PARK WEST BROOKLYN, NY',
+# Ammirati: 19 Union Square W , New York, NY',
+# ALTANOVA Energy+Sustainability: 1105 44th Dr , Long Island City, NY',
+# 19A EMPIRE RESTAURANT: 19 KNOLLS CRESCENT BRONX, NY',
+# 168 HI TEA: 16711 UNION TURNPIKE QUEENS, NY',
+# '22 THAI CUISINE: 22 MAIDEN LANE MANHATTAN, NY',
+# '678 aurora catering inc: 3050 WHITESTONE EXPY QUEENS, NY',
+# '234 CHINA CITY: 234 KINGS HIGHWAY BROOKLYN, NY',
+# '10 COLUMBUS CIRCLE MANHATTAN, NY',
+
+# -- changes in peprocess to expand thoroughfare abbreviations
+# 1 BUEN SABOR: 4507 QUEENS BLVD QUEENS, NY',
+# 1.5 Galbi Corp: 15803 NORTHERN BLVD QUEENS, NY',
+# 10 DEVOE: 10 DEVOE ST BROOKLYN, NY',
+# 100 montaditos: 176 BLEECKER ST MANHATTAN, NY',
+# 101 Meat Shop: 11601 101ST AVE QUEENS, NY',
+# (LIBRARY)  FOUR & TWENTY BLACKBIRDS: 10 GRAND ARMY PLZ BROOKLYN, NY',
+# ALTANOVA Energy+Sustainability: 1105 44th Dr , Long Island City, NY',
+# 1061 CATERING: 1061 OCEAN PKWY BROOKLYN, NY',
+# '22 THAI CUISINE: 22 MAIDEN LANE MANHATTAN, NY',
+# '658 KINGS DELI: 658 NEW DORP LANE STATEN ISLAND, NY',
+# '68 TASTE OF CHINA: 6824 FRESH MEADOW LN QUEENS, NY',
+# '678 aurora catering inc: 3050 WHITESTONE EXPY QUEENS, NY',
+# '234 CHINA CITY: 234 KINGS HIGHWAY BROOKLYN, NY',
+# '10 COLUMBUS CIRCLE MANHATTAN, NY',
+
+# -- changes in peprocess to expand 110(E|w|s|N)
+# '110E 28th street Floor 8, New York, NY'
+#     110E -> 110 E
+
+# -- changes in tagger to change 1st 2nd 3rd 4th 5th
+#    as 'CD'
+# '110E 28th street Floor 8, New York, NY',
+
