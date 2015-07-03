@@ -11,10 +11,11 @@ nltk.data.path.append(os.path.join(os.path.dirname(__file__), 'nltk-data'))
 from nltk.tokenize import word_tokenize
 
 import preprocess
+from neighborhoods import throughway_names
 
 
 def filter_unnecessary_abbreviations(tup):
-    rex = re.compile('inc\.$|rest$|corp\.?$', re.IGNORECASE)
+    rex = re.compile('(inc|rest|corp|llc)\.?', re.IGNORECASE)
     if rex.match(tup[0]):
         return tup[0], '-NONE-'
     return tup
@@ -54,8 +55,7 @@ def filter_throughways(tup):
     # have to treat broadway & bowery as a thhoroughfare
     # because they are valid street names and thoroughfares in of
     # themselves
-    rex = re.compile('(avenue|bowery|broadway|boulevard|circle|crescent|drive|expressway|highway|lane|park|piers|place|plaza|road|street|slip|square|terrace|turnpike)',
-                     re.IGNORECASE)
+    rex = re.compile(throughway_names, re.I)
 
     if rex.match(tup[0]):
         # 马路的路

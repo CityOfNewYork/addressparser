@@ -1,6 +1,9 @@
-"""Usage:
-  quick_example.py --text SOURCE  [--trace] [--geo]
-  quick_example.py batch --file FILE [--trace]
+"""Usage: quick_example.py [options] SOURCE
+
+--trace     Trace the parsing states. Useful for debugging.
+--geo       Return Geolocation attributes
+Options:
+    SOURCE  Quoted text to parse. ie, "1 Centre Street, NY NY"
 """
 from docopt import docopt
 from os import environ
@@ -47,10 +50,11 @@ if __name__ == '__main__':
     g = Geoclient(appid, appkey)
 
     args = docopt(__doc__, version='0.1.1rc')
+    # import ipdb; ipdb.set_trace()
     addresses = []
-    if args['--text'] and args['--geo']:
+    if args['--geo']:
         addresses = parse_with_geo(args['SOURCE'], g, args['--trace'])
-    elif args['--text']:
+    else:
         addresses = parse(args['SOURCE'], args['--trace'])
 
     for ad in addresses:
