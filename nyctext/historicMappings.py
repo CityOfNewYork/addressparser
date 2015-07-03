@@ -52,5 +52,5 @@ def preprocess(text):
         text = rex.sub(', Brooklyn, NY.\n', text)
 
     for rex in manhattan:
-        text = rex.sub(', \\1, NY, NY.\n', text)
+        text = rex.sub(', \\1, Manhattan, NY.\n', text)
     return text

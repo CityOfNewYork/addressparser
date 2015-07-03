@@ -11,6 +11,6 @@
 17-23 Aitken Place, Brooklyn Heights, Brooklyn, NY
 168 Court Street, Cobble Hill, Brooklyn, NY
 816 Prospect Place, Crown Heights, Brooklyn, NY
-15 Jay Street, Tribeca, NY, NY
-106-114 Grand Street, SoHo, NY, NY
-35 Great Jones Street, NoHo, NY, NY
+15 Jay Street, Tribeca, Manhattan, NY
+106-114 Grand Street, SoHo, Manhattan, NY
+35 Great Jones Street, NoHo, Manhattan, NY

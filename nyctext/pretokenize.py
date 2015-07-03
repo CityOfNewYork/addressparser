@@ -8,10 +8,6 @@ sent_tokenize that could stitch sentence fragments
 together.
 
 '''
-_rex_initials = re.compile('(?<=[\s\.][A-Z])(\.)', re.I)
-
-_rex_reverend = re.compile('rev\.', re.I)
-_rex_suite = re.compile('ste\.', re.I)
 
 _street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
 _avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
@@ -48,57 +44,49 @@ def do_street_abbreviations(text):
     return text
 
 
-_rex_cd = re.compile(r'\s?(\d+)(n|s|e|w)(\.)?\s', re.I)
-
-# 110E 21st -> 100 E 21 st
-# 110E 22nd
-# 110E 23rd
-# 110E 24th
-# 110E 25th.
-
-
 def do_cd(text):
-    global _rex_cd
+    _rex_cd = re.compile(r'\s?(\d+)(n|s|e|w)(\.)?\s', re.I)
     return _rex_cd.sub('\\1 \\2 ', text)
 
 
 def do_initials(text):
-    global _rex_initials
+    _rex_initials = re.compile('(?<=[\s\.][A-Z])(\.)', re.I)
     return _rex_initials.sub(' ', text)
 
 
 def do_title(text):
-    global _rex_reverend
+    _rex_reverend = re.compile('rev\.', re.I)
     return _rex_reverend.sub('Rev', text)
 
 
 def do_suite(text):
-    global _rex_suite
+    _rex_suite = re.compile('ste\.', re.I)
     return _rex_suite.sub('Suite', text)
-
-_rex_periods = re.compile('(?<=[^\s])(\.)(?=\s)', re.I)
 
 
 def do_periods(text):
-    global _rex_periods
-    return _rex_periods.sub(' ', text)
-
-
-_rex_ordinal_indicator_st = re.compile('(\d+)(?<!1)(st\.?)', re.I)
-_rex_ordinal_indicator_rd = re.compile('(\d+)(?<!3)(rd\.?)', re.I)
+    _rex_periods = re.compile('(?<=[^\s\s])(\.)(?=\s)', re.I)
+    # return text
+    return _rex_periods.sub('\\1 ', text)
 
 
 def do_ordinal_indicator(text):
     '''Removes bad ordinal indicators that could be
     road(rd) or street(st)
     Transform yes:    22st -> 22 st
-    Transform  no:    21st -> 21st
+    Transform  no:    21st. -> 21st
 
     '''
-    global _ordinal_indicator_st, _ordinal_indicator_rd
+    _rex_bad_ord_indic_st = re.compile('(\d+)(?<!1)(st\.?)', re.I)
+    _rex_bad_ord_indic_rd = re.compile('(\d+)(?<!3)(rd\.?)', re.I)
+    _rex_good_ord_indic_st = re.compile('(\d+)(?<=1)(st\.)', re.I)
+    _rex_good_ord_indic_rd = re.compile('(\d+)(?<=3)(rd\.)', re.I)
 
-    text = _rex_ordinal_indicator_st.sub('\\1 \\2', text)
-    text = _rex_ordinal_indicator_rd.sub('\\1 \\2', text)
+    text = _rex_bad_ord_indic_st.sub('\\1 st', text)
+    text = _rex_bad_ord_indic_rd.sub('\\1 rd', text)
+
+    text = _rex_good_ord_indic_st.sub('\\1st', text)
+    text = _rex_good_ord_indic_rd.sub('\\1rd', text)
     return text
 
 
@@ -124,7 +112,7 @@ def transform(text, verbose=False):
 
     text = do_ordinal_indicator(text)
     if verbose:
-        print 'ordinal indicator: %s' % text
+        print '  ord indic: %s' % text
 
     text = do_street_abbreviations(text)
     if verbose:

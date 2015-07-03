@@ -49,7 +49,7 @@ def matchAddresses(text, verbose=False):
             print 'Sentence: %s\n' % s
 
         if verbose:
-            print 'Stripping White Spaces:\n\t%s\n' % text
+            print 'Stripping White Spaces:\n\t%s\n' % s
         s = re.sub('\s+', ' ', s)
         if len(s) < 10:
             if verbose:

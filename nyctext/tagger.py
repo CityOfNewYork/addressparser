@@ -14,7 +14,7 @@ import preprocess
 from neighborhoods import throughway_names
 
 
-def filter_unnecessary_abbreviations(tup):
+def filter_probable_company(tup):
     rex = re.compile('(inc|rest|corp|llc)\.?', re.IGNORECASE)
     if rex.match(tup[0]):
         return tup[0], '-NONE-'
@@ -64,6 +64,14 @@ def filter_throughways(tup):
     return tup
 
 
+def filter_cities(tup):
+    val = tup[0]
+    rex = re.compile('(manhattan|brooklyn|bronx|queens|statenisland)', re.I)
+    if rex.match(val):
+        return val, 'CITY'
+    return tup
+
+
 def filter_state(tup):
     rex = re.compile('NY$', re.IGNORECASE)
     if rex.match(tup[0]):
@@ -90,10 +98,38 @@ def pos_tag(text, verbose=False):
     # tag state
     tagged = map(filter_state, tagged)
 
+    # tag city
+    tagged = map(filter_cities, tagged)
+
+    # handle special case of "staten island", multi word
+    if 'staten island' in text.lower():
+        tup = None
+        for t in tagged:
+            if t[0].lower() == 'staten':
+                tup = t
+                break
+        dx = tagged.index(tup)
+        _tagged = [list(tup) for tup in tagged]
+        _tagged[dx][1]  = 'CITY'
+        _tagged[dx+1][1] = 'CITY'
+        tagged = [tuple(tup) for tup in _tagged]
+
+
+
     # change POS tag to -NONE- to aid chunking
     # Todo: better comments -- remove this function to find
     # cases where this break tests
-    return map(filter_unnecessary_abbreviations, tagged)
+    tagged =  map(filter_probable_company, tagged)
+
+
+    # Remove incorrect CITY tags.
+    # ie, those not succeeded by ,STATE
+    _dx = [tagged.index(tup) for tup in tagged if tup[1]=='CITY']
+    _tagged = [list(tup) for tup in tagged]
+    for _d in _dx[:-1]:
+        _tagged[_d][1] = 'NNP'
+    tagged = [tuple(i) for i in _tagged]
+    return tagged
 
 
 def chunkAddresses(text, verbose=False):
@@ -107,7 +143,10 @@ def chunkAddresses(text, verbose=False):
         '<CD>' \
         '<CD|DT|NN|NNP|NNS|JJ|JJS|COMMMA|POS|PRP|HASH|WDT>*' \
         '<LU>+?' \
-        '<CD|JJ|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH>+<STATE|COMMA>+' \
+        '<CD|JJ|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH>*' \
+        '<CITY>+' \
+        '<COMMA>?' \
+        '<STATE>' \
         '}'
 
     chunkParser = nltk.RegexpParser(grammer)

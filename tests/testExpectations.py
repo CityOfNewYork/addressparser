@@ -29,12 +29,12 @@ class PublicHearing(unittest.TestCase):
 
         if verbose:
             print 'expect:\t'
-            if isinstance(expect, list):
+            if isinstance(expected, list):
                 print
-                for e in expect:
+                for e in expected:
                     print '\t%s' %e
             else:
-                print '%s' % expect
+                print '%s' % expected
             print
             print 'got \t:'
             if isinstance(addresses, list):
@@ -43,6 +43,7 @@ class PublicHearing(unittest.TestCase):
                     print '\t%s' %e
             else:
                 print '%s' % addresses
+
 
         for loc in addresses:
             self.assertIn(loc, expected)
@@ -62,6 +63,7 @@ class PublicHearing(unittest.TestCase):
         'department of transportation sample'
         self.checkExpectation('ad-sample3.txt', 'ad-expected3.txt')
 
+    @attr(test='wip')
     def testLandmarkPreservation(self):
         'landmark preservation sample'
         self.checkExpectation('ad-sample4.txt', 'ad-expected4.txt')
