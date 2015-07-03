@@ -76,10 +76,21 @@ def do_suite(text):
     global _rex_suite
     return _rex_suite.sub('Suite', text)
 
+_rex_periods = re.compile('(?<=[^\s])(\.)(?=\s)', re.I)
+
+
+def do_periods(text):
+    global _rex_periods
+    return _rex_periods.sub(' ', text)
+
 
 def transform(text, verbose=False):
     if verbose:
         print 'Source Text: %s' % text
+
+    text = do_periods(text)
+    if verbose:
+        print '    Periods: %s' % text
 
     text = do_initials(text)
     if verbose:
