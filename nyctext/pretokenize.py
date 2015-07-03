@@ -26,7 +26,7 @@ _highway_abbreviations = re.compile('\s+(hwy\.?)[\s,]', re.IGNORECASE)
 _circle_abbreviations = re.compile('\s+(cir\.?)[\s,]', re.IGNORECASE)
 
 
-def filter_street_abbreviations(text):
+def do_street_abbreviations(text):
     # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
 
@@ -57,7 +57,7 @@ _rex_cd = re.compile(r'\s?(\d+)(n|s|e|w)(\.)?\s', re.I)
 # 110E 25th.
 
 
-def filter_cd(text):
+def do_cd(text):
     global _rex_cd
     return _rex_cd.sub('\\1 \\2 ', text)
 
@@ -84,6 +84,24 @@ def do_periods(text):
     return _rex_periods.sub(' ', text)
 
 
+_rex_ordinal_indicator_st = re.compile('(\d+)(?<!1)(st\.?)', re.I)
+_rex_ordinal_indicator_rd = re.compile('(\d+)(?<!3)(rd\.?)', re.I)
+
+
+def do_ordinal_indicator(text):
+    '''Removes bad ordinal indicators that could be
+    road(rd) or street(st)
+    Transform yes:    22st -> 22 st
+    Transform  no:    21st -> 21st
+
+    '''
+    global _ordinal_indicator_st, _ordinal_indicator_rd
+
+    text = _rex_ordinal_indicator_st.sub('\\1 \\2', text)
+    text = _rex_ordinal_indicator_rd.sub('\\1 \\2', text)
+    return text
+
+
 def transform(text, verbose=False):
     if verbose:
         print 'Source Text: %s' % text
@@ -104,11 +122,15 @@ def transform(text, verbose=False):
     if verbose:
         print '   suitesub: %s' % text
 
-    text = filter_street_abbreviations(text)
+    text = do_ordinal_indicator(text)
+    if verbose:
+        print 'ordinal indicator: %s' % text
+
+    text = do_street_abbreviations(text)
     if verbose:
         print 'street abbr: %s' % text
 
-    text = filter_cd(text)
+    text = do_cd(text)
     if verbose:
         print '    cd abbr: %s' % text
 

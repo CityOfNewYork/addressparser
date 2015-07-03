@@ -61,7 +61,8 @@ def lines():
                 yield line
 
 def processAll(g):
-    unparsed, parsed = 0, 0
+    nUnparsed, nParsed = 0, 0
+    unparsed, parsed = [], []
     dic = []
     for line in lines():
         if line.strip() == '':
@@ -69,56 +70,27 @@ def processAll(g):
         ad = Address(line, verbose=False)
         if ad.address is None:
             dic.append(dict(parsed=False, text=line))
-            unparsed += 1
-            print 'source: %s' % ad.source
+            unparsed.append(line)
+            nUnparsed += 1
         else:
             dic.append(dict(parsed=True, text=line))
-            parsed += 1
+            parsed.append(line)
+            nParsed += 1
 
+    print '\n\nSummary:\n\tUnparsed: %d\n\tParsed: %d' % (nUnparsed, nParsed)
+    total = 1.0*(nParsed + nUnparsed)
+    print 'Completion %%: %f' % (nParsed/total*100)
 
-    print '\n\nSummary:\n\tUnparsed: %d\n\tParsed: %d' % (unparsed, parsed)
-    total = 1.0*(parsed + unparsed)
-    print 'Completion %%: %f' % (parsed/total*100)
+    f_parsed = codecs.open('ad-pass.txt', 'w', 'utf-8')
+    f_unparsed = codecs.open('ad-fail.txt', 'w', 'utf-8')
+    print 'Writing outputs'
+    for line in parsed:
+        f_parsed.write('%s\n' % line)
 
-    fn = 'current_results.json'
-    print 'Writing to file: %s' % fn
-    out =  open(fn, 'wt')
-    json.dump(dic, out)
-    out.flush()
-
-
-def processAdys(g, fn):
-    lines = codecs.open(fn, encoding='latin1').read()
-    lines = lines.split('\n')
-    entries = [Address(l, verbose=False) for l in lines if l.strip() != '']
-# for entry in entries:
-#     entry['geo'] = parser.parse_with_geo(entry['source'], g, verbose=False)
-
-    unparsed, parsed = [], []
-    total = []
-
-    for e in entries:
-        if e.address:
-            parsed.append(e.asDict())
-            total.append(dict(parsed=True, text=e['source']))
-        else:
-            unparsed.append(e.asDict())
-            total.append(dict(parsed=False, text=e['source']))
-
-    print '%d Unparsed Addresses' % (len(unparsed))
-    print '%d Parsed Addresses' % (len(parsed))
-    # for e in  unparsed:
-        # print 'source: "%s"' % e['source']
-        # print Address(e['source'], verbose=True)
-        # print '\n'*3
-
-    # print json.dumps(unparsed, indent=1)
-    out =  open('current_results.json', 'wt')
-    json.dump(total, out)
-    out.flush()
-
-
-
+    for line in unparsed:
+        f_unparsed.write('%s\n' % line)
+    f_parsed.flush()
+    f_unparsed.flush()
 
 
 if __name__ == '__main__':
