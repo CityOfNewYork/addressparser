@@ -92,4 +92,4 @@ West Village
 World Trade Center
 Yorkville'''.split('\n')
 
-r_manhattan = make_neighorbood_regex(_hoods)
+r_manhattan = make_neighorbood_regex(_hoods, 'manhattan|ny')

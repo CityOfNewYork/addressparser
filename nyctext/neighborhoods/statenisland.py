@@ -69,4 +69,4 @@ West New Brighton
 Willowbrook
 Woodrow'''.split('\n')
 
-r_statenIsland = make_neighorbood_regex(_hoods)
+r_statenIsland = make_neighorbood_regex(_hoods, 'staten island')

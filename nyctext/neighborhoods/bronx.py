@@ -70,4 +70,4 @@ Throg{1,2}s Neck
 Unionport
 Westchester Square'''.split('\n')
 
-r_bronx = make_neighorbood_regex(_hoods)
+r_bronx = make_neighorbood_regex(_hoods, 'bronx')

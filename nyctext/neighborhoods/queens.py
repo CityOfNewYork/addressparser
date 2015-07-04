@@ -100,4 +100,4 @@ Woodhaven
 Woodside
 Wyckoff Heights'''.split('\n')
 
-r_queens = make_neighorbood_regex(_hoods)
+r_queens = make_neighorbood_regex(_hoods, 'queens')

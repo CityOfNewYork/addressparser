@@ -84,4 +84,4 @@ New Lots
 Starrett City
 Highland Park'''.split('\n')
 
-r_brooklyn = make_neighorbood_regex(_hoods)
+r_brooklyn = make_neighorbood_regex(_hoods, 'brooklyn')
