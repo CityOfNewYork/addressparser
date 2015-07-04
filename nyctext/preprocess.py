@@ -11,65 +11,35 @@ from neighborhoods import rex_neighborhoods_brooklyn
 from neighborhoods import rex_neighborhoods_bronx
 from neighborhoods import rex_neighborhoods_statenIsland
 from neighborhoods import rex_neighborhoods_manhattan
-from neighborhoods import throughways
-_rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
-                           '(Brooklyn|Queens|Staten\s+Island|Bronx)',
-                           re.IGNORECASE)
-
-_rex_manhattan = re.compile('(in\s+the\s+)Borough\s+of\s+'
-                            '(Manhattan)',
-                            re.IGNORECASE)
-
-# match these...
-# BOROUGH OF QUEENS 15-5446-Block 1289, lot 15–
-# BOROUGH OF QUEENS 15-7412 - Block 8020, lot 6–
-# BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3–
-# BOROUGH OF MANHATTAN 15-6223 – Block 15, lot 22-
-_b = '[brooklyn|bronx|manhattan|staten\s+island|queens]'
-_rex_blockcodes = r'BOROUGH\s+of\s+%s[^b]+block[^,]+,\s+lot[\s\d]+.' % _b
-_rex_blockcodes = re.compile(_rex_blockcodes, re.IGNORECASE)
 
 
 def filter_boroughs(text):
-    global _rex_boroughs, _rex_manhattan
+    _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
+                               '(Brooklyn|Queens|Staten\s+Island|Bronx)',
+                               re.I)
+
+    _rex_manhattan = re.compile('(in\s+the\s+)Borough\s+of\s+'
+                                '(Manhattan)',
+                                re.I)
     text = _rex_manhattan.sub('Manhattan, NY.\n', text)
     return _rex_boroughs.sub('\\2, NY.\n', text)
 
 
 def filter_blockcodes(text):
-    global _rex_blockcodes
+    # match these...
+    # BOROUGH OF QUEENS 15-5446-Block 1289, lot 15–
+    # BOROUGH OF QUEENS 15-7412 - Block 8020, lot 6–
+    # BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3–
+    # BOROUGH OF MANHATTAN 15-6223 – Block 15, lot 22-
+    _b = '[brooklyn|bronx|manhattan|staten\s+island|queens]'
+    _rex_blockcodes = r'BOROUGH\s+of\s+%s[^b]+block[^,]+,\s+lot[\s\d]+.' % _b
+    _rex_blockcodes = re.compile(_rex_blockcodes, re.I)
+
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
 
 
-_street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
-_avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
-_boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
-_plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
-_drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
-_parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
-_road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
-
-
-def filter_street_abbreviations(text):
-    # Todo: Build a more comprehensive list of throughways.
-    # See: http://www.semaphorecorp.com/cgi/abbrev.html
-
-    global _street_abbreviations, _avenue_abbreviations
-    text = _street_abbreviations.sub(' Street ', text)
-    text = _avenue_abbreviations.sub(' Avenue ', text)
-    text = _boulevard_abbreviations.sub(' Boulevard ', text)
-    text = _plaza_abbreviations.sub(' Plaza ', text)
-    text = _drive_abbreviations.sub(' Drive ', text)
-    text = _parkway_abbreviations.sub(' Parkway ', text)
-    text = _road_abbreviations.sub(' Road ', text)
-    return text
-
-
-_ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.IGNORECASE)
-
-
 def filter_ny_ny(text):
-    global _ny_ny
+    _ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.I)
     return _ny_ny.sub('Manhattan, NY.\n', text)
 
 
@@ -119,12 +89,4 @@ def prepare_text(text, verbose=False):
     if verbose:
         print 'filter_neighborhoods:\n\t%s\n' % text
 
-    text = filter_street_abbreviations(text)
-    if verbose:
-        print 'filter_street_abbreviations:\n\t%s\n' % text
-
     return text
-
-
-# def location_to_string(tree):
-#     return ' '.join([c[0] for c in tree]).replace(' ,', ',')
