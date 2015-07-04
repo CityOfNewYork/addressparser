@@ -8,6 +8,25 @@ sent_tokenize that could stitch sentence fragments
 together.
 
 '''
+from tagger import pos_tag
+
+
+def prepare_for_sent_tokenize(text):
+    tags = pos_tag(text)
+    _text = [tags[0][0]]
+    for dx in range(1, len(tags)-1):
+        prevTag = tags[dx-1][1]
+        val, tag = tags[dx]
+
+        if val == '.' and prevTag == 'NNP' and tags[dx+1][1] == 'LU':
+            continue
+        _text.append(val)
+    _text.append(tags[-1][0])
+
+    # remove spaces
+    savespace = re.compile('\s+([,\.])', re.I)
+    return savespace.sub('\\1 ', ' '.join(_text))
+
 
 _street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
 _avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
@@ -95,8 +114,13 @@ def do_occupancy_abbreviations(text):
 
 
 def transform(text, verbose=False):
+
     if verbose:
         print 'Source Text: %s' % text
+
+    text = prepare_for_sent_tokenize(text)
+    if verbose:
+        print 'Pre toknize: %s' % text
 
     text = filter_street_abbreviations(text)
     if verbose:
