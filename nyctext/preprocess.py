@@ -126,5 +126,5 @@ def prepare_text(text, verbose=False):
     return text
 
 
-def location_to_string(tree):
-    return ' '.join([c[0] for c in tree]).replace(' ,', ',')
+# def location_to_string(tree):
+#     return ' '.join([c[0] for c in tree]).replace(' ,', ',')
