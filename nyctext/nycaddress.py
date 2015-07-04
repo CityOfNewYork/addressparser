@@ -152,7 +152,7 @@ def parse(text, verbose=False):
     candidates = [location_to_string(c) for c in candidates]
 
     # only candidates that end in NY
-    rex = re.compile('(.+,\s+NY)', re.IGNORECASE)
+    rex = re.compile('(.+\s+NY)', re.IGNORECASE)
     candidates = [rex.match(c) for c in candidates]
     candidates = [c.group() for c in candidates if c is not None]
     return [c for c in candidates if isValidAddress(c, verbose)]

@@ -43,3 +43,11 @@ class PeriodManipulation(unittest.TestCase):
             expected = [expected]
 
             self.checkExpectation(source, expected)
+
+    def testPeriodAfterThroughfareName(self):
+        'wipe out period after throughfare name'
+
+        source = "BlackFeet Films: 132 Lexington Avenue. , Brooklyn, NY"
+        expected = "132 Lexington Avenue, Brooklyn, NY"
+        expected = [expected]
+        self.checkExpectation(source, expected)

@@ -9,15 +9,21 @@ together.
 
 '''
 from tagger import pos_tag
+from neighborhoods import throughway_names
+
+def remove_period_after_throughway_name(text):
+    rex = re.compile('%s\s*(\.\s+)' % throughway_names, re.I)
+    return rex.sub('\\1 ', text)
 
 
-def prepare_for_sent_tokenize(text):
+def remove_period_between_nnp_and_lu(text):
+
+    # no periods between NNP and LU
     tags = pos_tag(text)
     _text = [tags[0][0]]
     for dx in range(1, len(tags)-1):
         prevTag = tags[dx-1][1]
         val, tag = tags[dx]
-
         if val == '.' and prevTag == 'NNP' and tags[dx+1][1] == 'LU':
             continue
         _text.append(val)
@@ -26,6 +32,8 @@ def prepare_for_sent_tokenize(text):
     # remove spaces
     savespace = re.compile('\s+([,\.])', re.I)
     return savespace.sub('\\1 ', ' '.join(_text))
+
+
 
 
 _street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
@@ -73,8 +81,9 @@ def do_suite(text):
 
 
 def do_periods(text):
-    _rex_periods = re.compile('(?<=[^\s\s])(\.)(?=\s)', re.I)
-    return _rex_periods.sub('\\1 ', text)
+    # _rex_periods = re.compile('(?<=[^\s\s])(\.)(?=\s)', re.I)
+    # return _rex_periods.sub('\\1 ', text)
+    return text
 
 
 def do_ordinal_indicator(text):
@@ -118,9 +127,13 @@ def transform(text, verbose=False):
     if verbose:
         print 'Source Text: %s' % text
 
-    text = prepare_for_sent_tokenize(text)
+    text = remove_period_between_nnp_and_lu(text)
     if verbose:
-        print 'Pre toknize: %s' % text
+        print 'Pre toknize 1: %s' % text
+
+    text = remove_period_after_throughway_name(text)
+    if verbose:
+        print 'Pre toknize 2: %s' % text
 
     text = filter_street_abbreviations(text)
     if verbose:
