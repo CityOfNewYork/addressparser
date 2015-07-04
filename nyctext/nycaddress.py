@@ -76,11 +76,11 @@ def isValidAddress(ady, verbose=False):
 
     if not any([a[1] == 'StreetName' for a in address]):
         dic = {}
-        for v,k in address:
-            dic[k] = '%s %s' %(dic.get(k,''), v)
+        for v, k in address:
+            dic[k] = '%s %s' % (dic.get(k, ''), v)
 
         if 'BuildingName' in dic and 'PlaceName' in dic and \
-            'StateName' in dic:
+           'StateName' in dic:
             return True
 
         showFailureReason('StreetName', ady, address, verbose)
