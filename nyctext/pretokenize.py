@@ -9,40 +9,6 @@ together.
 
 '''
 
-_street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
-_avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
-_boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
-_plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
-_drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
-_parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
-_road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
-_lane_abbreviations = re.compile('\s+(ln\.?)[\s,]', re.IGNORECASE)
-_expressway_abbreviations = re.compile('\s+(expy\.?)[\s,]', re.IGNORECASE)
-_highway_abbreviations = re.compile('\s+(hwy\.?)[\s,]', re.IGNORECASE)
-_circle_abbreviations = re.compile('\s+(cir\.?)[\s,]', re.IGNORECASE)
-
-
-def do_street_abbreviations(text):
-    # Todo: Build a more comprehensive list of throughways.
-    # See: http://www.semaphorecorp.com/cgi/abbrev.html
-
-    global _street_abbreviations, _avenue_abbreviations
-    global _boulevard_abbreviations, _plaza_abbreviations, _drive_abbreviations
-    global _parkway_abbreviations, _road_abbreviations, _lane_abbreviations
-
-    text = _street_abbreviations.sub(' Street ', text)
-    text = _avenue_abbreviations.sub(' Avenue ', text)
-    text = _boulevard_abbreviations.sub(' Boulevard ', text)
-    text = _plaza_abbreviations.sub(' Plaza ', text)
-    text = _drive_abbreviations.sub(' Drive ', text)
-    text = _parkway_abbreviations.sub(' Parkway ', text)
-    text = _road_abbreviations.sub(' Road ', text)
-    text = _lane_abbreviations.sub(' Lane ', text)
-    text = _expressway_abbreviations.sub(' Expressway ', text)
-    text = _highway_abbreviations.sub(' Highway ', text)
-    text = _circle_abbreviations.sub(' Circle ', text)
-    return text
-
 
 def do_cd(text):
     _rex_cd = re.compile(r'\s?(\d+)(n|s|e|w)(\.)?\s', re.I)
@@ -66,7 +32,6 @@ def do_suite(text):
 
 def do_periods(text):
     _rex_periods = re.compile('(?<=[^\s\s])(\.)(?=\s)', re.I)
-    # return text
     return _rex_periods.sub('\\1 ', text)
 
 
@@ -87,6 +52,18 @@ def do_ordinal_indicator(text):
 
     text = _rex_good_ord_indic_st.sub('\\1st', text)
     text = _rex_good_ord_indic_rd.sub('\\1rd', text)
+    return text
+
+
+def do_city_abbreviations(text):
+    abr_brooklyn = re.compile('\s[\s,]*(bklyn|bkln)[\s,]', re.I)
+    text = abr_brooklyn.sub(' Brooklyn ', text)
+    return text
+
+
+def do_occupancy_abbreviations(text):
+    rex_floor = re.compile('([\s,]flr?\.?[\s\.]*)[\s,]', re.I)
+    text = rex_floor.sub(' Floor ', text)
     return text
 
 
@@ -114,9 +91,13 @@ def transform(text, verbose=False):
     if verbose:
         print '  ord indic: %s' % text
 
-    text = do_street_abbreviations(text)
+    text = do_occupancy_abbreviations(text)
     if verbose:
-        print 'street abbr: %s' % text
+        print 'occu abbrev: %s' % text
+
+    text = do_city_abbreviations(text)
+    if verbose:
+        print '  city abbr: %s' % text
 
     text = do_cd(text)
     if verbose:

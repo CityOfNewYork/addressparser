@@ -50,7 +50,6 @@ if __name__ == '__main__':
     g = Geoclient(appid, appkey)
 
     args = docopt(__doc__, version='0.1.1rc')
-    # import ipdb; ipdb.set_trace()
     addresses = []
     if args['--geo']:
         addresses = parse_with_geo(args['SOURCE'], g, args['--trace'])

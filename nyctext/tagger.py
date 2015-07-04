@@ -64,19 +64,46 @@ def filter_throughways(tup):
     return tup
 
 
-def filter_cities(tup):
-    val = tup[0]
-    rex = re.compile('(manhattan|brooklyn|bronx|queens|statenisland)', re.I)
-    if rex.match(val):
-        return val, 'CITY'
-    return tup
-
-
 def filter_state(tup):
     rex = re.compile('NY$', re.IGNORECASE)
     if rex.match(tup[0]):
         return tup[0], 'STATE'
     return tup
+
+def tag_cities(tagged, text):
+    r_throughway = re.compile(throughway_names, re.I)
+    r_city = re.compile('(manhattan|brooklyn|bronx|queens)', re.I)
+
+    new_tagged = []
+    for dx in range(len(tagged)-1):
+        cur, nxt = tagged[dx], tagged[dx+1]
+        if r_city.match(cur[0]) and not r_throughway.match(nxt[0]):
+            new_tagged.append((cur[0], 'CITY'))
+        else:
+            new_tagged.append(cur)
+
+    last = tagged[-1]
+    if r_city.match(last[0]):
+        new_tagged.append((last[0], 'CITY'))
+    else:
+        new_tagged.append(last)
+
+
+    # handle special case of "staten island", multi word
+    if 'staten island' in text.lower():
+        tup = None
+        for t in new_tagged:
+            if t[0].lower() == 'staten':
+                tup = t
+                break
+        dx = new_tagged.index(tup)
+        _tagged = [list(tup) for tup in new_tagged]
+        _tagged[dx][1]  = 'CITY'
+        _tagged[dx+1][1] = 'CITY'
+        new_tagged = [tuple(tup) for tup in _tagged]
+
+
+    return new_tagged
 
 
 def pos_tag(text, verbose=False):
@@ -99,20 +126,7 @@ def pos_tag(text, verbose=False):
     tagged = map(filter_state, tagged)
 
     # tag city
-    tagged = map(filter_cities, tagged)
-
-    # handle special case of "staten island", multi word
-    if 'staten island' in text.lower():
-        tup = None
-        for t in tagged:
-            if t[0].lower() == 'staten':
-                tup = t
-                break
-        dx = tagged.index(tup)
-        _tagged = [list(tup) for tup in tagged]
-        _tagged[dx][1]  = 'CITY'
-        _tagged[dx+1][1] = 'CITY'
-        tagged = [tuple(tup) for tup in _tagged]
+    tagged = tag_cities(tagged, text)
 
 
 

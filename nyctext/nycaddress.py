@@ -43,6 +43,8 @@ def matchAddresses(text, verbose=False):
 
     sentences = sent_tokenize(text)
     for s in sentences:
+        # s = transform(s, verbose=verbose)
+
         if verbose:
             print '\n\n'
             print '=' * 48

@@ -5,17 +5,13 @@ __license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
 
 import re
 import historicMappings
-# from queens import rex_neighborhoods_queens
-# from brooklyn import rex_neighborhoods_brooklyn
-# from bronx import rex_neighborhoods_bronx
-# from statenisland import rex_neighborhoods_statenIsland
-# from manhattan import rex_neighborhoods_manhattan
 
 from neighborhoods import rex_neighborhoods_queens
 from neighborhoods import rex_neighborhoods_brooklyn
 from neighborhoods import rex_neighborhoods_bronx
 from neighborhoods import rex_neighborhoods_statenIsland
 from neighborhoods import rex_neighborhoods_manhattan
+from neighborhoods import throughways
 _rex_boroughs = re.compile('(in\s+the\s+)Borough\s+of\s+'
                            '(Brooklyn|Queens|Staten\s+Island|Bronx)',
                            re.IGNORECASE)
@@ -45,29 +41,29 @@ def filter_blockcodes(text):
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
 
 
-# _street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
-# _avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
-# _boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
-# _plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
-# _drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
-# _parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
-# _road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
+_street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
+_avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
+_boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
+_plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
+_drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
+_parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
+_road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
 
 
-# def filter_street_abbreviations(text):
+def filter_street_abbreviations(text):
     # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
 
-    # global _street_abbreviations, _avenue_abbreviations
-    # text = _street_abbreviations.sub(' Street ', text)
-    # text = _avenue_abbreviations.sub(' Avenue ', text)
-    # text = _boulevard_abbreviations.sub(' Boulevard ', text)
-    # text = _plaza_abbreviations.sub(' Plaza ', text)
-    # text = _drive_abbreviations.sub(' Drive ', text)
-    # text = _parkway_abbreviations.sub(' Parkway ', text)
-    # text = _road_abbreviations.sub(' Road ', text)
-    # return text
-    #
+    global _street_abbreviations, _avenue_abbreviations
+    text = _street_abbreviations.sub(' Street ', text)
+    text = _avenue_abbreviations.sub(' Avenue ', text)
+    text = _boulevard_abbreviations.sub(' Boulevard ', text)
+    text = _plaza_abbreviations.sub(' Plaza ', text)
+    text = _drive_abbreviations.sub(' Drive ', text)
+    text = _parkway_abbreviations.sub(' Parkway ', text)
+    text = _road_abbreviations.sub(' Road ', text)
+    return text
+
 
 _ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.IGNORECASE)
 
@@ -78,23 +74,19 @@ def filter_ny_ny(text):
 
 
 def filter_neighborhoods(text):
-    _t = text.lower()
-    if 'queens' not in _t:
-        text = rex_neighborhoods_queens.sub(', \\1, Queens,', text)
+    text = rex_neighborhoods_queens.sub(', \\1, Queens,', text)
 
-    if 'brooklyn' not in _t:
-        text = rex_neighborhoods_brooklyn.sub(', \\1, Brooklyn,', text)
+    text = rex_neighborhoods_brooklyn.sub(', \\1, Brooklyn,', text)
 
-    if 'staten island' not in _t:
-        text = rex_neighborhoods_statenIsland.sub(', \\1, Staten Island,', text)
+    text = rex_neighborhoods_statenIsland.sub(', \\1, Staten Island,', text)
 
-    # skip if 'NY, NY' in expression
-    if 'manhattan' not in _t and 'ny, ny' not in _t:
-        text = rex_neighborhoods_manhattan.sub(', \\1, Manhattan,', text)
+    text = rex_neighborhoods_manhattan.sub(', \\1, Manhattan,', text)
 
     # Marble Hill can be both manhattan and bronx
-    if 'marble hill' not in _t and 'bronx' not in _t:
-        text = rex_neighborhoods_bronx.sub(', \\1, Bronx,', text)
+    # if not _bronx.match(_t):
+    # if 'marble hill' not in _t and 'bronx' not in _t:
+    text = rex_neighborhoods_bronx.sub(', \\1, Bronx,', text)
+
     text = text.replace(',,', ',')
     return text
 
@@ -127,45 +119,12 @@ def prepare_text(text, verbose=False):
     if verbose:
         print 'filter_neighborhoods:\n\t%s\n' % text
 
+    text = filter_street_abbreviations(text)
+    if verbose:
+        print 'filter_street_abbreviations:\n\t%s\n' % text
+
     return text
 
 
 def location_to_string(tree):
     return ' '.join([c[0] for c in tree]).replace(' ,', ',')
-
-
-# Some filters for other address formats
-# For instances such as "22 Reade Street, Spector Hall, Borough of Manhattan"
-# boroughOf = re.compile(r"""(Borough\s+of\s+)
-#                            (Brooklyn|Queens|Staten\s+Island|Bronx)""",
-#                            re.IGNORECASE | re.VERBOSE)
-#
-# boroughOfManhattan = re.compile(r"""(Borough\s+of\s+)
-#                            (Manhattan)""",
-#                            re.IGNORECASE | re.VERBOSE)
-#
-# def filterBoroughOf(text):
-#     return re.sub(boroughOf, r"""\g<2>, NY""", text)
-#
-# def filterBoroughOfManhattan(text):
-#     return re.sub(boroughOfManhattan, r"""New York, NY""", text)
-#
-#
-# # For instances such as "1 Centre Street in Manhattan"
-#
-# inBorough = re.compile(r"""(\sin\s)
-#                            (Brooklyn|Queens|Staten\s+Island|Bronx)""",
-#                            re.IGNORECASE | re.VERBOSE)
-#
-#
-# inManhattan = re.compile(r"""(\sin\s)
-#                            (Manhattan)""",
-#                            re.IGNORECASE | re.VERBOSE)
-#
-#
-# def filterInBorough(text):
-#     return re.sub(inBorough, r', \g<2>, NY', text)
-#
-#
-# def filterInManhattan(text):
-#     return re.sub(inManhattan, r', New York, NY', text)
