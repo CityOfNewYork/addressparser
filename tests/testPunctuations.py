@@ -9,7 +9,7 @@ import unittest
 from nyctext import nycaddress as parser
 
 
-class PeriodManipulation(unittest.TestCase):
+class PunctuationManipulation(unittest.TestCase):
     '''Add description HERE
     '''
 
@@ -49,5 +49,14 @@ class PeriodManipulation(unittest.TestCase):
 
         source = "BlackFeet Films: 132 Lexington Avenue. , Brooklyn, NY"
         expected = "132 Lexington Avenue, Brooklyn, NY"
+        expected = [expected]
+        self.checkExpectation(source, expected)
+
+
+    def testDoubleCommas(self):
+        'remove double commas to single occurence'
+
+        source = "10  8TH AVENUE  BROOKLYN,, NY"
+        expected = "10 8TH AVENUE BROOKLYN, NY"
         expected = [expected]
         self.checkExpectation(source, expected)

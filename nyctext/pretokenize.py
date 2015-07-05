@@ -13,6 +13,9 @@ from nltk.tokenize import word_tokenize
 from tagger import transform_tags
 from neighborhoods import throughway_names
 
+def remove_commas_multiple_occurences(text):
+    rex = re.compile('(\s*\,[\,\s]*)', re.I)
+    return rex.sub(', ', text)
 
 def remove_period_after_throughway_name(text):
     rex = re.compile('%s\s*(\.\s+)' % throughway_names, re.I)
@@ -148,6 +151,10 @@ def transform(text, verbose=False):
     text = remove_period_after_throughway_name(text)
     if verbose:
         print 'Pre toknize 2: %s' % text
+
+    text = remove_commas_multiple_occurences(text)
+    if verbose:
+        print '     Commas: %s' % text
 
     text = filter_street_abbreviations(text)
     if verbose:
