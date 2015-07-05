@@ -104,13 +104,14 @@ class Address(unittest.TestCase):
         self.checkExpectation(source, expect)
 
     def testSaintAnneAvenue(self):
-        'Name with apostrophe'
+        'name with apostrophe'
         expected = [u"600 Saint Ann's Avenue Bronx, NY"]
         text = "Academy of Science: 600 Saint Ann's Avenue Bronx, NY"
         address = parser.parse(text)[0]
         self.assertIn(address, expected)
 
     def testStreetNamePreTypeAveOfAmericas(self):
+        'find Avenue of the Americas'
         expected = "131 Avenue Of The Americas Manhattan, NY"
         text = 'blab blah bleu %s foo fe hu' % expected
 
@@ -118,6 +119,7 @@ class Address(unittest.TestCase):
         self.assertIn(got[0], [expected])
 
     def testStreetNamePreTypes(self):
+        'test Avenue xxx'
         expected = [
             "1600 Avenue L Brooklyn, NY",
             "3000 Avenue X Brooklyn, NY",
@@ -128,6 +130,14 @@ class Address(unittest.TestCase):
             text = 'blab blah bleu %s foo fe hu' % text
             got = parser.parse(text)[0]
             self.assertIn(got, expected)
+
+    def testAddressWithMultipleCity(self):
+        'test ... Queens, NY  NY, NY finds first address'
+
+        text = "11 W. 19th Street, NY, NY 10011 , New York, NY"
+        expected = "11 W 19th Street, Manhattan, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(expected, got)
 
     def testHighwayAbbreviations(self):
         'hwy, expy'

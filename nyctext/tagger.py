@@ -138,12 +138,21 @@ def pos_tag(text, verbose=False):
     tagged = map(filter_probable_company, tagged)
 
     # Remove incorrect CITY tags.
-    # ie, those not succeeded by ,STATE
-    _dx = [tagged.index(tup) for tup in tagged if tup[1] == 'CITY']
-    _tagged = [list(tup) for tup in tagged]
-    for _d in _dx[:-1]:
-        _tagged[_d][1] = 'NNP'
-    tagged = [tuple(i) for i in _tagged]
+    # ie, those not succeeded by STATE
+    nopuncts = [ [v,k] for v, k in tagged if v not in ['.', ',']]
+    for i in range(len(nopuncts)-1):
+        j = i+1
+        if nopuncts[i][1] == 'CITY' and nopuncts[j][1] not in ["STATE", "CITY"]:
+            nopuncts[i][1] = 'NNP'
+    nopuncts.reverse()
+    _tagged = []
+    for v, k in tagged:
+        if v in ['.', ',']:
+            _tagged.append((v,k))
+        else:
+            _tagged.append(tuple(nopuncts.pop()))
+    tagged = _tagged
+
     return tagged
 
 
@@ -158,7 +167,7 @@ def chunkAddresses(text, verbose=False):
         '<CD>' \
         '<CD|DT|NN|NNP|NNS|JJ|JJS|COMMMA|POS|PRP|HASH|WDT>*' \
         '<LU>+?' \
-        '<CD|JJ|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH>*' \
+        '<CD|JJ|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH|RB|VBP>*' \
         '<CITY>+' \
         '<COMMA>?' \
         '<STATE>' \
