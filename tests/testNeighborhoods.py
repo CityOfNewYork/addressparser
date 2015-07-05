@@ -43,10 +43,14 @@ class Neighborhoods(unittest.TestCase):
         'Neighborhood + |N|S|W|E|NORTH|SOUTH|EAST|WEST ok'
 
         directions = 'North South East West N S E W'.split(' ')
+        expand = { 'N': 'North', 'S': 'South', 'E': 'East', 'W': 'West'}
         for d in directions:
             text = "19 Union Square %s , New York, NY" % d
-            expected = "19 Union Square %s, Manhattan, NY" % d
+            expected = "19 Union Square %s, Manhattan, NY" % expand.get(d, d)
             expected = [expected]
             got = parser.parse(text)
+            print 'src -: %s' % text
+            print 'exp -: %s' % expected[0]
             print 'got -: %s' % got
+            print
             self.assertEqual(got, expected)

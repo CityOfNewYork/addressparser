@@ -13,9 +13,11 @@ from nltk.tokenize import word_tokenize
 from tagger import transform_tags
 from neighborhoods import throughway_names
 
+
 def remove_commas_multiple_occurences(text):
     rex = re.compile('(\s*\,[\,\s]*)', re.I)
     return rex.sub(', ', text)
+
 
 def remove_period_after_throughway_name(text):
     rex = re.compile('%s\s*(\.\s+)' % throughway_names, re.I)
@@ -73,6 +75,30 @@ def filter_street_abbreviations(text):
     return text
 
 
+def expand_street_post_directions(text):
+    rex_s = "%s[\\s]*([\\,\\s]+(so?|south)[\\s\\,\\.]+)"
+    rex_s = rex_s % throughway_names
+    rex_s = re.compile(rex_s, re.I)
+    text = rex_s.sub('\\1 South, ', text)
+
+    rex_n = "%s[\\s]*([\\,\\s]+(no?|north)[\\s\\,\\.]+)"
+    rex_n = rex_n % throughway_names
+    rex_n = re.compile(rex_n, re.I)
+    text = rex_n.sub('\\1 North, ', text)
+
+    rex_e = "%s[\\s]*([\\,\\s]+(e|east)[\\s\\,\\.]+)"
+    rex_e = rex_e % throughway_names
+    rex_e = re.compile(rex_e, re.I)
+    text = rex_e.sub('\\1 East, ', text)
+
+    rex_w = "%s[\\s]*([\\,\\s]+(w|west)[\\s\\,\\.]+)"
+    rex_w = rex_w % throughway_names
+    rex_w = re.compile(rex_w, re.I)
+    text = rex_w.sub('\\1 West, ', text)
+
+    return text
+
+
 def do_cd(text):
     _rex_cd = re.compile(r'\s?(\d+)(n|s|e|w)(\.)?\s', re.I)
     return _rex_cd.sub('\\1 \\2 ', text)
@@ -120,14 +146,15 @@ def do_ordinal_indicator(text):
 
 
 def do_city_abbreviations(text):
-    abr_brooklyn = re.compile('\s[\s,]*((bk[ly]{2,2}n|bkln|bk|broolkyn|brookyln)[\s,]*)',
-                              re.I)
-    abr_manhattan = re.compile('\s[\s,]*((manhttan|new york city)[\s,]*)', re.I)
-    abr_bronx = re.compile('\s[\s,]*(bx[\s,]*)', re.I)
+    abr_bk = '\s[\s,]*((bk[ly]{2,2}n|bkln|bk|broolkyn|brookyln)[\s,]*)'
+    abr_bk = re.compile(abr_bk, re.I)
 
-    text = abr_brooklyn.sub(' Brooklyn, ', text)
-    text = abr_manhattan.sub(' Manhattan, ', text)
-    text = abr_bronx.sub(' Bronx, ', text)
+    abr_man = re.compile('\s[\s,]*((manhttan|new york city)[\s,]*)', re.I)
+    abr_bx = re.compile('\s[\s,]*(bx[\s,]*)', re.I)
+
+    text = abr_bk.sub(' Brooklyn, ', text)
+    text = abr_man.sub(' Manhattan, ', text)
+    text = abr_bx.sub(' Bronx, ', text)
 
     return text
 
@@ -159,6 +186,10 @@ def transform(text, verbose=False):
     text = filter_street_abbreviations(text)
     if verbose:
         print 'street Abbr: %s' % text
+
+    text = expand_street_post_directions(text)
+    if verbose:
+        print 'Post   Abbr: %s' % text
 
     text = do_periods(text)
     if verbose:
