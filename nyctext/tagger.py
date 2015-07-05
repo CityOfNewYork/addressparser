@@ -192,9 +192,9 @@ def chunkAddresses(text, verbose=False):
     grammer = 'Location: ' \
         '{' \
         '<CD>' \
-        '<CD|DT|NN|NNP|NNS|JJ|JJS|COMMMA|POS|PRP|HASH|WDT>*' \
+        '<CD|DT|IN|NN|NNP|NNS|JJ|JJS|COMMMA|POS|PRP|HASH|WDT>*' \
         '<LU>+?' \
-        '<CD|JJ|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH|RB|VBP>*' \
+        '<CD|JJ|IN|JJS|NN|NNP|NNS|COMMA|IN|DT|PRP|HASH|RB|VBP>*' \
         '<CITY>+' \
         '<COMMA>?' \
         '<STATE>' \
