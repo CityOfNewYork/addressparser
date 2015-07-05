@@ -65,3 +65,21 @@ class CityAbbreviations(unittest.TestCase):
         expected = "12 WEST BURNSIDE Avenue Bronx, NY"
         expected = [expected]
         self.checkExpectation(source, expected)
+
+
+    def testNYNYExpands(self):
+        'ny ny expands'
+
+        source = """
+            9000  FIFTH AVE  NY, NY.
+            9001  FIFTH AVE  NY, New York.
+            9002  FIFTH AVE  New York, NY.
+            9003  FIFTH AVE  New York, New York.
+        """
+        expected = [
+            "9000 FIFTH Avenue Manhattan, NY",
+            "9001 FIFTH Avenue Manhattan, NY",
+            "9002 FIFTH Avenue Manhattan, NY",
+            "9003 FIFTH Avenue Manhattan, NY",
+        ]
+        self.checkExpectation(source, expected)

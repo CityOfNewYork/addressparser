@@ -39,7 +39,8 @@ def filter_blockcodes(text):
 
 
 def filter_ny_ny(text):
-    _ny_ny = re.compile('(new\s+york|NY)[\s,]+(new\s+york|NY)\s?', re.I)
+    _ny_ny = r"\b((new\s*york|ny)\b[\s,]*)\b(new\s*york|ny)\b"
+    _ny_ny = re.compile(_ny_ny, re.I)
     return _ny_ny.sub('Manhattan, NY.\n', text)
 
 
