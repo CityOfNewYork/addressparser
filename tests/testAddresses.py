@@ -129,7 +129,12 @@ class Address(unittest.TestCase):
             got = parser.parse(text)[0]
             self.assertIn(got, expected)
 
-    # @attr(test='wip')
+    def testHighwayAbbreviation(self):
+        text = "238 KINGS HWY BROOKLYN, NY"
+        expected = "238 KINGS Highway BROOKLYN, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(got, expected)
+
     @SkipTest
     def testSaintNotStreet(self):
         '701 St. Anns should resolve to Saint Anns instead of Street Anns'
