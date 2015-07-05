@@ -45,18 +45,18 @@ def filter_ny_ny(text):
 
 
 def filter_neighborhoods(text):
-    text = rex_neighborhoods_queens.sub(', \\1, Queens,', text)
+    text = rex_neighborhoods_queens.sub(', \\1, Queens, ', text)
 
-    text = rex_neighborhoods_brooklyn.sub(', \\1, Brooklyn,', text)
+    text = rex_neighborhoods_brooklyn.sub(', \\1, Brooklyn, ', text)
 
-    text = rex_neighborhoods_statenIsland.sub(', \\1, Staten Island,', text)
+    text = rex_neighborhoods_statenIsland.sub(', \\1, Staten Island, ', text)
 
-    text = rex_neighborhoods_manhattan.sub(', \\1, Manhattan,', text)
+    text = rex_neighborhoods_manhattan.sub(', \\1, Manhattan, ', text)
 
     # Marble Hill can be both manhattan and bronx
     # if not _bronx.match(_t):
     # if 'marble hill' not in _t and 'bronx' not in _t:
-    text = rex_neighborhoods_bronx.sub(', \\1, Bronx,', text)
+    text = rex_neighborhoods_bronx.sub(', \\1, Bronx, ', text)
 
     text = text.replace(',,', ',')
     return text
