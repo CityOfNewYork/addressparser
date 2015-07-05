@@ -70,6 +70,7 @@ def filter_state(tup):
         return tup[0], 'STATE'
     return tup
 
+
 def tag_cities(tagged, text):
     r_throughway = re.compile(throughway_names, re.I)
     r_city = re.compile('(manhattan|brooklyn|bronx|queens)', re.I)
@@ -88,7 +89,6 @@ def tag_cities(tagged, text):
     else:
         new_tagged.append(last)
 
-
     # handle special case of "staten island", multi word
     if 'staten island' in text.lower():
         tup = None
@@ -97,19 +97,15 @@ def tag_cities(tagged, text):
                 tup = t
                 break
         dx = new_tagged.index(tup)
-        _tagged = [list(tup) for tup in new_tagged]
-        _tagged[dx][1]  = 'CITY'
+        _tagged = [list(t) for t in new_tagged]
+        _tagged[dx][1] = 'CITY'
         _tagged[dx+1][1] = 'CITY'
-        new_tagged = [tuple(tup) for tup in _tagged]
-
+        new_tagged = [tuple(t) for t in _tagged]
 
     return new_tagged
 
 
-def pos_tag(text, verbose=False):
-    tokens = word_tokenize(preprocess.prepare_text(text, verbose))
-    tagged = nltk.pos_tag(tokens)
-
+def transform_tags(tagged, text):
     # retag commas
     tagged = map(filter_comma, tagged)
 
@@ -127,18 +123,23 @@ def pos_tag(text, verbose=False):
 
     # tag city
     tagged = tag_cities(tagged, text)
+    return tagged
 
 
+def pos_tag(text, verbose=False):
+    tokens = word_tokenize(preprocess.prepare_text(text, verbose))
+    tagged = nltk.pos_tag(tokens)
+
+    tagged = transform_tags(tagged, text)
 
     # change POS tag to -NONE- to aid chunking
     # Todo: better comments -- remove this function to find
     # cases where this break tests
-    tagged =  map(filter_probable_company, tagged)
-
+    tagged = map(filter_probable_company, tagged)
 
     # Remove incorrect CITY tags.
     # ie, those not succeeded by ,STATE
-    _dx = [tagged.index(tup) for tup in tagged if tup[1]=='CITY']
+    _dx = [tagged.index(tup) for tup in tagged if tup[1] == 'CITY']
     _tagged = [list(tup) for tup in tagged]
     for _d in _dx[:-1]:
         _tagged[_d][1] = 'NNP'

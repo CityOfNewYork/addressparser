@@ -104,15 +104,9 @@ def lookup_geo(g, ady, verbose=False):
     streetName = ' '.join(streetName)
     borough = tags.get('PlaceName', '').lower()
 
-    # Todo - map neighborhoods to boroughs
-    # ie: long island city -> queens
-    #
-    # if borough == 'ny':
     if 'ny' in borough or 'manhattan' in borough:
         borough = 'manhattan'
 
-    # if borough == 'long island city':
-    #     borough = 'queens'
     if 'queens' in borough:
         borough = 'queens'
 

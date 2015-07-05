@@ -8,8 +8,11 @@ sent_tokenize that could stitch sentence fragments
 together.
 
 '''
-from tagger import pos_tag
+import nltk
+from nltk.tokenize import word_tokenize
+from tagger import transform_tags
 from neighborhoods import throughway_names
+
 
 def remove_period_after_throughway_name(text):
     rex = re.compile('%s\s*(\.\s+)' % throughway_names, re.I)
@@ -18,8 +21,11 @@ def remove_period_after_throughway_name(text):
 
 def remove_period_between_nnp_and_lu(text):
 
+    tokens = word_tokenize(text)
+    tags = nltk.pos_tag(tokens)
+    tags = transform_tags(tags, text)
+
     # no periods between NNP and LU
-    tags = pos_tag(text)
     _text = [tags[0][0]]
     for dx in range(1, len(tags)-1):
         prevTag = tags[dx-1][1]
@@ -43,6 +49,7 @@ _plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
 _drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
 _parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
 _road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
+_lane_abbreviations = re.compile('\s+(ln\.?)[\s,]', re.IGNORECASE)
 
 
 def filter_street_abbreviations(text):
@@ -57,6 +64,7 @@ def filter_street_abbreviations(text):
     text = _drive_abbreviations.sub(' Drive ', text)
     text = _parkway_abbreviations.sub(' Parkway ', text)
     text = _road_abbreviations.sub(' Road ', text)
+    text = _lane_abbreviations.sub(' Lane ', text)
     return text
 
 
@@ -124,6 +132,7 @@ def do_occupancy_abbreviations(text):
 
 def transform(text, verbose=False):
 
+    # import ipdb; ipdb.set_trace()
     if verbose:
         print 'Source Text: %s' % text
 
