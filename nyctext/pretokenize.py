@@ -43,8 +43,6 @@ def remove_period_between_nnp_and_lu(text):
     return savespace.sub('\\1 ', ' '.join(_text))
 
 
-
-
 _street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
 _avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
 _boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
@@ -122,12 +120,13 @@ def do_ordinal_indicator(text):
 
 
 def do_city_abbreviations(text):
-    # abr_brooklyn = re.compile('\s[\s,]*((bklyn|bkln)[\s,]*)', re.I)
     abr_brooklyn = re.compile('\s[\s,]*((bk[ly]{2,2}n|bkln)[\s,]*)', re.I)
     abr_manhattan = re.compile('\s[\s,]*((manhttan|new york city)[\s,]*)', re.I)
+    abr_bronx = re.compile('\s[\s,]*(bx[\s,]*)', re.I)
 
     text = abr_brooklyn.sub(' Brooklyn, ', text)
     text = abr_manhattan.sub(' Manhattan, ', text)
+    text = abr_bronx.sub(' Bronx, ', text)
 
     return text
 

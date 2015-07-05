@@ -48,3 +48,10 @@ class CityAbbreviations(unittest.TestCase):
         expected = "9002 FIFTH Avenue Brooklyn, NY"
         expected = [expected]
         self.checkExpectation(source, expected)
+
+    def testBronxExpands(self):
+        'various bronx abbreviations expand'
+        source = "12  WEST BURNSIDE AVE  BX, NY"
+        expected = "12 WEST BURNSIDE Avenue Bronx, NY"
+        expected = [expected]
+        self.checkExpectation(source, expected)
