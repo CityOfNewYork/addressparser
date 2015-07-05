@@ -148,7 +148,7 @@ def pos_tag(text, verbose=False):
     _tagged = []
     for v, k in tagged:
         if v in ['.', ',']:
-            _tagged.append((v,k))
+            _tagged.append((v, k))
         else:
             _tagged.append(tuple(nopuncts.pop()))
     tagged = _tagged
@@ -156,12 +156,39 @@ def pos_tag(text, verbose=False):
     return tagged
 
 
-def chunkAddresses(text, verbose=False):
+def do_chunk(text, verbose=False):
 
     tagged = pos_tag(text, verbose)
     if verbose:
         print tagged
 
+    # import ipdb;  ipdb.set_trace()
+    # infer Street if missing in manhattan
+    # addresses
+    anchors = [ (v, t) for v, t in tagged if t == 'CITY' and v == 'Manhattan']
+    streets = [ (v, t) for v, t in tagged if t == 'LU']
+
+    if anchors and not streets:
+
+        # find first CD to left
+        anc = anchors[0]
+        i = tagged.index(anc)
+        j = --1
+        while i > 0:
+            i -=1
+            tag = tagged[i][1]
+            if tag == 'LU':
+                return tagged
+            elif tag == 'CD':
+                # insert street
+                tagged.insert(i+1, (u'Street', u'LU'))
+                return tagged
+    return tagged
+
+
+def chunkAddresses(text, verbose=False):
+
+    tagged = do_chunk(text, verbose)
     grammer = 'Location: ' \
         '{' \
         '<CD>' \

@@ -165,6 +165,12 @@ class Address(unittest.TestCase):
         got = parser.parse(text)[0]
         self.assertEqual(got, expected)
 
+    def testInferredStreet(self):
+        'infer street in manhattan'
+        text = "10 W 15th , New York, NY"
+        expected = "10 W 15th Street, Manhattan, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(got, expected)
 
     @SkipTest
     def testSaintNotStreet(self):

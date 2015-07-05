@@ -49,7 +49,7 @@ def lines():
 
 
     for fn in files:
-        count = 1000
+        count = 10000
         with codecs.open(fn, encoding='latin1') as dataset:
             for line in dataset:
                 line = line.strip()
