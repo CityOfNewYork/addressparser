@@ -115,8 +115,13 @@ def do_title(text):
 
 
 def do_suite(text):
-    _rex_suite = re.compile('ste\.', re.I)
-    return _rex_suite.sub('Suite', text)
+    # _rex_suite = re.compile('ste\.', re.I)
+    _rex_suite = re.compile(r'\bste\.', re.I)
+    text = _rex_suite.sub('Suite ', text)
+
+    _rex_suite = re.compile(r'\bapt\.', re.I)
+    text = _rex_suite.sub('Apt ', text)
+    return text
 
 
 def do_periods(text):
@@ -149,7 +154,7 @@ def do_city_abbreviations(text):
     abr_bk = '\s[\s,]*((bk[ly]{2,2}n|bkln|bk|broolkyn|brookyln|brroklyn)[\s,]*)'
     abr_bk = re.compile(abr_bk, re.I)
 
-    abr_man = re.compile('\s[\s,]*((manhttan|new york city)[\s,]*)', re.I)
+    abr_man = re.compile('\s[\s,]*((manhttan|new york city|nyc)[\s,]*)', re.I)
     abr_bx = re.compile('\s[\s,]*(bx[\s,]*)', re.I)
 
     text = abr_bk.sub(' Brooklyn, ', text)

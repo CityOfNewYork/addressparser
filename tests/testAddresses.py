@@ -152,6 +152,20 @@ class Address(unittest.TestCase):
         got = parser.parse(text)[0]
         self.assertEqual(got, expected)
 
+    def testAptAndSuite(self):
+        'handle ste and apt'
+
+        text = "35 WEST 89TH STREET APT. 1A NEW YORK, NY"
+        expected = "35 WEST 89TH STREET Apt 1A Manhattan, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(got, expected)
+
+        text = "35 WEST 89TH STREET STE. 1A NEW YORK, NY"
+        expected = "35 WEST 89TH STREET Suite 1A Manhattan, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(got, expected)
+
+
     @SkipTest
     def testSaintNotStreet(self):
         '701 St. Anns should resolve to Saint Anns instead of Street Anns'

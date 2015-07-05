@@ -77,11 +77,13 @@ class CityAbbreviations(unittest.TestCase):
             9001  FIFTH AVE  NY, New York.
             9002  FIFTH AVE  New York, NY.
             9003  FIFTH AVE  New York, New York.
+            10 E 40TH Street NYC, NY
         """
         expected = [
             "9000 FIFTH Avenue Manhattan, NY",
             "9001 FIFTH Avenue Manhattan, NY",
             "9002 FIFTH Avenue Manhattan, NY",
             "9003 FIFTH Avenue Manhattan, NY",
+            "10 E 40TH Street Manhattan, NY",
         ]
         self.checkExpectation(source, expected)
