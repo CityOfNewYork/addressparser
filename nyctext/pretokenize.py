@@ -51,6 +51,7 @@ _parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
 _road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
 _lane_abbreviations = re.compile('\s+(ln\.?)[\s,]', re.IGNORECASE)
 _highway_abbreviations = re.compile('\s+(hwy\.?)[\s,]', re.IGNORECASE)
+_expressway_abbreviations = re.compile('\s+(expy\.?)[\s,]', re.IGNORECASE)
 
 
 def filter_street_abbreviations(text):
@@ -67,6 +68,7 @@ def filter_street_abbreviations(text):
     text = _road_abbreviations.sub(' Road ', text)
     text = _lane_abbreviations.sub(' Lane ', text)
     text = _highway_abbreviations.sub(' Highway ', text)
+    text = _expressway_abbreviations.sub(' Expressway ', text)
     return text
 
 

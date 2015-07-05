@@ -129,9 +129,16 @@ class Address(unittest.TestCase):
             got = parser.parse(text)[0]
             self.assertIn(got, expected)
 
-    def testHighwayAbbreviation(self):
+    def testHighwayAbbreviations(self):
+        'hwy, expy'
+# 3 IN 1 KITCHEN: 4902 FORT HAMILTON PARKWAY BROOKLYN, NY
         text = "238 KINGS HWY BROOKLYN, NY"
         expected = "238 KINGS Highway BROOKLYN, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(got, expected)
+
+        text = "3050 WHITESTONE EXPY QUEENS, NY"
+        expected = "3050 WHITESTONE Expressway QUEENS, NY"
         got = parser.parse(text)[0]
         self.assertEqual(got, expected)
 
