@@ -47,11 +47,13 @@ class CityAbbreviations(unittest.TestCase):
         source = """
             9002  FIFTH AVE  BKYLN, NY.
             100  WOODRUFF AVE  BROOLKYN, NY.
+            105  WOODRUFF AVE  BROOKYLN, NY.
             258  UNION ST  BK, NY.
         """
         expected = [
             "9002 FIFTH Avenue Brooklyn, NY",
             "100 WOODRUFF Avenue Brooklyn, NY",
+            "105 WOODRUFF Avenue Brooklyn, NY",
             "258 UNION Street Brooklyn, NY"
         ]
 
