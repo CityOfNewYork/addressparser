@@ -120,7 +120,8 @@ def do_ordinal_indicator(text):
 
 
 def do_city_abbreviations(text):
-    abr_brooklyn = re.compile('\s[\s,]*((bk[ly]{2,2}n|bkln)[\s,]*)', re.I)
+    abr_brooklyn = re.compile('\s[\s,]*((bk[ly]{2,2}n|bkln|bk|broolkyn)[\s,]*)',
+                              re.I)
     abr_manhattan = re.compile('\s[\s,]*((manhttan|new york city)[\s,]*)', re.I)
     abr_bronx = re.compile('\s[\s,]*(bx[\s,]*)', re.I)
 

@@ -44,9 +44,17 @@ class CityAbbreviations(unittest.TestCase):
 
     def testBrooklynExpands(self):
         'various brooklyn abbreviations expand'
-        source = "9002  FIFTH AVE  BKYLN, NY"
-        expected = "9002 FIFTH Avenue Brooklyn, NY"
-        expected = [expected]
+        source = """
+            9002  FIFTH AVE  BKYLN, NY.
+            100  WOODRUFF AVE  BROOLKYN, NY.
+            258  UNION ST  BK, NY.
+        """
+        expected = [
+            "9002 FIFTH Avenue Brooklyn, NY",
+            "100 WOODRUFF Avenue Brooklyn, NY",
+            "258 UNION Street Brooklyn, NY"
+        ]
+
         self.checkExpectation(source, expected)
 
     def testBronxExpands(self):
