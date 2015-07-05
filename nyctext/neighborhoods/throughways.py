@@ -4,11 +4,13 @@ names = [
     'bowery',
     'broadway',
     'circle',
+    'concourse',
     'crescent',
     'drive',
     'expressway',
     'highway',
     'lane',
+    'loop',
     'park',
     'piers',
     'place',
@@ -18,7 +20,7 @@ names = [
     'square',
     'street',
     'terrace',
-    'turnpike'
+    'turnpike',
 ]
 
 names = '|'.join(names)
