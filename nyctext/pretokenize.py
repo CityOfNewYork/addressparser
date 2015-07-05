@@ -146,7 +146,7 @@ def do_ordinal_indicator(text):
 
 
 def do_city_abbreviations(text):
-    abr_bk = '\s[\s,]*((bk[ly]{2,2}n|bkln|bk|broolkyn|brookyln)[\s,]*)'
+    abr_bk = '\s[\s,]*((bk[ly]{2,2}n|bkln|bk|broolkyn|brookyln|brroklyn)[\s,]*)'
     abr_bk = re.compile(abr_bk, re.I)
 
     abr_man = re.compile('\s[\s,]*((manhttan|new york city)[\s,]*)', re.I)

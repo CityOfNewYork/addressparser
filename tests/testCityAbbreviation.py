@@ -49,12 +49,14 @@ class CityAbbreviations(unittest.TestCase):
             100  WOODRUFF AVE  BROOLKYN, NY.
             105  WOODRUFF AVE  BROOKYLN, NY.
             258  UNION ST  BK, NY.
+            155 THIRD STREET BRROKLYN, NY.
         """
         expected = [
             "9002 FIFTH Avenue Brooklyn, NY",
             "100 WOODRUFF Avenue Brooklyn, NY",
             "105 WOODRUFF Avenue Brooklyn, NY",
-            "258 UNION Street Brooklyn, NY"
+            "258 UNION Street Brooklyn, NY",
+            "155 THIRD STREET Brooklyn, NY",
         ]
 
         self.checkExpectation(source, expected)
