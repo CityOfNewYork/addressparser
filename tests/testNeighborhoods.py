@@ -32,6 +32,13 @@ class Neighborhoods(unittest.TestCase):
         got = parser.parse(text)[0]
         self.assertEqual(got, expect)
 
+    def testNoSubsInWord(self):
+        'Neighborhood substitution should be on word boundaries'
+        text = "4902 FORT HAMILTON PARKWAY BROOKLYN, NY"
+        expected = "4902 FORT HAMILTON PARKWAY BROOKLYN, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(got, expected)
+
     def testNoMappingOnPostConditions(self):
         'Neighborhood + |N|S|W|E|NORTH|SOUTH|EAST|WEST ok'
 
@@ -41,4 +48,5 @@ class Neighborhoods(unittest.TestCase):
             expected = "19 Union Square %s, Manhattan, NY" % d
             expected = [expected]
             got = parser.parse(text)
+            print 'got -: %s' % got
             self.assertEqual(got, expected)

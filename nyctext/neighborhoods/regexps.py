@@ -11,5 +11,5 @@ def make_neighorbood_regex(lHoods, city):
     names = throughway_names[1:-1]  # remove parens
     names = '(%s|%s|north|south|east|west|n[\s\.,]|s[\s\.,]|w[\s\.,]|e[\s\.,])' % (names, city)
 
-    rex = '\\s(%s)(?!([\\s|,]+(%s)))' % (hoods, names)
+    rex = '\\s((%s)(\\s|,))(?!([\\s|,]*(%s)))' % (hoods, names)
     return re.compile(rex, re.I)
