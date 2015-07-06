@@ -172,6 +172,13 @@ class Address(unittest.TestCase):
         got = parser.parse(text)[0]
         self.assertEqual(got, expected)
 
+    def testPeriodBetweenDirectionAndStreet(self):
+        'period handled between direction and street'
+        text = "Decker Design: 14W.23rd Street 3rd Floor, New York, NY"
+        expected = "14 W 23rd Street 3rd Floor, Manhattan, NY"
+        got = parser.parse(text)[0]
+        self.assertEqual(got, expected)
+
     @SkipTest
     def testSaintNotStreet(self):
         '701 St. Anns should resolve to Saint Anns instead of Street Anns'

@@ -38,11 +38,12 @@ def filter_cd(tup):
     val, tag = tup[0].lower(), tup[1]
     if tag == 'LS':
         return val, 'CD'
-    else:
-        if len(val) > 2 and \
-           val[-2:] in ['st', 'nd', 'rd', 'th'] and \
-           val[0].isdigit() and val[-3].isdigit():
-            return tup[0], 'CD'
+    elif len(val) > 2 and \
+            val[-2:] in ['st', 'nd', 'rd', 'th'] and \
+            val[0].isdigit() and val[-3].isdigit():
+        return tup[0], 'CD'
+    # elif val.isdigit():
+    #     return tup[0], 'CD'
     return tup
 
 
@@ -139,7 +140,7 @@ def pos_tag(text, verbose=False):
 
     # Remove incorrect CITY tags.
     # ie, those not succeeded by STATE
-    nopuncts = [ [v,k] for v, k in tagged if v not in ['.', ',']]
+    nopuncts = [[v, k] for v, k in tagged if v not in ['.', ',']]
     for i in range(len(nopuncts)-1):
         j = i+1
         if nopuncts[i][1] == 'CITY' and nopuncts[j][1] not in ["STATE", "CITY"]:
@@ -165,17 +166,16 @@ def do_chunk(text, verbose=False):
     # import ipdb;  ipdb.set_trace()
     # infer Street if missing in manhattan
     # addresses
-    anchors = [ (v, t) for v, t in tagged if t == 'CITY' and v == 'Manhattan']
-    streets = [ (v, t) for v, t in tagged if t == 'LU']
+    anchors = [(v, t) for v, t in tagged if t == 'CITY' and v == 'Manhattan']
+    streets = [(v, t) for v, t in tagged if t == 'LU']
 
     if anchors and not streets:
 
         # find first CD to left
         anc = anchors[0]
         i = tagged.index(anc)
-        j = --1
         while i > 0:
-            i -=1
+            i -= 1
             tag = tagged[i][1]
             if tag == 'LU':
                 return tagged

@@ -14,6 +14,13 @@ from tagger import transform_tags
 from neighborhoods import throughway_names
 
 
+def do_periods(text):
+    '''Replace all surrounded periods with a period-space
+    '''
+    rex = re.compile(r'(\b\.\b)', re.I)
+    return rex.sub('\\1 ', text)
+
+
 def remove_commas_multiple_occurences(text):
     rex = re.compile('(\s*\,[\,\s]*)', re.I)
     return rex.sub(', ', text)
@@ -100,7 +107,7 @@ def expand_street_post_directions(text):
 
 
 def do_cd(text):
-    _rex_cd = re.compile(r'\s?(\d+)(n|s|e|w)(\.)?\s', re.I)
+    _rex_cd = re.compile(r'\b(\d+)(n|s|e|w)(\.)?\s', re.I)
     return _rex_cd.sub('\\1 \\2 ', text)
 
 
@@ -121,12 +128,6 @@ def do_suite(text):
 
     _rex_suite = re.compile(r'\bapt\.', re.I)
     text = _rex_suite.sub('Apt ', text)
-    return text
-
-
-def do_periods(text):
-    # _rex_periods = re.compile('(?<=[^\s\s])(\.)(?=\s)', re.I)
-    # return _rex_periods.sub('\\1 ', text)
     return text
 
 
@@ -176,6 +177,10 @@ def transform(text, verbose=False):
     if verbose:
         print 'Source Text: %s' % text
 
+    text = do_periods(text)
+    if verbose:
+        print '    Periods: %s' % text
+
     text = remove_period_between_nnp_and_lu(text)
     if verbose:
         print 'Pre toknize 1: %s' % text
@@ -195,10 +200,6 @@ def transform(text, verbose=False):
     text = expand_street_post_directions(text)
     if verbose:
         print 'Post   Abbr: %s' % text
-
-    text = do_periods(text)
-    if verbose:
-        print '    Periods: %s' % text
 
     text = do_initials(text)
     if verbose:
