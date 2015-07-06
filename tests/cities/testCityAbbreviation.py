@@ -1,8 +1,10 @@
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
 from ..expectations import ParseExpectations
+import pytest
 
 
+@pytest.mark.abbr
 class CityAbbreviations(ParseExpectations):
     '''Expand city abbreviations
     '''

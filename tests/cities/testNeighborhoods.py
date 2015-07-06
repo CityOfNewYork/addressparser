@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from nose.plugins.skip import SkipTest
-from nose.plugins.attrib import attr
+import pytest
 from ..expectations import ParseExpectations
 
 
@@ -9,7 +9,6 @@ class Neighborhoods(ParseExpectations):
     def __init__(self, *args, **kwds):
         super(Neighborhoods, self).__init__(*args, **kwds)
 
-    @SkipTest
     def testHistoricNeighborhoods(self):
         'parse historic marked queens neighborhoods'
 
@@ -17,15 +16,7 @@ class Neighborhoods(ParseExpectations):
         BOROUGH OF QUEENS 14-8118-Block 8041, lot 47-
         121 Arleigh Road-Douglaston Historic District'''
 
-        expected = '121 Arleigh Road, Douglaston Queens, NY'
-        expected = [expected]
-        self.checkExpectation(text, expected)
-
-    @SkipTest
-    def testQueensNeighborhoods(self):
-        'parse queens neighborhoods'
-        text = '121 Arleigh Road-Douglaston Historic District'
-        expected = '121 Arleigh Road, Douglaston Queens, NY'
+        expected = '121 Arleigh Road, Douglaston, Queens, NY'
         expected = [expected]
         self.checkExpectation(text, expected)
 

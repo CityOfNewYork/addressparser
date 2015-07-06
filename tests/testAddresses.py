@@ -1,11 +1,8 @@
 import sys
 sys.path.append('..')
-
-from nose.plugins.skip import SkipTest
-from nose.plugins.attrib import attr
+import pytest
 import os.path
 import unittest
-# import codecs
 
 from nyctext import nycaddress as parser
 
@@ -179,8 +176,9 @@ class Address(unittest.TestCase):
         got = parser.parse(text)[0]
         self.assertEqual(got, expected)
 
-    @SkipTest
+    @pytest.mark.skipif("True")
     def testSaintNotStreet(self):
+        #This is unimplemented
         '701 St. Anns should resolve to Saint Anns instead of Street Anns'
         expected = ['701 St. Anns Avenue Bronx, NY']
 
@@ -190,31 +188,24 @@ class Address(unittest.TestCase):
             got = parser.parse(text, verbose=True)[0]
             self.assertIn(got, expected)
 
-    @SkipTest
-    def testXXX(self):
-        # This fails at sentence tokenizer.
-        # splitting on periods.
+    def testInitials(self):
+
+        text = '''
+            1180 Reverend J.A. Polite Ave. Bronx, NY.
+        '''
 
         expected = [
-            '1180 Reverend J.A. Polite Ave. Bronx, NY',
+            '1180 Reverend J A Polite Avenue Bronx, NY'
         ]
 
-        for text in expected:
-            print text
-            got = parser.parse(text, verbose=True)[0]
-            self.assertIn(got, expected)
+        got = parser.parse(text)[0]
+        self.assertIn(got, expected)
 
-    # @attr(test='wip')
-    @SkipTest
     def testColumbusCircle(self):
         'basic -  Columbus Circle'
 
-        #  the current sentence tokenizer splits on
-        #  cir.
-        #  TODO: How to fix?
-        #
-        lus = 'Circle Cir.'.split(' ')
+        lus = 'Circle Cir. Cir'.split(' ')
         for lu in lus:
             source = '4 Columbus %s NY, NY' % lu
-            expect = ['4 Columbus %s Manhattan, NY' % lu]
+            expect = ['4 Columbus Circle Manhattan, NY']
             self.checkExpectation(source, expect, True)

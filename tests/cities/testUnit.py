@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from nose.plugins.skip import SkipTest
-from nose.plugins.attrib import attr
+import pytest
 from ..expectations import ParseExpectations
 
 
@@ -30,17 +29,17 @@ class UnitFilters(ParseExpectations):
         "handle blockcodes"
 
         blockcodes = [
-            "BOROUGH OF QUEENS 15-5446-Block 1289, lot 15-",
-            "BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3-",
-            "BOROUGH OF MANHATTAN 15-6223 - Block 15, lot 22-"
+            ["BOROUGH OF QUEENS 15-5446-Block 1289, lot 15-", 'Queens'],
+            ["BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3-", 'Brooklyn'],
+            ["BOROUGH OF MANHATTAN 15-6223 - Block 15, lot 22-", 'Manhattan'],
         ]
-        blockcodes = [b.replace('\x80', '').replace('\x93', '')
+        blockcodes = [(b[0].replace('\x80', '').replace('\x93', ''),  b[1])
                       for b in blockcodes]
 
         source, expected = [], []
         for bc in blockcodes:
-            source.append('A ' + bc + '123 Burrito Boulevard, Brooklyn NY')
-            expected.append('123 Burrito Boulevard, Brooklyn NY')
+            source.append('A %s\n123 Burrito Boulevard, %s NY' % bc)
+            expected.append('123 Burrito Boulevard, %s NY' % bc[1])
 
         source = '.\n'.join(source)
         self.checkExpectation(source, expected)
