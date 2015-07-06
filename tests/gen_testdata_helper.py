@@ -45,11 +45,13 @@ def lines():
     files = ['data/ACRIS_-_Personal_Property_Parties.txt',
              'data/DOHMH_New_York_City_Restaurant_Inspection_Results.txt',
              'data/Lower_Manhattan_Retailers.txt',
-             'data/Mapped_In_NY_Companies.txt']
+             'data/Mapped_In_NY_Companies.txt',
+             'data/highschools.txt',
+             ]
 
 
     for fn in files:
-        count = 10000
+        count = 5000
         with codecs.open(fn, encoding='latin1') as dataset:
             for line in dataset:
                 line = line.strip()
