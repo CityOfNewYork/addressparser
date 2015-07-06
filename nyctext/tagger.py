@@ -51,7 +51,15 @@ def filter_throughways(tup):
     '''Identify and tag throughway names.
 
     '''
-    # Todo: Build a more comprehensive list of throughways.
+    # Todo: This alg has to change so that it doesn't
+    #       assign 'LU' to portions of a neighborhood-
+    #       name...
+    #       Consider passing a context object to keep
+    #       track of the annotations an address goes through.
+    #       it will have which neighborhood was mapped
+    #       making it easier to eliminate those LU matches.
+    #
+    # 1: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
     # have to treat broadway & bowery as a thhoroughfare
     # because they are valid street names and thoroughfares in of
