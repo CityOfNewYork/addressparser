@@ -1,9 +1,6 @@
-import sys
-sys.path.append('..')
-
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
-from expectations import ParseExpectations
+from ..expectations import ParseExpectations
 
 
 class DepartmentOfConsumerAffairs(ParseExpectations):
