@@ -1,29 +1,69 @@
-# Address parser for DCAS
+# NYC Five Boroughs Address parser
 
-Extract address details from a text string.
+The goal of this project is to be able to identify, parse and geo-encode
+New York City postal addresses from a plaintext source.
 
 ## Dependencies
 
   * Pyhon 2.7.6
   * See [Requirements.txt](https://goo.gl/QByJUu)
+  * Register your application with [NYC Developer Portal](https://developer.cityofnewyork.us/)
+    and make sure that you check off access to the Geoclient API for
+    the application. Take note of the Application's ID and key. You will not be
+    able to use the ID and key until DoITT approves you -- this could take
+    several days, and you will receive an email when this happens. There isn't
+    any indication of your status on the dashboard, but all requests will
+    return a 403.
 
-## Installation (on UNIX/MAC)
+## Local deployment (on UNIX/MAC)
  * ```pip install -r requirements.txt```
- * Create a file named ENV in the root folder with the following lines:
+ * Set DOITT environment variables. One way is to create a file
+   and sourcing it:
 ```
-    export DOITT_CROL_APP_ID=Your_App_ID
-    export DOITT_CROL_APP_KEY=Your_App_KEY
-```
- * Load the Environment variables:
+cat <<EOF > DOITT_ENV
+export DOITT_CROL_APP_ID=Your_App_ID
+export DOITT_CROL_APP_KEY=Your_App_KEY
+EOF
 
+source DOITT_ENV
 ```
-    source ENV
-```
+
 * Run the Server
 ```
-    python webserver.py
+python webserver.py
 ```
+
 * [Explore the api](http://localhost:5000/api)
+
+## Testing
+
+This project uses the [pytest](http://pytest.org/latest/) framework to drive code.
+
+```
+# run all tests
+py.test -v
+
+# run tests decorated as wip
+py.test -m wip
+
+# test an ad-hoc address from the commandline
+python nyctext/quicktest.py "Akira Dubois: 1802  OCEAN PARKWAY  BKLYN, NY"
+
+# trace the same ad-hoc address to parsing journey
+python nyctext/quicktest.py --trace "Akira Dubois: 1802  OCEAN PARKWAY  BKLYN, NY"
+
+```
+## Note on Patches/Pull Requests
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests to verify your code.
+* Pass your tests and old tests.
+* Send a pull request. Bonus points for topic branches.
+
+## Thanks
+
+* [BetaNYC](http://betanyc.us/)
 
 ## License
 [Apache License, Version 2.0](LICENSE)
