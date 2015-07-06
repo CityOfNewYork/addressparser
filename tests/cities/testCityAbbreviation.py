@@ -1,28 +1,14 @@
-import sys
-sys.path.append('..')
-
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
-import os.path
-import unittest
-
-from nyctext import nycaddress as parser
+from ..expectations import ParseExpectations
 
 
-class CityAbbreviations(unittest.TestCase):
+class CityAbbreviations(ParseExpectations):
     '''Expand city abbreviations
     '''
 
-    def checkExpectation(self, source, expected, verbose=False):
-        addresses = parser.parse(source, verbose)
-        if verbose:
-            print 'source: %s' % source
-            print 'expected: %s' % expected
-            print 'got: %s' % addresses
-        for loc in addresses:
-            self.assertIn(loc, expected)
-            expected.remove(loc)
-        self.assertEqual(expected, [])
+    def __init__(self, *args, **kwds):
+        super(CityAbbreviations, self).__init__(*args, **kwds)
 
     def testManhttan(self):
         'test manhttan'
@@ -67,7 +53,6 @@ class CityAbbreviations(unittest.TestCase):
         expected = "12 WEST BURNSIDE Avenue Bronx, NY"
         expected = [expected]
         self.checkExpectation(source, expected)
-
 
     def testNYNYExpands(self):
         'ny ny expands'

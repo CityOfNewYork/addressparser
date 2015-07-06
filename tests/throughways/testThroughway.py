@@ -1,26 +1,12 @@
-import sys
-sys.path.append('..')
-
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
-import unittest
-from nyctext import nycaddress as parser
+from ..expectations import ParseExpectations
 
 
-class ThroughwayTests(unittest.TestCase):
+class ThroughwayTests(ParseExpectations):
 
-    def checkExpectation(self, source, expected, verbose=False):
-        addresses = parser.parse(source, verbose)
-        if verbose:
-            print 'source: %s' % source
-            print 'expected: %s' % expected
-            print 'got: %s' % addresses
-
-        for loc in addresses:
-            print 'checking: %s' % loc
-            self.assertIn(loc, expected)
-            expected.remove(loc)
-        self.assertEqual(expected, [])
+    def __init__(self, *args, **kwds):
+        super(ThroughwayTests, self).__init__(*args, **kwds)
 
     def testSouths(self):
         'various southern directions recognized'

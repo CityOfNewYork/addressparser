@@ -8,11 +8,24 @@ import unittest
 import codecs
 from nyctext import nycaddress as parser
 
-
 class ParseExpectations(unittest.TestCase):
 
+    def checkExpectation(self, source, expected, verbose=False):
+        addresses = parser.parse(source, verbose)
+        if verbose:
+            print 'source: %s' % source
+            print 'expected: %s' % expected
+            print 'got: %s' % addresses
+        for loc in addresses:
+            self.assertIn(loc, expected)
+            expected.remove(loc)
+        self.assertEqual(expected, [])
+
+
+class ParseExpectationsFromFile(unittest.TestCase):
+
     def __init__(self, *args, **kwds):
-        super(ParseExpectations, self).__init__(*args, **kwds)
+        super(ParseExpectationsFromFile, self).__init__(*args, **kwds)
         self.datadir = os.path.join(os.path.dirname(__file__), 'data')
 
     def checkExpectation(self, sample, expect, verbose=False):

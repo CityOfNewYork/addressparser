@@ -1,28 +1,15 @@
-import sys
-sys.path.append('..')
-
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
-import os.path
-import unittest
 
-from nyctext import nycaddress as parser
+from ..expectations import ParseExpectations
 
 
-class WithOccupancy(unittest.TestCase):
+class WithOccupancy(ParseExpectations):
     '''Addresses with Occupancy tags
     '''
 
-    def checkExpectation(self, source, expected, verbose=False):
-        addresses = parser.parse(source, verbose)
-        if verbose:
-            print 'source: %s' % source
-            print 'expected: %s' % expected
-            print 'got: %s' % addresses
-        for loc in addresses:
-            self.assertIn(loc, expected)
-            expected.remove(loc)
-        self.assertEqual(expected, [])
+    def __init__(self, *args, **kwds):
+        super(WithOccupancy, self).__init__(*args, **kwds)
 
     def testHandleFloor_flr_period(self):
         'process addresses with floor (flr.)'

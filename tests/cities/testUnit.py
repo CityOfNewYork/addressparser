@@ -1,60 +1,46 @@
 # -*- coding: utf-8 -*-
-import sys
-sys.path.append('..')
-
 from nose.plugins.skip import SkipTest
-import os.path
-import unittest
-import codecs
-from nyctext import preprocess
-from nyctext import nycaddress as parser
+from nose.plugins.attrib import attr
+from ..expectations import ParseExpectations
 
 
-class UnitFilters(unittest.TestCase):
+class UnitFilters(ParseExpectations):
 
     def __init__(self, *args, **kwds):
         super(UnitFilters, self).__init__(*args, **kwds)
-        self.cwd = os.path.dirname(__file__)
-
-    def checkExpectation(self, text, expect):
-        self.assertEqual(text, expect)
-
 
     def testFilterBoroughs(self):
         "handle 'in the borough of (...)' mappings"
 
-        boroughs = 'Brooklyn, Bronx, Queens, Staten Island, Manhattan'.split(', ')
+        boroughs = 'Brooklyn, Bronx, Queens, Staten Island, Manhattan' \
+            .split(', ')
         src = '123 Burro St. in the borough of %s'
-        exp = '123 Burro St. %s, NY.\n'
+        exp = '123 Burro Street %s, NY'
 
-        tests = [dict(text=src%b, expect=exp%b) for b in boroughs]
+        source, expected = [], []
 
-        for d in tests:
-            self.checkExpectation(preprocess.filter_boroughs(d['text']), d['expect'])
+        for b in boroughs:
+            source.append(src % b)
+            expected.append(exp % b)
 
+        source = '.\n'.join(source)
+        self.checkExpectation(source, expected)
 
     def testFilterBlockCodes(self):
         "handle blockcodes"
 
         blockcodes = [
-            "BOROUGH OF QUEENS 15-5446-Block 1289, lot 15–",
-            "BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3–",
-            "BOROUGH OF MANHATTAN 15-6223 – Block 15, lot 22-"]
+            "BOROUGH OF QUEENS 15-5446-Block 1289, lot 15-",
+            "BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3-",
+            "BOROUGH OF MANHATTAN 15-6223 - Block 15, lot 22-"
+        ]
+        blockcodes = [b.replace('\x80', '').replace('\x93', '')
+                      for b in blockcodes]
 
+        source, expected = [], []
         for bc in blockcodes:
-            print bc
-            text = 'A '+ bc + '123 Burrito Boulevard, Brooklyn NY'
-            text = text.replace('\x80','').replace('\x93', '')
-            # text = text.replace(u'\xa0','')
-            # text = text.decode('unicode_escape').encode('ascii','ignore')
-            print text
-            text = preprocess.filter_blockcodes(text)
-            exp = 'A .\n123 Burrito Boulevard, Brooklyn NY'
-            self.checkExpectation(text, exp)
+            source.append('A ' + bc + '123 Burrito Boulevard, Brooklyn NY')
+            expected.append('123 Burrito Boulevard, Brooklyn NY')
 
-    @SkipTest
-    def filterStreetAbbreviations(self):
-        pass
-
-
-
+        source = '.\n'.join(source)
+        self.checkExpectation(source, expected)

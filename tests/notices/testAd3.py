@@ -1,9 +1,9 @@
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
-from ..expectations import ParseExpectations
+from ..expectations import ParseExpectationsFromFile
 
 
-class DepartmentOfTransportation(ParseExpectations):
+class DepartmentOfTransportation(ParseExpectationsFromFile):
 
     def __init__(self, *args, **kwds):
         super(DepartmentOfTransportation, self).__init__(*args, **kwds)

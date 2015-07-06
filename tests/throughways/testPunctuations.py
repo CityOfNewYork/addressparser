@@ -1,28 +1,14 @@
-import sys
-sys.path.append('..')
-
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
-import os.path
-import unittest
-
-from nyctext import nycaddress as parser
+from ..expectations import ParseExpectations
 
 
-class PunctuationManipulation(unittest.TestCase):
+class PunctuationManipulation(ParseExpectations):
     '''Add description HERE
     '''
 
-    def checkExpectation(self, source, expected, verbose=False):
-        addresses = parser.parse(source, verbose)
-        if verbose:
-            print 'source: %s' % source
-            print 'expected: %s' % expected
-            print 'got: %s' % addresses
-        for loc in addresses:
-            self.assertIn(loc, expected)
-            expected.remove(loc)
-        self.assertEqual(expected, [])
+    def __init__(self, *args, **kwds):
+        super(PunctuationManipulation, self).__init__(*args, **kwds)
 
     def testPeriodBetweenNNPAndThroughfare(self):
         'wipe out the following period: NNP . LU'

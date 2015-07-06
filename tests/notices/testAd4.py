@@ -1,9 +1,9 @@
 from nose.plugins.skip import SkipTest
 from nose.plugins.attrib import attr
-from ..expectations import ParseExpectations
+from ..expectations import ParseExpectationsFromFile
 
 
-class LandmarkPreservation(ParseExpectations):
+class LandmarkPreservation(ParseExpectationsFromFile):
 
     def __init__(self, *args, **kwds):
         super(LandmarkPreservation, self).__init__(*args, **kwds)
