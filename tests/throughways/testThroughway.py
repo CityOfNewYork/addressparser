@@ -91,6 +91,7 @@ class ThroughwayTests(unittest.TestCase):
         self.checkExpectation(source, expected)
 
     def testStreetNames(self):
+        'concourse and loop recognized'
         source = """
             590 GRAND CONCOURSE BRONX, NY.
             149 DREISER LOOP BRONX, NY.
@@ -100,3 +101,16 @@ class ThroughwayTests(unittest.TestCase):
             "149 DREISER LOOP BRONX, NY"
         ]
         self.checkExpectation(source, expected)
+
+    def testSquareAbbreviation(self):
+        'sq expands to square'
+        source = """
+            41 Union Sq. West suite 1024, New York, NY.
+            51 Union Sq West suite 10, New York, NY.
+        """
+        expected = [
+            "41 Union Square West, suite 1024, Manhattan, NY",
+            "51 Union Square West, suite 10, Manhattan, NY"
+        ]
+        self.checkExpectation(source, expected)
+

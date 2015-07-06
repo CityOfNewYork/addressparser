@@ -52,33 +52,33 @@ def remove_period_between_nnp_and_lu(text):
     return savespace.sub('\\1 ', ' '.join(_text))
 
 
-_street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
-_avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
-_boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
-_plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
-_drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
-_parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
-_road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
-_lane_abbreviations = re.compile('\s+(ln\.?)[\s,]', re.IGNORECASE)
-_highway_abbreviations = re.compile('\s+(hwy\.?)[\s,]', re.IGNORECASE)
-_expressway_abbreviations = re.compile('\s+(expy\.?)[\s,]', re.IGNORECASE)
-
-
 def filter_street_abbreviations(text):
     # Todo: Build a more comprehensive list of throughways.
     # See: http://www.semaphorecorp.com/cgi/abbrev.html
+    _avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.IGNORECASE)
+    _boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.IGNORECASE)
+    _drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.IGNORECASE)
+    _expressway_abbreviations = re.compile('\s+(expy\.?)[\s,]', re.IGNORECASE)
+    _highway_abbreviations = re.compile('\s+(hwy\.?)[\s,]', re.IGNORECASE)
+    _lane_abbreviations = re.compile('\s+(ln\.?)[\s,]', re.IGNORECASE)
+    _parkway_abbreviations = re.compile('\s+(pkwy?\.?)[\s,]', re.IGNORECASE)
+    _plaza_abbreviations = re.compile('\s+(plz?\.?)[\s,]', re.IGNORECASE)
+    _road_abbreviations = re.compile('\s+(rd\.?)[\s,]', re.IGNORECASE)
+    _square_abbreviations = re.compile('\s+(sq\.?)[\s,]', re.IGNORECASE)
+    _street_abbreviations = re.compile('\s+(str?\.?)[\s,]', re.IGNORECASE)
 
-    global _street_abbreviations, _avenue_abbreviations
-    text = _street_abbreviations.sub(' Street ', text)
+
     text = _avenue_abbreviations.sub(' Avenue ', text)
     text = _boulevard_abbreviations.sub(' Boulevard ', text)
-    text = _plaza_abbreviations.sub(' Plaza ', text)
     text = _drive_abbreviations.sub(' Drive ', text)
-    text = _parkway_abbreviations.sub(' Parkway ', text)
-    text = _road_abbreviations.sub(' Road ', text)
-    text = _lane_abbreviations.sub(' Lane ', text)
-    text = _highway_abbreviations.sub(' Highway ', text)
     text = _expressway_abbreviations.sub(' Expressway ', text)
+    text = _highway_abbreviations.sub(' Highway ', text)
+    text = _lane_abbreviations.sub(' Lane ', text)
+    text = _parkway_abbreviations.sub(' Parkway ', text)
+    text = _plaza_abbreviations.sub(' Plaza ', text)
+    text = _road_abbreviations.sub(' Road ', text)
+    text = _square_abbreviations.sub(' Square ', text)
+    text = _street_abbreviations.sub(' Street ', text)
     return text
 
 
