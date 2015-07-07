@@ -168,8 +168,10 @@ def parseaddresses():
 
     try:
         data = request.json
-        source = data['source']
-        ret = jsonify(refLocation=parse_with_geo(source, g))
+        # have to make sure calling app is set to unicode
+        source = data['source'].encode('utf8')
+        print 'AddressParser received: %s\n\nCalling parse_with_geo...\n' % source
+        ret = jsonify(refLocation=parse_with_geo(source, g, True))
     except Exception, e:
         print 'Exception: %s' % e
         errmsg = 'Invalid or Missing JSON Request'

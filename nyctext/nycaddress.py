@@ -5,6 +5,7 @@ __license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
 
 
 import os
+import unicodedata
 import nltk
 nltk.data.path.append(os.path.join(os.path.dirname(__file__), 'nltk-data'))
 from nltk.tokenize import sent_tokenize
@@ -140,8 +141,14 @@ def lookup_geo(g, ady, verbose=False):
     place = RefLocation(streetAddress, borough, zipcode, latitude, longitude)
     return place.schema_object()
 
+def normalize_text(text):
+    'Remove accents and other annotations from unicode characters'
+    return unicodedata.normalize(
+              'NFKD', 
+              text.decode('utf8', 'strict')).encode('ascii', 'ignore')
 
 def parse(text, verbose=False):
+    text = normalize_text(text)
     candidates = matchAddresses(text, verbose)
     candidates = [location_to_string(c) for c in candidates]
 
