@@ -58,7 +58,7 @@ def filter_street_abbreviations(text):
     _avenue_abbreviations = re.compile('\s+(ave?\.?)[\s,]', re.I)
     _boulevard_abbreviations = re.compile('\s+(blvd?\.?)[\s,]', re.I)
     _circle_abbreviations = re.compile('\s+(cir\.?)[\s,]', re.I)
-    _drive_abbreviations = re.compile('\s+(dr?\.?)[\s,]', re.I)
+    _drive_abbreviations = re.compile('\s+(dr\.?)[\s,]', re.I)
     _expressway_abbreviations = re.compile('\s+(expy\.?)[\s,]', re.I)
     _highway_abbreviations = re.compile('\s+(hwy\.?)[\s,]', re.I)
     _lane_abbreviations = re.compile('\s+(ln\.?)[\s,]', re.I)
@@ -109,7 +109,7 @@ def expand_street_post_directions(text):
 
 
 def do_cd(text):
-    _rex_cd = re.compile(r'\b(\d+)(n|s|e|w)(\.)?\s', re.I)
+    _rex_cd = re.compile(r'\b(\d+)(n|s|e|w|north|south|east|west)(\.)?\s', re.I)
     return _rex_cd.sub('\\1 \\2 ', text)
 
 
