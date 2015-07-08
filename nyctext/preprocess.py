@@ -31,8 +31,8 @@ def filter_blockcodes(text):
     # BOROUGH OF QUEENS 15-7412 - Block 8020, lot 6–
     # BOROUGH OF BROOKLYN 15-7494-Block 2382, lot 3–
     # BOROUGH OF MANHATTAN 15-6223 – Block 15, lot 22-
-    _b = '[brooklyn|bronx|manhattan|staten\s+island|queens]'
-    _rex_blockcodes = r'BOROUGH\s+of\s+%s[^b]+block[^,]+,\s+lot[\s\d]+.' % _b
+    _b = 'brooklyn|bronx|manhattan|staten\s+island|queens'
+    _rex_blockcodes = "BOROUGH\s+of\s+(%s)\s+[^b]{7,15}Block\s+\d+,\slot\s\d+.\s*" % _b
     _rex_blockcodes = re.compile(_rex_blockcodes, re.I)
 
     return '.\n'.join([para for para in _rex_blockcodes.split(text)])
