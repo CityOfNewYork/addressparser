@@ -35,7 +35,7 @@ class ParseExpectationsFromFile(unittest.TestCase):
         expected = open(expectation).readlines()
         expected = [e.strip() for e in expected]
 
-        text = codecs.open(source, 'r', encoding='utf8').read()
+        text = codecs.open(source, 'r', encoding='utf8').read().encode('ascii', 'ignore')
         addresses = parser.parse(text, verbose)
 
         if verbose:
