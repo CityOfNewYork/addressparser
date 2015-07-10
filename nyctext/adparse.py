@@ -32,7 +32,7 @@ def do_file(fn, g, trace=False, geo=False):
     total, parsed, failed = 0, 0, 0
     ads = []
     for line in codecs.open(fn, encoding='utf-8'):
-        line = line.strip()
+        line = line.encode('ascii', 'ignore').strip()
         if line == '':
             continue
 
