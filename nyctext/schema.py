@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+__author__ = "C. Sudama, Matthew Alhonte"
+__license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
+
 class RefLocation:
 
     def __init__(self, streetAddress, borough, zipcode, latitude, longitude):

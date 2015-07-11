@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+__author__ = "C. Sudama, Matthew Alhonte"
+__license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
+
 """
 Usage:
     adparse --file=<infile> [--trace]
@@ -10,6 +14,7 @@ Options:
     --trace         Print trace statement
     --geo           Return Geolocation attributes [default: False]
 """
+
 from docopt import docopt
 from os import environ
 import codecs

@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+__author__ = "C. Sudama, Matthew Alhonte"
+__license__ = "Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0"
+
 import re
 '''Process to be done before tokenizing into sentences.
 Transorm the text so the sentence tokenizer can break
