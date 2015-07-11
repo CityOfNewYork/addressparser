@@ -53,6 +53,12 @@ python nyctext/adparse.py "Johnson Doe: 1802  OCEAN PARKWAY  BKLYN, NY"
 python nyctext/adparse.py --trace "Johnson Doe: 1802  OCEAN PARKWAY  BKLYN, NY"
 
 ```
+
+## Team
+
+* [Amal S](https://github.com/cds-amal)
+* [Matthew A](https://github.com/mattalhonte)
+
 ## Note on Patches/Pull Requests
 
 * Fork the project.
