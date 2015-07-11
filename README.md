@@ -6,7 +6,7 @@ New York City postal addresses from a plaintext source.
 ## Dependencies
 
   * Pyhon 2.7.6
-  * See [Requirements.txt](https://goo.gl/QByJUu)
+  * See [Requirements.txt](./requirements.txt)
   * Register your application with [NYC Developer Portal](https://developer.cityofnewyork.us/)
     and make sure that you check off access to the Geoclient API for
     the application. Take note of the Application's ID and key. You will not be
@@ -47,10 +47,10 @@ py.test -v
 py.test -m wip
 
 # test an ad-hoc address from the commandline
-python nyctext/quicktest.py "Akira Dubois: 1802  OCEAN PARKWAY  BKLYN, NY"
+python nyctext/adparse.py "Johnson Doe: 1802  OCEAN PARKWAY  BKLYN, NY"
 
 # trace the same ad-hoc address to parsing journey
-python nyctext/quicktest.py --trace "Akira Dubois: 1802  OCEAN PARKWAY  BKLYN, NY"
+python nyctext/adparse.py --trace "Johnson Doe: 1802  OCEAN PARKWAY  BKLYN, NY"
 
 ```
 ## Note on Patches/Pull Requests
@@ -64,6 +64,7 @@ python nyctext/quicktest.py --trace "Akira Dubois: 1802  OCEAN PARKWAY  BKLYN, N
 ## Thanks
 
 * [BetaNYC](http://betanyc.us/)
+* [Datamade](http://datamade.us/) and their awesome [usaddress tagger](https://github.com/datamade/usaddress)
 
 ## License
 [Apache License, Version 2.0](LICENSE)
