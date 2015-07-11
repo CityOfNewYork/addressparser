@@ -1,12 +1,11 @@
 import sys
 sys.path.append('..')
 
-from nose.plugins.skip import SkipTest
-from nose.plugins.attrib import attr
 import os.path
 import unittest
 import codecs
 from nyctext import nycaddress as parser
+
 
 class ParseExpectations(unittest.TestCase):
 
@@ -35,7 +34,8 @@ class ParseExpectationsFromFile(unittest.TestCase):
         expected = open(expectation).readlines()
         expected = [e.strip() for e in expected]
 
-        text = codecs.open(source, 'r', encoding='utf8').read().encode('ascii', 'ignore')
+        text = codecs.open(source, 'r', encoding='utf8') \
+            .read().encode('ascii', 'ignore')
         addresses = parser.parse(text, verbose)
 
         if verbose:

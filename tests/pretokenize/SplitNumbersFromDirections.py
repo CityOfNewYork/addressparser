@@ -2,12 +2,12 @@ import pytest
 from ..expectations import ParseExpectations
 
 
-class PreTokenizeLogic(ParseExpectations):
+class SplitNumberFromDirections(ParseExpectations):
 
     def __init__(self, *args, **kwds):
-        super(PreTokenizeLogic, self).__init__(*args, **kwds)
+        super(SplitNumberFromDirections, self).__init__(*args, **kwds)
 
-    def test_separate_number_and_direction(self):
+    def test_separation(self):
         'separate number from direction'
 
         source = """
