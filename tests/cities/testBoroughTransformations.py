@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-import pytest
 from ..expectations import ParseExpectations
 
 
-class UnitFilters(ParseExpectations):
+class BoroughTransformation(ParseExpectations):
 
     def __init__(self, *args, **kwds):
-        super(UnitFilters, self).__init__(*args, **kwds)
+        super(BoroughTransformation, self).__init__(*args, **kwds)
 
     def testFilterBoroughs(self):
         "handle 'in the borough of (...)' mappings"
