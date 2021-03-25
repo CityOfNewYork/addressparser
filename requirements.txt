@@ -3,7 +3,7 @@ Jinja2==2.7.3
 Markdown==2.6.2
 MarkupSafe==0.23
 Metafone==0.5
-PyYAML==3.11
+PyYAML==5.4
 Pygments==2.0.2
 Werkzeug==0.10.4
 cffi==1.1.0
