@@ -5,7 +5,7 @@ MarkupSafe==0.23
 Metafone==0.5
 PyYAML==3.11
 Pygments==2.0.2
-Werkzeug==0.10.4
+Werkzeug==0.15.3
 cffi==1.1.0
 cryptography==0.9
 docopt==0.6.2
